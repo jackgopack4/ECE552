@@ -27,11 +27,12 @@ module ALU( dst,
 	       ((op == 0101 | op[3:1] == 3'b011) ? 2'b10 :
 	                                           2'b11));
 
-  assign ov  = (v_arith);
-  assign neg = (n_arith);
-  assign zr = (Sel == 2'b00) ? z_arith :
+  assign ov = (Sel == 2'b00) ? v_arith  : 1'b0;
+  assign neg = (Sel == 2'b00) ? n_arith : 1'b0;
+  assign zr = (Sel == 2'b00)  ? z_arith :
 	      ((Sel == 2'b01) ? z_logic :
-	      z_shift);
+	      ((Sel == 2'b10) ? z_shift :
+	                        1'b0));
 
   assign dst = (Sel == 2'b00)  ? arithout : 
 	       ((Sel == 2'b01) ? logicout :
