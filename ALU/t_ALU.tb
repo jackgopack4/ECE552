@@ -22,7 +22,7 @@ module t_ALU();
    localparam LHB     = 4'b1011;
    
 /////////// Instantiate DUT ////////// 
-   ALU DUT(.src0(src0[15:0]), .src1(src1[15:0]), .func(func), .shamt(shamt),
+   ALU DUT(.src0(src0[15:0]), .src1(src1[15:0]), .op(func), .shamt(shamt),
            .dst(dst), .ov(ov), .zr(zr), .neg(neg));   
            // We won't need 'shamt' since it will be grabbed from
            // src1 as the immidiate field
@@ -40,9 +40,9 @@ module t_ALU();
    src0 = 16'b0000000000000000;
    src1 = 16'b0000000000000000;
    #5  
-   for (src0 = 0; src0 < 32767; src0 = src0 + 1) begin
+   for (src0 = 0; src0 < 32767; src0 = src0 + 1000) begin
    #5
-      for (src1 = 0; src1 < 32767; src1 = src1 + 1) begin 
+      for (src1 = 0; src1 < 32767; src1 = src1 + 100) begin 
 		   #5           
 			// Self check output   
 			if (src0 + src1 > 32767) begin
@@ -56,6 +56,7 @@ module t_ALU();
 			else if (src0 + src1 != dst) begin      
 				$display("*ERROR* ADD fault");
 			end
+			$display("src0=%d, src1=%d, dst=%d", src0, src1, dst);
       end 
    end
 /* Non-Exhaustive Check
@@ -83,7 +84,6 @@ module t_ALU();
       $display("*ERROR* dst does not match"); 
    end 
 */ 
- 
  
    // PADDSB 
    // Exhaustive Check
@@ -558,6 +558,9 @@ src1 = 16'b0000000000000000; // shift amount
   */ 
    
  $display("src0=%d, src1=%d, func=%d, dst=%d", src0, src1, func, dst);          
+
+
+
 
 
  end // Test Input   
