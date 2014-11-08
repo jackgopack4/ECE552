@@ -29,8 +29,8 @@ module shifter(dst, src, m, shamt);
 	          (m==SRL) ? {4'h0,sel1[15:4]}         :
 		             {sel1[15],sel1[15],sel1[15],sel1[15],sel1[15:4]};
 
-  assign shift3 = (m==SLL) ? {sel2[7:0],8'h0} :
-	          (m==SRL) ? {8'h0,sel2[15:8]} :
+  assign shift3 = (m==SLL) ? {sel2[7:0],8'h00} :
+	          (m==SRL) ? {8'h00,sel2[15:8]} :
 		             {sel2[15],sel2[15],sel2[15],sel2[15],sel2[15],sel2[15],sel2[15],sel2[15],sel2[15:8]};
 
 endmodule
