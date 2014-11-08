@@ -33,5 +33,9 @@ module ALU( dst,
 	      ((Sel == 2'b01) ? z_logic :
 	      z_shift);
 
+  assign dst = (Sel == 2'b00)  ? arithout : 
+	       ((Sel == 2'b01) ? logicout :
+	       ((Sel == 2'b10) ? shiftout :
+	                         loadout));
 
 endmodule
