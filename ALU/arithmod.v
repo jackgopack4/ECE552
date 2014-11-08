@@ -9,7 +9,7 @@ module arithmod(Out, V, N, Z, A, B, Sel);
   wire [15:0] adder_out, paddsb_out, adder_result, B_nor, sel_nor;
   wire sign;
   split16 splitSel(sel_nor, Sel[1]);
-  assign B_nor = (sel_nor ^ B);
+  assign B_nor = (sel_nor) ? (~B + 1) : B;
   add16bit Adder(cout, adder_out, A, B_nor, Sel[1]);
   overflow check(V, sign, A[15], B_nor[15], adder_out[15], Sel[1]);
   assign adder_result = (V) ? ((sign) ? 16'h8000 : 16'h7FFF):
