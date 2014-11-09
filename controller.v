@@ -1,8 +1,8 @@
 module controller(OpCode, RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite,
-					ALUSrc, RegWrite);
+					ALUSrc, RegWrite, PCSrc);
 
 input [3:0] OpCode; 
-output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;					
+output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, PCSrc;					
 
    localparam ADD     = 4'b0000;
    localparam PADDSB  = 4'b0001;
@@ -22,7 +22,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    localparam JR 	  = 4'b1110;
    localparam HLT	  = 4'b1111;
 
-// could do if (OpCode[5] = 0 -> R-type, etc...
+// 
 
 
 
@@ -36,6 +36,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
+   PCSrc	= 0;
    case (OpCode)
    ADD: begin
    // R-type
@@ -47,6 +48,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 1'b0;
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
+   PCSrc	= 0;
    end
    PADDSB: begin
    // R-type
@@ -58,6 +60,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 1'b0;
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
+   PCSrc	= 0;
    end
    SUB: begin
    // R-type
@@ -69,6 +72,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    AND: begin
    // R-type
@@ -80,6 +84,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    NOR: begin
    // R-type
@@ -91,6 +96,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    SLL: begin
    // R-type
@@ -102,6 +108,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    SRL: begin
    // R-type
@@ -113,6 +120,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    SRA: begin
    // R-type
@@ -124,6 +132,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    LW: begin
    // LW-type
@@ -135,6 +144,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 1;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    SW: begin
    // SW-type
@@ -146,6 +156,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 1;
    ALUSrc   = 1;
    RegWrite = 0;
+   PCSrc	= 0;
    end
    LLB: begin
    // R-type?
@@ -157,6 +168,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    LHB: begin
    // R-type?
@@ -168,6 +180,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    B: begin
    // not sure about these
@@ -179,6 +192,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    JAL: begin
    // not sure about these
@@ -190,6 +204,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    JR: begin
    // not sure about these
@@ -201,6 +216,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    HLT: begin
    // not sure about these
@@ -212,6 +228,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
+   PCSrc	= 0;
    end
    default: begin
    RegDst   = 0;
@@ -222,6 +239,7 @@ output reg RegDst, Branch, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
+   PCSrc	= 0;
    end
    endcase
   end //always@
