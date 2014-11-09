@@ -1,16 +1,16 @@
 module PC(nextAddr, clk, rst, programCounter);
 
-input [15:0] nextAddr;
+input wire [15:0] nextAddr;
 input clk, rst;
 output reg [15:0] programCounter;
 
-always @(posedge clk) begin
-	if (rst) begin
-		programCounter <= 4'h0000;
+always @(posedge clk, rst) begin
+	if (~rst) begin
+		programCounter <= 16'd0;
 	end else begin
 		programCounter <= nextAddr;
 	end
-
+//$display("programCounter=%d, nextAddr=%d", programCounter, nextAddr); 
 end
 
 endmodule
