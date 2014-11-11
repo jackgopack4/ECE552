@@ -38,21 +38,21 @@ module t_ALU();
  #5 
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* ADD dst does not match"); 
    end 
  src0 = 16'b0000001110000010;
  src1 = 16'b0010010001100001;
  #5
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* ADD dst does not match"); 
    end
  src0 = 16'b0000011001000010;
  src1 = 16'b0010000100011011;
  #5
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* ADD dst does not match"); 
    end 
 
 
@@ -64,21 +64,21 @@ module t_ALU();
  #5
  // Self check output     
    if (src0 - src1 != dst) begin      
-      $display("*ERROR* dst does not match, %b, %b", src0-src1, dst); 
+      $display("*ERROR* SUB dst does not match, %b, %b", src0-src1, dst); 
    end 
  src0 = 16'b0000001110000010;
  src1 = 16'b0010010001100001;
  #5
  // Self check output     
    if (src0 - src1 != dst) begin      
-      $display("*ERROR* dst does not match, %b, %b", src0-src1, dst);
+      $display("*ERROR* SUB dst does not match, %b, %b", src0-src1, dst);
    end
  src0 = 16'b0000011001000010;
  src1 = 16'b0010000100011011;
  #5
  // Self check output     
    if (src0 - src1 != dst) begin      
-      $display("*ERROR* dst does not match, %b, %b", src0-src1, dst);
+      $display("*ERROR* SUB dst does not match, %b, %b", src0-src1, dst);
    end 
 
 // PADDSB Non-Exhaustive Check
@@ -89,46 +89,60 @@ module t_ALU();
  #5
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* PADDSB dst does not match"); 
    end 
  src0 = 16'b0000001110000010;
  src1 = 16'b0010010001100001;
  #5
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* PADDSB dst does not match"); 
    end
  src0 = 16'b0000011001000010;
  src1 = 16'b0010000100011011;
  #5
  // Self check output     
    if (src0 + src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* PADDSB dst does not match"); 
    end
 
 // AND Non-Exhaustive Check
 #5
  func = 4'b0011;
+ #1
  src0 = 16'b0010000110010001;
+ #1
  src1 = 16'b0000010001100001;
  #5
  // Self check output     
-   if (src0 && src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+   if ((src0 & src1) != dst) begin      
+      $display("*ERROR* AND 1 dst does not match"); 
+      $display("src0        = %b", src0);
+      $display("src1        = %b", src1);
+      $display("src0 & src1 = %b", src0 & src1);
+      $display("dst actual  = %b", dst);
    end 
  src0 = 16'b0000001110000010;
  src1 = 16'b0010010001100001;
  #5
  // Self check output     
-   if (src0 && src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+   if (src0 & src1 != dst) begin      
+      $display("*ERROR* AND 2 dst does not match"); 
+      $display("src0        = %b", src0);
+      $display("src1        = %b", src1);
+      $display("src0 & src1 = %b", src0 & src1);
+      $display("dst actual  = %b", dst);
    end
  src0 = 16'b0000011001000010;
  src1 = 16'b0010000100011011;
  #5
  // Self check output     
-   if (src0 && src1 != dst) begin      
-      $display("*ERROR* dst does not match"); 
+   if (src0 & src1 != dst) begin      
+      $display("*ERROR* AND 3 dst does not match"); 
+      $display("src0        = %b", src0);
+      $display("src1        = %b", src1);
+      $display("src0 & src1 = %b", src0 & src1);
+      $display("dst actual  = %b", dst);
    end 
 
 // NOR Non-Exhaustive Check
@@ -139,7 +153,7 @@ module t_ALU();
  #5
  // Self check output     
    if (~(src0 | src1) != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* NOR dst does not match"); 
       $display("src0       = %b,", src0); 
       $display("src1       = %b,", src1);
       $display("NOR should = %b,", ~(src0 || src1));
@@ -150,7 +164,7 @@ module t_ALU();
  #5
  // Self check output     
    if (~(src0 | src1) != dst) begin      
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* NOR dst does not match"); 
       $display("src0       = %b,", src0); 
       $display("src1       = %b,", src1);
       $display("NOR should = %b,", ~(src0 || src1));
@@ -161,11 +175,108 @@ module t_ALU();
  #5
  // Self check output     
    if (~(src0 | src1) != dst) begin    
-      $display("*ERROR* dst does not match"); 
+      $display("*ERROR* NOR dst does not match"); 
       $display("src0       = %b,", src0); 
       $display("src1       = %b,", src1);
       $display("NOR should = %b,", ~(src0 || src1));
       $display("dst actual  = %b", dst);  
+   end 
+
+// SLL non-exhaustive check
+ #5
+ func = 4'b0101;
+ src0 = 16'b0010000110010001;
+ //src1 = 16'b0000010001100001;
+ shamt = 4'b0001;
+ #5
+ // Self check output     
+   if (src0 << shamt != dst) begin      
+      $display("*ERROR* SLL dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("shamt   = %d", shamt);
+      $display("shifted = %b", src0 << shamt);
+      $display("dst     = %b", dst);
+   end 
+ src0 = 16'b0000001110000010;
+ //src1 = 16'b0010010001100001;
+ shamt = 4'b0010;
+ #5
+ // Self check output     
+   if (src0 << shamt != dst) begin      
+      $display("*ERROR* SLL dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("shamt   = %d", shamt);
+      $display("shifted = %b", src0 << shamt);
+      $display("dst     = %b", dst);
+   end
+ src0 = 16'b0000011001000010;
+ //src1 = 16'b0010000100011011;
+ shamt = 4'b0100;
+ #5
+ // Self check output     
+   if (src0 << shamt != dst) begin      
+      $display("*ERROR* SLL dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("shamt   = %d", shamt);
+      $display("shifted = %b", src0 << shamt);
+      $display("dst     = %b", dst);
+   end
+
+// SRL Non-Exhaustive check
+ #5
+ func = 4'b0110;
+ src0 = 16'b0010000110010001;
+ //src1 = 16'b0000010001100001;
+ shamt = 4'b0001;
+ #5
+ // Self check output     
+   if (src0 >> shamt != dst) begin      
+      $display("*ERROR* SRL dst does not match"); 
+   end 
+ src0 = 16'b0000001110000010;
+ //src1 = 16'b0010010001100001;
+ shamt = 4'b0010;
+ #5
+ // Self check output     
+   if (src0 >> shamt != dst) begin      
+      $display("*ERROR* SRL dst does not match"); 
+   end
+ src0 = 16'b0000011001000010;
+ //src1 = 16'b0010000100011011;
+ shamt = 4'b0100;
+ #5
+ // Self check output     
+   if (src0 >> shamt != dst) begin      
+      $display("*ERROR* SRL dst does not match"); 
+   end
+
+// SRA Non-Exhaustive check
+ #5
+ func = 4'b0111;
+ #1
+ src0 = 16'b0010000110010001;
+ //src1 = 16'b0000010001100001;
+ shamt = 4'b0001;
+ #5
+ // Self check output     
+   if ({src0 >>> shamt} != dst) begin      
+      $display("*ERROR* SRA 1 dst does not match"); 
+   end 
+ src0 = 16'b0000001110000010;
+ //src1 = 16'b0010010001100001;
+ shamt = 4'b0010;
+ #5
+ // Self check output     
+   if ({src0 >>> shamt} != dst) begin      
+      $display("*ERROR* SRA 2 dst does not match"); 
+   end
+ src0 = 16'b0000011001000010;
+ //src1 = 16'b0010000100011011;
+ shamt = 4'b0100;
+ #5
+ // Self check output     
+   if ({src0 >>> shamt} != dst) begin      
+      $display("*ERROR* SRA 3 dst does not match"); 
    end 
 
 end 

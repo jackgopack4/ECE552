@@ -22,9 +22,9 @@ module ALU( dst,
   shiftmod sm(shiftout, z_shift, src0, op[1:0], shamt);
   loadmod  dm(loadout, src0, src1, op[0]);
 
-  assign Sel = (op[3:1] == 3'b000 || op == 4'h2)  ? 2'b00 :
-	       ((op == 4'b0101 || op == 4'b0100)  ? 2'b01 :
-	       ((op == 0101 || op[3:1] == 3'b011) ? 2'b10 :
+  assign Sel = (op[3:1] == 3'b000 || op == 4'b0010)  ? 2'b00 :
+	       ((op == 4'b0011 || op == 4'b0100)  ? 2'b01 :
+	       ((op == 4'b0101 || op[3:1] == 3'b011) ? 2'b10 :
 	                                           2'b11));
 
 //  always@(Sel) $display("Sel changed to: %b", Sel);

@@ -8,6 +8,6 @@ module shiftmod(Out, Z, A, Op, Shamt);
   output Z;
 
   shifter shift_it(Out, A, Op, Shamt);
-  assign Z = (A == 16'h0000);
+  assign Z = (A == 16'h0000)? 1'b1: 1'b0;
 
 endmodule

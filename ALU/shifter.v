@@ -8,6 +8,7 @@ module shifter(dst, src, m, shamt);
   input  [15:0] src;
   input  [1:0]  m;
   input  [3:0]  shamt;
+  //always@(dst) $display("dst in shifter = %b", dst);
 
   wire   [15:0] shift0, shift1, shift2, shift3;
   wire   [15:0] sel0, sel1, sel2;

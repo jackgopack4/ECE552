@@ -8,6 +8,7 @@ module logicmod(Out, Z, A, B, Sel);
   wire [15:0] andwire, norwire;
 
   assign andwire = (A & B);
+  //always@(andwire && !Sel) $display("And result = %b", andwire);
   assign norwire = ~(A | B);
   assign Out = (Sel) ? norwire : andwire;
   assign Z = (Out == 16'h0000);
