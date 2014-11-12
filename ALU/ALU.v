@@ -29,7 +29,7 @@ module ALU( dst,
 
 //  always@(Sel) $display("Sel changed to: %b", Sel);
 //  always@(op) $display("op changed to: %b", op);
-  always@(src0, src1, op, shamt) begin
+  always@(arithout, logicout, shiftout) begin
     case(op)
       4'b0000: begin
 	      if(v_arith == 1'b1) ov  = 1;
