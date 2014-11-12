@@ -1,14 +1,35 @@
 module ALU( dst,
-	    ov,
-	    zr,
-	    neg,
+	    change_v,
+	    change_z,
+	    change_n,
+      ov,
+      zr, 
+      neg,
 	    src0,
 	    src1,
 	    op,
 	    shamt);
 
+  localparam ADD = 4'b0000;
+  localparam PADDSB = 4'b0001;
+  localparam SUB = 4'b0010;
+  localparam AND = 4'b0011;
+  localparam NOR = 4'b0100;
+  localparam SLL = 4'b0101;
+  localparam SRL = 4'b0110;
+  localparam SRA = 4'b0111;
+  localparam LW = 4'b1000;
+  localparam SW = 4'b1001;
+  localparam LHB = 4'b1010;
+  localparam LLB = 4'b1011;
+  localparam B = 4'b1100;
+  localparam JAL = 4'b1101;
+  localparam JR = 4'b1110;
+  localparam HLT = 4'b1111;
+
   output [15:0] dst;
-  output reg ov, zr, neg; // Signals for flags
+  output ov, zr, neg; // Signals for flags
+  output reg change_v, change_z, change_n;
   input [15:0] src0, src1;
   input [3:0] op;     // op code determines control
   input [3:0] shamt;  // how much src0 is shifted
@@ -29,41 +50,48 @@ module ALU( dst,
 
 //  always@(Sel) $display("Sel changed to: %b", Sel);
 //  always@(op) $display("op changed to: %b", op);
-  always@(arithout, logicout, shiftout) begin
-    case(op)
-      4'b0000: begin
-	      if(v_arith == 1'b1) ov  = 1;
-	      if(n_arith == 1'b1) neg = 1;
-	      if(z_arith == 1'b1) zr  = 1;
-      end
-      4'b0010: begin
-        if(v_arith == 1'b1) ov  = 1;
-        if(n_arith == 1'b1) neg = 1;
-        if(z_arith == 1'b1) zr  = 1;
-      end
-      4'b0011: begin
-        if(z_logic == 1'b1) zr = 1;
-      end
-      4'b0100: begin
-        if(z_logic == 1'b1) zr = 1;
-      end
-      4'b0101: begin
-        if(z_shift == 1'b1) zr = 1;
-      end
-      4'b0110: begin
-        if(z_shift == 1'b1) zr = 1;
-      end
-      4'b0111: begin
-        if(z_shift == 1'b1) zr = 1;
-      end
-      4'b1100: begin
-      end
-      default: begin
-	      ov = 0;
-	      neg = 0;
-	      zr = 0;
-      end
-    endcase
+  assign ov = (Sel == 2'b00) ? v_arith : 1'b0;
+  assign zr = (Sel == 2'b00) ? z_arith :
+             ((Sel == 2'b01) ? z_logic :
+             ((Sel == 2'b10) ? z_shift :
+                               1'b0));
+  assign neg = (Sel == 2'b00) ? n_arith : 1'b0;
+  always@(op) begin
+  change_z = 1'b0;
+  change_v = 1'b0;
+  change_n = 1'b0;
+  case(op)
+    ADD: begin
+      change_z <= 1'b1;
+      change_v <= 1'b1;
+      change_n <= 1'b1;
+    end
+    SUB: begin
+      change_z <= 1'b1;
+      change_v <= 1'b1;
+      change_n <= 1'b1;
+    end
+    AND: begin
+      change_z <= 1'b1;
+    end
+    NOR: begin
+      change_z <= 1'b1;
+    end
+    SLL: begin
+      change_z <= 1'b1;
+    end
+    SRL: begin
+      change_z <= 1'b1;
+    end
+    SRA: begin
+      change_z <= 1'b1;
+    end
+    default: begin
+      change_z <= 1'b0;
+      change_v <= 1'b0;
+      change_n <= 1'b0;
+    end
+  endcase
   end
 
   assign dst = (Sel == 2'b00)  ? arithout : 
