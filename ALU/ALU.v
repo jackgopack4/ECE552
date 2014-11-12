@@ -33,16 +33,30 @@ module ALU( dst,
     ov  = 0;
     zr  = 0;
     neg = 0;
-    case(Sel) begin
-      2'b00: begin
+    case(op) begin
+      4'b0000: begin
 	if(v_arith == 1'b1) ov  = 1;
 	if(n_arith == 1'b1) neg = 1;
 	if(z_arith == 1'b1) zr  = 1;
       end
-      2'b01: begin
+      4'b0010: begin
+        if(v_arith == 1'b1) ov  = 1;
+        if(n_arith == 1'b1) neg = 1;
+        if(z_arith == 1'b1) zr  = 1;
+      end
+      4'b0011: begin
         if(z_logic == 1'b1) zr = 1;
       end
-      2'b10: begin
+      4'b0100: begin
+        if(z_logic == 1'b1) zr = 1;
+      end
+      4'b0101: begin
+        if(z_shift == 1'b1) zr = 1;
+      end
+      4'b0110: begin
+        if(z_shift == 1'b1) zr = 1;
+      end
+      4'b0111: begin
         if(z_shift == 1'b1) zr = 1;
       end
       default: begin
