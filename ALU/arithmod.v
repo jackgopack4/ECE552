@@ -21,6 +21,6 @@ module arithmod(Out, V, N, Z, A, B, Sel);
   assign Out = (Sel[0]) ? paddsb_out :
 	                  adder_result;
   assign N = (adder_result[15]);
-  assign Z = (adder_result == 16'h0000);
+  assign Z = (adder_result == 16'h0000 && (Sel[0] == 1'b0));
 
 endmodule
