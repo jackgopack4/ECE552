@@ -84,8 +84,8 @@ always @(posedge clk) begin
 	end
 	// let's see what's going on!
 	$display("programCounter=%d, instruction=%b, readData1=%b,
-	src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b\n", programCounter, instruction,
-	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc);
+	src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b\n", programCounter, instruction,
+	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
@@ -124,7 +124,7 @@ ALU alu(.src0(readData1), .src1(src2Wire), .op(instruction[15:12]),
 .dst(ALUResult), .ov(ov), .zr(zr), .neg(neg), .shamt(shamt));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
 assign src2Wire = ALUSrc ? signOutALU : readData2;
-// obvioulsy $sign is bad design... but quick for now
+
 
 
 // Data Memory //
