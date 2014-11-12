@@ -45,11 +45,12 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 		Branch, 	// 1: take branch, 0: don't take branch
 		MemRead, 	// 1: enable read memory, 0: disable memory read
 		MemToReg, 	// 1: write data from memory to registers, 0: write data from ALU to registers
-		ALUOp, 		// Can be used to combine LW/SW with ADD, or branch instructions (we are currently not using this?)
+		//ALUOp, 		// Can be used to combine LW/SW with ADD, or branch instructions (we are currently not using this?)
 		MemWrite,	// 1: enable memory write, 0: disable memory write
 		ALUSrc, 	// 0: readData2 -> ALU 1: sign-extended -> ALU
 		RegWrite,	// 1: enable right back to register, 0: don't write back to register
 		PCSrc;		// 0: take next pc addr, 1: enable branch (sign-ext << 2)
+		// PCSrc is not connected to the control
 
 
 /////////////////////////
@@ -59,19 +60,26 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 // PC //
 PC pcMod(.nextAddr(nextAddr), .clk(clk), .rst(rst_n), .programCounter(programCounter));
 
+// Program Counter
 always @(posedge clk) begin
-	pcInc <= programCounter + 1;
-	if (PCSrc) begin
+	if (~rst_n) begin
+	pcInc <= 16'h0000;
+	end
+	else if (PCSrc) begin
 	// not sure if this would work...
-	nextAddr <= pcInc + ($signed(instruction[3:0]) << 2);
+	nextAddr <= pcInc + 1 + ($signed(instruction[3:0]) << 2);
 	end else begin
-	nextAddr <= pcInc;
+	pcInc <= programCounter + 1;
+	//nextAddr <= pcInc;
 	end
 	// let's see what's going on!
 	$display("programCounter=%d, rd_en=%b, instruction=%b, instruction[7:4]=%b, readData1=%b,
-	readData2=%b, instruction[3:0]=%b, src1Wire=%b, ALUResult=%b", programCounter, rd_en, instruction, instruction[7:4],
+	readData2=%b, instruction[3:0]=%b, src1Wire=%b, ALUResult=%b\n", programCounter, rd_en, instruction, instruction[7:4],
 	readData1, readData2, instruction[3:0], src1Wire, ALUResult);
 end
+
+// Branch 
+assign PCSrc = (zr && Branch);	// PCSrc is 1 if zr=1 && Branch=1?
 
 // Instruction Memory //
 IM instMem(.clk(clk), .addr(programCounter), .rd_en(rd_en), .instr(instruction));
@@ -91,7 +99,7 @@ assign dst_addr = RegDst ? instruction[11:8] : instruction[3:0];
 
 
 // ALU //
-ALU_test alu(.src0(readData1), .src1(src1Wire), .op(instruction[15:12]), 
+ALU alu(.src0(readData1), .src1(src1Wire), .op(instruction[15:12]), 
 .dst(ALUResult), .ov(ov), .zr(zr), .neg(neg), .shamt(shamt));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
 assign src1Wire = ALUSrc ? $signed(instruction[3:0]) : readData2;
@@ -107,8 +115,8 @@ assign dst = MemToReg ? rd_data : ALUResult;
 
 // Controller //
 controller ctrl(.OpCode(instruction[15:12]), .RegDst(RegDst), .Branch(Branch), 
-.MemRead(MemRead), .MemToReg(MemToReg), .ALUOp(ALUOp), .MemWrite(MemWrite),
-.ALUSrc(ALUSrc), .RegWrite(RegWrite), .PCSrc(PCSrc));
+.MemRead(MemRead), .MemToReg(MemToReg), .MemWrite(MemWrite),
+.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n));
 
 
 /////////////////////////
