@@ -33,7 +33,7 @@ module ALU( dst,
     ov  = 0;
     zr  = 0;
     neg = 0;
-    case(op) begin
+    case(op)
       4'b0000: begin
 	if(v_arith == 1'b1) ov  = 1;
 	if(n_arith == 1'b1) neg = 1;
