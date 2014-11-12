@@ -17,7 +17,7 @@ assign pc_D = stall ? pc : pc_next;
 
 flop16b pcFlop(.d(pc_D), .q(pc), .clk(clk), .rst_n(rst_n));
 
-assign pc_inc = pc + 4;
+assign pc_inc = pc + 1;
 
 //pipeline flops
 assign pc_IM = stall ? pc_IM_ID : pc_inc;

@@ -279,6 +279,68 @@ module t_ALU();
       $display("*ERROR* SRA 3 dst does not match"); 
    end 
 
+// LLB Non-Exhaustive Check
+#5
+ func = 4'b1010;
+ src0 = 16'b0010000110010001; // register to load lower bits into
+ src1 = 16'b0000010001100001; // sign-extended value to load
+ #5
+ // Self check output     
+   if ({src0[15:8], src1[7:0]} != dst) begin      
+      $display("*ERROR* LLB dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("src1    = %b", src1);
+      $display("shifted = %b", {src0[15:8], src1[7:0]});
+      $display("dst     = %b", dst);
+   end 
+ src0 = 16'b0000001110000010;
+ src1 = 16'b0010010001100001;
+ #5
+ // Self check output     
+   if ({src0[15:8], src1[7:0]} != dst) begin      
+      $display("*ERROR* LLB dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("src1    = %b", src1);
+      $display("shifted = %b", {src0[15:8], src1[7:0]});
+      $display("dst     = %b", dst);   
+   end
+ src0 = 16'b0000011001000010;
+ src1 = 16'b0010000100011011;
+ #5
+ // Self check output     
+   if ({src0[15:8], src1[7:0]} != dst) begin      
+      $display("*ERROR* LLB dst does not match"); 
+      $display("src0    = %b", src0);
+      $display("src1    = %b", src1);
+      $display("shifted = %b", {src0[15:8], src1[7:0]});
+      $display("dst     = %b", dst);
+   end 
+
+/*// LHB Non-exhaustive check
+#5
+ func = 4'b1011;
+ src0 = 16'b0010000110010001;
+ src1 = 16'b0000010001100001;
+ #5
+ // Self check output     
+   if ({src1[15:8], src0[7:0]} != dst) begin      
+      $display("*ERROR* dst does not match"); 
+   end 
+ src0 = 16'b0000001110000010;
+ src1 = 16'b0010010001100001;
+ #5
+ // Self check output     
+   if ({src1[15:8], src0[7:0]} != dst) begin      
+      $display("*ERROR* dst does not match"); 
+   end
+ src0 = 16'b0000011001000010;
+ src1 = 16'b0010000100011011;
+ #5
+ // Self check output     
+   if ({src1[15:8], src0[7:0]} != dst) begin      
+      $display("*ERROR* dst does not match"); 
+   end 
+*/
 end 
 
 endmodule
