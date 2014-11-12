@@ -30,14 +30,11 @@ module ALU( dst,
 //  always@(Sel) $display("Sel changed to: %b", Sel);
 //  always@(op) $display("op changed to: %b", op);
   always@(src0, src1, op, shamt) begin
-    ov  = 0;
-    zr  = 0;
-    neg = 0;
     case(op)
       4'b0000: begin
-	if(v_arith == 1'b1) ov  = 1;
-	if(n_arith == 1'b1) neg = 1;
-	if(z_arith == 1'b1) zr  = 1;
+	      if(v_arith == 1'b1) ov  = 1;
+	      if(n_arith == 1'b1) neg = 1;
+	      if(z_arith == 1'b1) zr  = 1;
       end
       4'b0010: begin
         if(v_arith == 1'b1) ov  = 1;
@@ -58,6 +55,8 @@ module ALU( dst,
       end
       4'b0111: begin
         if(z_shift == 1'b1) zr = 1;
+      end
+      4'b1100: begin
       end
       default: begin
 	      ov = 0;
