@@ -232,7 +232,6 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 1;
-   LoadHigh = 0;
    Jump 	= 0;
    end
    B: begin
