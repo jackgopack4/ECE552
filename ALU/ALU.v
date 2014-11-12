@@ -8,7 +8,7 @@ module ALU( dst,
 	    shamt);
 
   output [15:0] dst;
-  output ov, zr, neg; // Signals for flags
+  output reg ov, zr, neg; // Signals for flags
   input [15:0] src0, src1;
   input [3:0] op;     // op code determines control
   input [3:0] shamt;  // how much src0 is shifted
@@ -29,12 +29,29 @@ module ALU( dst,
 
 //  always@(Sel) $display("Sel changed to: %b", Sel);
 //  always@(op) $display("op changed to: %b", op);
-  assign ov = (Sel == 2'b00) ? v_arith  : 1'b0;
-  assign neg = (Sel == 2'b00) ? n_arith : 1'b0;
-  assign zr = (Sel == 2'b00)  ? z_arith :
-	      ((Sel == 2'b01) ? z_logic :
-	      ((Sel == 2'b10) ? z_shift :
-	                        1'b0));
+  always@(src0, src1, op, shamt) begin
+    ov  = 0;
+    zr  = 0;
+    neg = 0;
+    case(Sel) begin
+      2'b00: begin
+	if(v_arith == 1'b1) ov  = 1;
+	if(n_arith == 1'b1) neg = 1;
+	if(z_arith == 1'b1) zr  = 1;
+      end
+      2'b01: begin
+        if(z_logic == 1'b1) zr = 1;
+      end
+      2'b10: begin
+        if(z_shift == 1'b1) zr = 1;
+      end
+      default: begin
+	      ov = 0;
+	      neg = 0;
+	      zr = 0;
+      end
+    endcase
+  end
 
   assign dst = (Sel == 2'b00)  ? arithout : 
 	       ((Sel == 2'b01) ? logicout :

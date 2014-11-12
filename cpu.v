@@ -36,7 +36,7 @@ assign shamt = instruction[3:0];
 wire [15:0] src2Wire;
 
 // Branch
-wire reg Yes;
+wire Yes;
 
 // Sign Extension
 wire [15:0] signOutALU, signOutJump, signOutBranch;
@@ -83,9 +83,7 @@ always @(posedge clk) begin
 	nextAddr <= pcInc;
 	end
 	// let's see what's going on!
-	$display("programCounter=%d, instruction=%b, readData1=%b,
-	src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b\n", programCounter, instruction,
-	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr);
+	$display("programCounter=%d, instruction=%b, readData1=%b, src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b\n", programCounter, instruction, readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
