@@ -12,11 +12,11 @@ output hlt;
 
 // PC //
 reg [15:0] nextAddr; 
-wire reg [15:0] programCounter;
+reg [15:0] programCounter;
 reg [15:0] pcInc;	// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire reg [15:0] instruction;
+reg [15:0] instruction;
 wire rd_en;			 // asserted when instruction read desired
 
 // Register Memory //

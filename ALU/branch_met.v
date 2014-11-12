@@ -17,10 +17,16 @@ module branch_met(Yes,ccc,N,V,Z);
     Yes = 0;
     case (ccc)
       NEQ: begin
-        if(Z == 1'b0) Yes = 1;
+	if(Z == 1'b0) begin
+          Yes = 1;
+	  $display("NEQ condition and Z = 0 so branch");
+	end
       end
       EQ: begin
-        if(Z == 1'b1) Yes = 1;
+	if(Z == 1'b1) begin
+	  Yes = 1;
+          $display("EQ condition and z = 1 so branch");
+        end
       end
       GT: begin
         if(Z == 1'b0 && N == 1'b0) Yes = 1;
