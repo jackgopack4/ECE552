@@ -1,5 +1,5 @@
 module controller(OpCode, rst_n, RegDst, Branch, MemRead, MemToReg, MemWrite,
-					ALUSrc, RegWrite, LoadHigh, Jump);
+					ALUSrc, RegWrite, LoadHigh, Jump, Halt);
 
 input [3:0] OpCode; 
 input rst_n;
@@ -13,7 +13,8 @@ output reg  RegDst,
 			RegWrite, 
 			//PCSrc;	//this is set with an AND gate (zr && Branch)		
 			LoadHigh,
-			Jump;
+			Jump,
+			Halt;
 			
 			
 
@@ -39,7 +40,7 @@ output reg  RegDst,
 
 
 
-   always @(OpCode) begin
+   always @(OpCode, rst_n) begin
    // initial
    RegDst   = 0;
    Branch   = 0;
@@ -52,6 +53,7 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    Jump 	= 0;
+   Halt		= 0;
    if (~rst_n) begin
    RegDst   = 0;
    Branch   = 0;
@@ -64,6 +66,7 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    Jump 	= 0;
+   Halt		= 0;
    end else
    case (OpCode)
    ADD: begin
@@ -289,6 +292,7 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    Jump 	= 0;
+   Halt		= 1;
    end
    default: begin
    RegDst   = 0;
@@ -302,6 +306,7 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    Jump 	= 0;
+   Halt 	= 0;
    end
    endcase
   end //always@
