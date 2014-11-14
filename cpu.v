@@ -11,12 +11,12 @@ output hlt;
 /////////////////////
 
 // PC //
-reg [15:0] nextAddr; 
+wire [15:0] nextAddr; 
 wire [15:0] programCounter, PCaddOut, PCNext;
-reg [15:0] pcInc;	// to mediate between PC and nextAddr
+wire [15:0] pcInc;	// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire [15:0] instruction;
+wire reg [15:0] instruction;
 wire rd_en;			 // asserted when instruction read desired
 
 // Register Memory //
@@ -25,7 +25,7 @@ wire re0, re1;	// read enables (power not functionality)
 wire [3:0] dst_addr, readReg1;	// write address (reg)
 wire [15:0] dst;	// data to be written to register file, write data (dst bus)
 wire we;			// write enable
-wire hlt;			// not a functional input.  Used to dump register contents when test is halted.
+//wire hlt;			// not a functional input.  Used to dump register contents when test is halted.
 //^^ hlt is wire AND output?	
 
 // ALU //
@@ -72,9 +72,9 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 PC pcMod(.nextAddr(nextAddr), .clk(clk), .rst(rst_n), .programCounter(programCounter));
 
 // Program Counter
-always @(posedge clk) begin
-	if (~rst_n) begin
-	pcInc <= 16'h0000;
+always @(posedge clk or negedge rst_n) begin
+	//if (~rst_n) begin
+	//pcInc <= 16'h0000;
 	//end
 	//else if (PCSrc) begin
 	// not sure if this would work...
@@ -83,12 +83,17 @@ always @(posedge clk) begin
 	//end else if (Jump) begin
 	//pcInc <= (pcInc + 1 + signOutJump); //<< 2);
 	//nextAddr <= pcInc;
-	end else begin
-	pcInc <= programCounter + 1;
-	nextAddr <= PCNext;
-	end
+	//end else begin
+	//pcInc <= programCounter + 1;
+	//nextAddr <= PCNext;
+	//end
 	// let's see what's going on!
-	$display("programCounter=%d, instruction=%b, readData1=%b, src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b, negOut=%b, ovOut=%b, zrOut=%b, signOutBranch=%b, pcInc=%b\n", programCounter, instruction, readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr, negOut, ovOut, zrOut, signOutBranch, pcInc);
+	$display("programCounter=%d\n instruction#=%b\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d", programCounter, instruction,
+	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr,
+	negOut, ovOut, zrOut, signOutBranch, pcInc);
+	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
+   RegWrite=%b, LoadHigh=%b, Jump=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+   ALUSrc, RegWrite, LoadHigh, Jump);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
@@ -96,8 +101,9 @@ end
 
 // PC Adder
 alu2 PCAdd(PCaddOut, pcInc, signOutBranch);
-assign PCNext = PCSrc ? PCaddOut : pcInc;
-
+//assign PCNext = PCSrc ? PCaddOut : pcInc;
+assign pcInc = programCounter + 1;
+assign nextAddr = hlt ? programCounter : (PCSrc ? PCaddOut : pcInc);	//PCNext;
 
 // Sign-extender
 sign_extenderALU signExtenALU(instruction[7:0], signOutALU);
@@ -105,12 +111,12 @@ sign_extenderJump signExtenJUMP(instruction[11:0], signOutJump);
 sign_extenderBranch signExtenBranch(instruction[8:0], signOutBranch);
 
 // Branch 
-branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut));
+branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut), .clk(clk));
 assign PCSrc = (Yes && Branch);
 
 // Flags
 flags flagReg(.zr(zrOut), .neg(negOut), .ov(ovOut), .change_z(change_z), .change_n(change_n), 
-.change_v(change_v), .z_in(zr), .n_in(neg), .v_in(ov));
+.change_v(change_v), .z_in(zr), .n_in(neg), .v_in(ov), .rst_n(rst_n), .clk(clk));
 
 // Instruction Memory //
 IM instMem(.clk(clk), .addr(programCounter), .rd_en(rd_en), .instr(instruction));
@@ -150,7 +156,7 @@ assign dst = MemToReg ? rd_data : ALUResult;
 // Controller //
 controller ctrl(.OpCode(instruction[15:12]), .RegDst(RegDst), .Branch(Branch), 
 .MemRead(MemRead), .MemToReg(MemToReg), .MemWrite(MemWrite),
-.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Jump(Jump));
+.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Jump(Jump), .Halt(hlt));
 
 
 /////////////////////////
