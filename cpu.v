@@ -16,7 +16,7 @@ wire [15:0] programCounter, PCaddOut, PCNext;
 reg [15:0] pcInc;	// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire reg [15:0] instruction;
+wire [15:0] instruction;
 wire rd_en;			 // asserted when instruction read desired
 
 // Register Memory //
@@ -88,11 +88,7 @@ always @(posedge clk) begin
 	nextAddr <= PCNext;
 	end
 	// let's see what's going on!
-	$display("programCounter=%d, instruction=%b, readData1=%b,
-	src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b,
-	negOut=%b, ovOut=%b, zrOut=%b, signOutBranch=%b, pcInc=%b\n", programCounter, instruction,
-	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr,
-	negOut, ovOut, zrOut, signOutBranch, pcInc);
+	$display("programCounter=%d, instruction=%b, readData1=%b, src2Wire=%b, ALUResult=%b, dst_addr=%b, dst=%b, ALUSrc=%b, Branch=%b, Yes=%b, PCSrc=%b, nextAddr=%b, negOut=%b, ovOut=%b, zrOut=%b, signOutBranch=%b, pcInc=%b\n", programCounter, instruction, readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr, negOut, ovOut, zrOut, signOutBranch, pcInc);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
