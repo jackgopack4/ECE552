@@ -22,7 +22,7 @@ wire rd_en;			 // asserted when instruction read desired
 // Register Memory //
 wire [15:0] readData1, readData2;
 wire re0, re1;	// read enables (power not functionality)
-wire [3:0] dst_addr, readReg1;	// write address (reg)
+wire [3:0] dst_addr, readReg1, readReg2;	// write address (reg)
 wire [15:0] dst;	// data to be written to register file, write data (dst bus)
 wire we;			// write enable
 //wire hlt;			// not a functional input.  Used to dump register contents when test is halted.
@@ -61,7 +61,8 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 		PCSrc,		// 0: take next pc addr, 1: enable branch (sign-ext)
 		// PCSrc is not connected to the control
 		LoadHigh,	// 1: take in [11:8] as read data 1, 0: take normal read data 1
-		Jump;
+		Jump,
+		StoreWord;	// 1: enable [11:8] -> read register for SW, 0: otherwise
 
 
 /////////////////////////
@@ -88,12 +89,12 @@ always @(posedge clk or negedge rst_n) begin
 	//nextAddr <= PCNext;
 	//end
 	// let's see what's going on!
-	$display("programCounter=%d\n instruction#=%b\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d", programCounter, instruction,
-	readData1, src2Wire, ALUResult, dst_addr, dst, ALUSrc, Branch, Yes, PCSrc, nextAddr,
+	$display("programCounter=%d\n instruction#=%b\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n readData2=%d\n dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d", programCounter, instruction,
+	readData1, src2Wire, ALUResult, dst_addr, dst, readData2, ALUSrc, Branch, Yes, PCSrc, nextAddr,
 	negOut, ovOut, zrOut, signOutBranch, pcInc);
 	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
-   RegWrite=%b, LoadHigh=%b, Jump=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
-   ALUSrc, RegWrite, LoadHigh, Jump);
+   RegWrite=%b, LoadHigh=%b, Jump=%b, StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+   ALUSrc, RegWrite, LoadHigh, Jump, StoreWord);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
@@ -125,7 +126,7 @@ assign rd_en = 1'b1;
 
 // Registers //
 // po,p1 are 'output reg' in rfSC
-rfSC registers(.clk(clk), .p0_addr(readReg1), .p1_addr(instruction[3:0]),
+rfSC registers(.clk(clk), .p0_addr(readReg1), .p1_addr(readReg2),
 				.p0(readData1), .p1(readData2), .re0(re0), .re1(re1),
 				.dst_addr(dst_addr), .dst(dst), .we(RegWrite), .hlt(hlt));
 // Power not functionality?
@@ -134,6 +135,7 @@ assign re1 = 1'b1;
 // MUX: Write Register MUX. Changes for lw
 assign dst_addr = RegDst ? instruction[11:8] : instruction[3:0];
 assign readReg1 = LoadHigh ? instruction[11:8] : instruction[7:4]; 
+assign readReg2 = StoreWord ? instruction[11:8] : instruction[3:0];
 
 
 
@@ -156,7 +158,8 @@ assign dst = MemToReg ? rd_data : ALUResult;
 // Controller //
 controller ctrl(.OpCode(instruction[15:12]), .RegDst(RegDst), .Branch(Branch), 
 .MemRead(MemRead), .MemToReg(MemToReg), .MemWrite(MemWrite),
-.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Jump(Jump), .Halt(hlt));
+.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Jump(Jump), .Halt(hlt),
+.StoreWord(StoreWord));
 
 
 /////////////////////////
