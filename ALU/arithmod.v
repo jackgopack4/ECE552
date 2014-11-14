@@ -8,8 +8,8 @@ module arithmod(Out, V, N, Z, A, B, Sel);
   wire cout;
   wire [15:0] adder_out, paddsb_out, adder_result, B_nor, sel_nor;
   wire sign;
-  always@(Sel) begin
-	  //$display("Op code for arithmetic module is %b", Sel);
+  always@(Out) begin
+	  //$display("adder_result=%b, Z=%b, adder_out=%b, Sel=%b", adder_result, Z, adder_out, Sel);
   end
   split16 splitSel(sel_nor, Sel[1]);
   assign B_nor = (sel_nor ^ B);
