@@ -56,10 +56,7 @@ module ALU( dst,
              ((Sel == 2'b10) ? z_shift :
                                1'b0));
   assign neg = (Sel == 2'b00) ? n_arith : 1'b0;
-  always@(op) begin
-  change_z = 1'b0;
-  change_v = 1'b0;
-  change_n = 1'b0;
+  always@(ov, neg, zr) begin
   case(op)
     ADD: begin
       change_z <= 1'b1;

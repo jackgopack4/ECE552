@@ -1,7 +1,7 @@
-module branch_met(Yes,ccc,N,V,Z);
+module branch_met(Yes,ccc,N,V,Z,clk);
 
   input[2:0] ccc;
-  input N, V, Z;
+  input N, V, Z, clk;
   output reg Yes;
   localparam NEQ = 3'b000;
   localparam EQ  = 3'b001;
@@ -12,9 +12,8 @@ module branch_met(Yes,ccc,N,V,Z);
   localparam OV  = 3'b110;
   localparam UN  = 3'b111;
 
-  always@(ccc,N,V,Z) begin
-    //initial
-    Yes = 0;
+  always@(*) begin
+  Yes = 0;
     case (ccc)
       NEQ: begin
 	if(Z == 1'b0) begin

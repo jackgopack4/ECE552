@@ -4,7 +4,7 @@ input wire [15:0] nextAddr;
 input clk, rst;
 output reg [15:0] programCounter;
 
-always @(posedge clk, rst) begin
+always @(posedge clk, negedge rst) begin
 	if (~rst) begin
 		programCounter <= 16'd0;
 	end else begin
