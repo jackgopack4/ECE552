@@ -77,8 +77,8 @@ output reg  RegDst,
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
    //PCSrc	= 0;
-   LoadHigh = 0;
-   Jump 	= 0;
+   LoadHigh = 1'b0;
+   Jump 	= 1'b0;
    end
    PADDSB: begin
    // R-type
@@ -91,22 +91,22 @@ output reg  RegDst,
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
    //PCSrc	= 0;
-   LoadHigh = 0;
-   Jump 	= 0;
+   LoadHigh = 1'b0;
+   Jump 	= 1'b0;
    end
    SUB: begin
    // R-type
-   RegDst   = 1;
-   Branch   = 0;
-   MemRead  = 0;
-   MemToReg = 0;
+   RegDst   = 1'b1;
+   Branch   = 1'b0;
+   MemRead  = 1'b0;
+   MemToReg = 1'b0;
    //ALUOp    = 1;
-   MemWrite = 0;
-   ALUSrc   = 0;
-   RegWrite = 1;
+   MemWrite = 1'b0;
+   ALUSrc   = 1'b0;
+   RegWrite = 1'b1;
    //PCSrc	= 0;
-   LoadHigh = 0;
-   Jump 	= 0;
+   LoadHigh = 1'b0;
+   Jump 	= 1'b0;
    end
    AND: begin
    // R-type
