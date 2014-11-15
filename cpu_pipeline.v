@@ -195,37 +195,34 @@ controller ctrl(.OpCode(instruction[15:12]),
   // global clock and reset for DFFs
   //input clk, rst_n;
 
-  // Mem block outputs
-  wire DM_re_ID_EX_DM, DM_we_ID_EX_DM;
-
-  // ID block wires
+  // IF/ID block wires
+  wire [15:0] EX_pcInc_IF_ID;
   wire [15:0] instr_IF_ID;
-  wire DM_re, DM_we, RF_we;
-  wire [3:0] RF_dst_addr;
-  
-  // EX block wires
-  wire DM_re_ID_EX, DM_we_ID_EX;
-  wire RF_we_ID_EX;
-  wire DM_MemToReg_ED_EX;
-  wire [3:0] RF_dst_addr_ID_EX;
 
-  // MEM block
-  wire RF_we_EX_DM;
-  wire DM_MemToReg_EX_DM;
-  wire [3:0] RF_dst_addr_EX_DM;
-  
-  // WB block outputs
-  wire RF_we_DM_WB, DM_MemToReg_DM_WB;
-  wire [3:0] RF_dst_addr_DM_WB;
+  // ID/EX Block wires
+  wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
+  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX;
+  wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
+  wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
+  wire [15:0] EX_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX;
+
+  // EX/DM block wires
+  wire DM_Branch_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, DM_Halt_EX_DM, DM_JumpR_EX_DM, DM_JumpAL_EX_DM;
+  wire DM_MemToReg_EX_DM, DM_zrOut_EX_DM, DM_negOut_EX_DM, DM_ovOut_EX_DM, WB_RegWrite_EX_DM;
+  wire [15:0] DM_readData2_EX_DM, DM_ALUResult_EX_DM, DM_pcInc_EX_DM, DM_pcAddOut_EX_DM;
+  wire [3:0] DM_ccc_EX_DM, WB_dst_addr_EX_DM;
+
+  // DM/WB block wires
+  wire WB_RegWrite_DM_WB;
+  wire [3:0] WB_dst_addr_DM_WB;
+  wire [15:0] WB_dst_DM_WB;
 
   ////**** d -> [FLOP] -> q ****////
   
   // IF/ID BLOCK
   flop16b ID_flop(.q(instr_IF_ID), .d(instruction), .clk(clk), .rst_n(rst_n));
   flop16b f16_EX_pcInc_IF_ID(EX_pcInc_IF_ID, pcInc, clk, rst_n);
-  flop16b 
   
-  //block_ID ID_block(DM_re, DM_we, RF_we, RF_dst_addr, instr_IF_ID);
   
   // NEW Controller //
    controller ctrl(.OpCode(instr_IF_ID[15:12]), // ID
