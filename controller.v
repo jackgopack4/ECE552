@@ -1,5 +1,5 @@
 module controller(OpCode, rst_n, RegDst, Branch, MemRead, MemToReg, MemWrite,
-					ALUSrc, RegWrite, LoadHigh, Jump, Halt, StoreWord);
+					ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, Halt, StoreWord);
 
 input [3:0] OpCode; 
 input rst_n;
@@ -14,7 +14,8 @@ output reg  RegDst,
 			//PCSrc;	//this is set with an AND gate (zr && Branch)		
 			LoadHigh,
 			StoreWord,
-			Jump,
+			JumpAL,
+			JumpR,
 			Halt;
 			
 			
@@ -54,7 +55,8 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
-   Jump 	= 0;
+   JumpR 	= 0;
+   JumpAL 	= 0;
    Halt		= 0;
    if (~rst_n) begin
    RegDst   = 0;
@@ -68,7 +70,8 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
-   Jump 	= 0;
+   JumpR 	= 0;
+   JumpAL 	= 0;
    Halt		= 0;
    end else
    case (OpCode)
@@ -83,8 +86,8 @@ output reg  RegDst,
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
    //PCSrc	= 0;
-   LoadHigh = 1'b0;
-   Jump 	= 1'b0;
+   LoadHigh = 0;
+   
    end
    PADDSB: begin
    // R-type
@@ -97,22 +100,22 @@ output reg  RegDst,
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
    //PCSrc	= 0;
-   LoadHigh = 1'b0;
-   Jump 	= 1'b0;
+   LoadHigh = 0;
+   
    end
    SUB: begin
    // R-type
-   RegDst   = 1'b1;
-   Branch   = 1'b0;
-   MemRead  = 1'b0;
-   MemToReg = 1'b0;
+   RegDst   = 1;
+   Branch   = 0;
+   MemRead  = 0;
+   MemToReg = 0;
    //ALUOp    = 1;
-   MemWrite = 1'b0;
-   ALUSrc   = 1'b0;
-   RegWrite = 1'b1;
+   MemWrite = 0;
+   ALUSrc   = 0;
+   RegWrite = 1;
    //PCSrc	= 0;
-   LoadHigh = 1'b0;
-   Jump 	= 1'b0;
+   LoadHigh = 0;
+   
    end
    AND: begin
    // R-type
@@ -126,7 +129,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    NOR: begin
    // R-type
@@ -140,7 +143,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    SLL: begin
    // R-type
@@ -154,7 +157,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    SRL: begin
    // R-type
@@ -168,7 +171,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    SRA: begin
    // R-type
@@ -182,7 +185,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    LW: begin
    // LW-type
@@ -197,7 +200,7 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 1;
-   Jump 	= 0;
+   
    end
    SW: begin
    // SW-type
@@ -211,7 +214,8 @@ output reg  RegDst,
    RegWrite = 0;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   StoreWord= 1;
+   
    end
    LLB: begin
    // R-type
@@ -225,7 +229,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    LHB: begin
    // R-type
@@ -239,10 +243,10 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 1;
-   Jump 	= 0;
+   
    end
    B: begin
-   // this might be right
+   // 
    RegDst   = 0;
    Branch   = 1;
    MemRead  = 0;
@@ -253,10 +257,10 @@ output reg  RegDst,
    RegWrite = 0;
    //PCSrc	= 1;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    end
    JAL: begin
-   // not sure about these
+   // 
    RegDst   = 1;
    Branch   = 0;
    MemRead  = 0;
@@ -267,7 +271,7 @@ output reg  RegDst,
    RegWrite = 1;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   JumpAL 	= 1;
    end
    JR: begin
    // 
@@ -281,7 +285,7 @@ output reg  RegDst,
    RegWrite = 0;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   JumpR 	= 1;
    end
    HLT: begin
    // disable all?
@@ -295,7 +299,7 @@ output reg  RegDst,
    RegWrite = 0;
    //PCSrc	= 0;
    LoadHigh = 0;
-   Jump 	= 0;
+   
    Halt		= 1;
    end
    default: begin
@@ -310,7 +314,8 @@ output reg  RegDst,
    //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
-   Jump 	= 0;
+   JumpR 	= 0;
+   JumpAL 	= 0;
    Halt 	= 0;
    end
    endcase
