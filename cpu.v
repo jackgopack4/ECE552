@@ -17,7 +17,7 @@ wire [15:0] programCounter, PCaddOut, PCNext;
 wire [15:0] pcInc;			// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire [15:0] instruction;
+wire reg [15:0] instruction;
 wire rd_en;			 		// asserted when instruction read desired
 
 // Register Memory //
@@ -177,29 +177,136 @@ controller ctrl(.OpCode(instruction[15:12]),
 				.JumpR(JumpR));
 
 
+
+
 /////////////////////////
 // Pipeline SHIT      //
 ///////////////////////
 
-// Instruction Memory Read //
+// **************************************************************************************
+//TODO: need to pass through Branch, ALUOp, ALUSrc, PCSrc still.
+//		follow MemToReg as a reference
+//TODO: also need to connect the block outputs to the correct modules above
+// **************************************************************************************
 
+  // IF block input 
+  //input [15:0] instr;
 
+  // global clock and reset for DFFs
+  //input clk, rst_n;
 
-// Register Read //
+  // Mem block outputs
+  wire DM_re_ID_EX_DM, DM_we_ID_EX_DM;
 
+  // ID block wires
+  wire [15:0] instr_IF_ID;
+  wire DM_re, DM_we, RF_we;
+  wire [3:0] RF_dst_addr;
+  
+  // EX block wires
+  wire DM_re_ID_EX, DM_we_ID_EX;
+  wire RF_we_ID_EX;
+  wire DM_MemToReg_ED_EX;
+  wire [3:0] RF_dst_addr_ID_EX;
 
+  // MEM block
+  wire RF_we_EX_DM;
+  wire DM_MemToReg_EX_DM;
+  wire [3:0] RF_dst_addr_EX_DM;
+  
+  // WB block outputs
+  wire RF_we_DM_WB, DM_MemToReg_DM_WB;
+  wire [3:0] RF_dst_addr_DM_WB;
 
-// Execute //
+  ////**** d -> [FLOP] -> q ****////
+  
+  // IF/ID BLOCK
+  flop16b ID_flop(.q(instr_IF_ID), .d(instruction), .clk(clk), .rst_n(rst_n));
+  flop16b f16_EX_pcInc_IF_ID(EX_pcInc_IF_ID, pcInc, clk, rst_n);
+  flop16b 
+  
+  //block_ID ID_block(DM_re, DM_we, RF_we, RF_dst_addr, instr_IF_ID);
+  
+  // NEW Controller //
+   controller ctrl(.OpCode(instr_IF_ID[15:12]), // ID
+				   .RegDst(RegDst), 			// ID
+				   .LoadHigh(LoadHigh), 		// ID
+				   .StoreWord(StoreWord), 		// ID
+				   .JumpAL(JumpAL), 			// EX
+				   .ALUSrc(ALUSrc),				// EX
+				   .Branch(Branch), 			// DM
+				   .MemRead(MemRead), 			// DM
+				   .MemWrite(MemWrite),			// DM
+				   .Halt(hlt),					// DM
+				   .JumpR(JumpR)				// DM
+				   .MemToReg(MemToReg), 		// WB
+				   .RegWrite(RegWrite), 		// WB
+				   .rst_n(rst_n));				
+   
+   // OLD CONTROLLER //
+   controller ctrl(.OpCode(instruction[15:12]), 
+				.RegDst(RegDst), 
+				.Branch(Branch), 
+				.MemRead(MemRead), 
+				.MemToReg(MemToReg), 
+				.MemWrite(MemWrite),
+				.ALUSrc(ALUSrc), 
+				.RegWrite(RegWrite), 
+				.rst_n(rst_n), 
+				.LoadHigh(LoadHigh), 
+				.Halt(hlt),
+				.StoreWord(StoreWord), 
+				.JumpAL(JumpAL), 
+				.JumpR(JumpR));
+				
+   // RegDst decides which value this will be
+   //assign RF_dst_addr = dst_addr;
+  // Example Format:
+  //     Destination_Signal_From_To(Output, Input, clk, rst_n);
+  // ID/EX BLOCK //
+  flop1b f1_EX_ALUSrc_ID_EX(EX_ALUSrc_ID_EX, ALUSrc, clk, rst_n);// ALUSrc
+  flop16b f16_EX_signOutBranch_ID_EX(EX_signOutBranch_ID_EX, signOutBranch, clk, rst_n);
+  flop16b f16_EX_signOutALU_ID_EX(EX_signOutALU_ID_EX, signOutALU, clk, rst_n);
+  flop16b f16_EX_signOutMem_ID_EX(EX_signOutMem_ID_EX, signOutMem, clk, rst_n);
+  flop16b f16_EX_signOutJump_ID_EX(EX_signOutJump_ID_EX, signOutJump, clk, rst_n); // Signextended value
+  flop4b f4_EX_shamt_ID_EX(EX_shamt_ID_EX, instr_IF_ID[3:0], clk, rst_n);
+  flop16b f16_EX_readData1_ID_EX(EX_readData1_ID_EX, readData1, clk, rst_n);// readData1
+  flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);
+  flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch, clk, rst_n); // Branch
+  flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead, clk, rst_n);	// MemRead
+  flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite, clk, rst_n);		// MemWrite
+  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, Halt, clk, rst_n); // Halt
+  flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR, clk, rst_n); // JumpR
+  flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);
+  flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
+  flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
+  flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);
+  flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);
+  flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RF_we, clk, rst_n);			// RegWrite
+  flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
+  
+  // EX/DM BLOCK //
+  flop1b f1_DM_Branch_EX_DM(DM_Branch_EX_DM, DM_Branch_ID_EX, clk, rst_n); // Branch
+  flop1b f1_DM_MemRead_EX_DM(DM_MemRead_EX_DM, DM_MemRead_ID_EX, clk, rst_n);	// MemRead
+  flop1b f1_DM_MemWrite_EX_DM(DM_MemWrite_EX_DM, DM_MemWrite_ID_EX, clk, rst_n);	// MemWrite
+  flop1b f1_DM_Halt_EX_DM(DM_Halt_EX_DM, DM_Halt_ID_EX, clk, rst_n); // Halt
+  flop1b f1_DM_JumpR_EX_DM(DM_JumpR_EX_DM, DM_JumpR_ID_EX, clk, rst_n); // JumpR
+  flop1b f1_DM_JumpAL_EX_DM(DM_JumpAL_EX_DM, DM_JumpAL_ID_EX, clk, rst_n); // JumpAL
+  flop1b f1_DM_MemToReg_EX_DM(DM_MemToReg_EX_DM, DM_MemToReg_ID_EX, clk, rst_n); // MemToReg
+  flop16b f16_DM_readData2_EX_DM(DM_readData2_EX_DM, DM_readData2_ID_EX, clk, rst_n); // readData2
+  flop16b f16_DM_ALUResult_EX_DM(DM_ALUResult_EX_DM, ALUResult, clk, rst_n);
+  flop16b f16_DM_pcInc_EX_DM(DM_pcInc_EX_DM, DM_pcInc_ID_EX, clk, rst_n);
+  flop16b f16_DM_pcAddOut_EX_DM(DM_pcAddOut_EX_DM, pcAddOut, clk, rst_n);
+  flop1b f1_DM_zrOut_EX_DM(DM_zrOut_EX_DM, zrOut, clk, rst_n);
+  flop1b f1_DM_negOut_EX_DM(DM_negOut_EX_DM, negOut, clk, rst_n);
+  flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);
+  flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);
+  flop1b f1_WB_RegWrite_EX_DM(WB_RegWrite_EX_DM, WB_RegWrite_ID_EX, clk, rst_n); // RegWrite
+  flop4b f4_WB_dst_addr_EX_DM(WB_dst_addr_EX_DM, WB_dst_addr_ID_EX, clk, rst_n); // dst_addr
 
-
-
-// Read/Write Data Memory //
-
-
-
-// Write Back to Registers //
-
-
-
+  // DM/WB BLOCK //
+  flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
+  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, WB_dst_addr_EX_DM, clk, rst_n); // dst_addr
+  flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
 
 endmodule
