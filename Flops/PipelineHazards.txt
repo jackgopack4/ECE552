@@ -5,9 +5,9 @@
 
 EX hazard:
 if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 10
+
 if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 10
-if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 10
-if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 10
+
 
 ^pg.368^ - diagram of forwarding unit w/ MUX to pass to EX
 
