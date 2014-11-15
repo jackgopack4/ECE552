@@ -25,8 +25,6 @@ wire re0, re1;	// read enables (power not functionality)
 wire [3:0] dst_addr, readReg1, readReg2;	// write address (reg)
 wire [15:0] dst;	// data to be written to register file, write data (dst bus)
 wire we;			// write enable
-//wire hlt;			// not a functional input.  Used to dump register contents when test is halted.
-//^^ hlt is wire AND output?	
 
 // ALU //
 wire [15:0] ALUResult;
@@ -45,8 +43,6 @@ wire [15:0] signOutALU, signOutJump, signOutBranch, signOutMem, signOutBJ;
 wire zrOut, negOut, ovOut, change_z, change_v, change_n;
 
 // Data Memory //
-//wire re;	// asserted when instruction read desired
-//wire we;	// asserted when write desired
 wire [15:0] rd_data;	//output of data memory -> register write data
 
 // Controller //
@@ -75,28 +71,12 @@ PC pcMod(.nextAddr(nextAddr), .clk(clk), .rst(rst_n), .programCounter(programCou
 
 // Program Counter
 always @(posedge clk or negedge rst_n) begin
-	//if (~rst_n) begin
-	//pcInc <= 16'h0000;
-	//end
-	//else if (PCSrc) begin
-	// not sure if this would work...
-	//pcInc <= (pcInc + 1 + signOutBranch); //<< 2);
-	//nextAddr <= pcInc;
-	//end else if (Jump) begin
-	//pcInc <= (pcInc + 1 + signOutJump); //<< 2);
-	//nextAddr <= pcInc;
-	//end else begin
-	//pcInc <= programCounter + 1;
-	//nextAddr <= PCNext;
-	//end
 	// let's see what's going on!
 	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
 	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
 	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
    RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
    ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
-	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
-	//dst_addr, dst);
 	
 end
 
