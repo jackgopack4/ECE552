@@ -39,7 +39,7 @@ wire [15:0] src2Wire;
 wire Yes;
 
 // Sign Extension
-wire [15:0] signOutALU, signOutJump, signOutBranch;
+wire [15:0] signOutALU, signOutJump, signOutBranch, signOutMem, signOutBJ;
 
 // Flag Register
 wire zrOut, negOut, ovOut, change_z, change_v, change_n;
@@ -61,7 +61,8 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 		PCSrc,		// 0: take next pc addr, 1: enable branch (sign-ext)
 		// PCSrc is not connected to the control
 		LoadHigh,	// 1: take in [11:8] as read data 1, 0: take normal read data 1
-		Jump,
+		JumpR,		// 1: if taking Jump register
+		JumpAL,		// 1: if taking Jump and link
 		StoreWord;	// 1: enable [11:8] -> read register for SW, 0: otherwise
 
 
@@ -89,27 +90,28 @@ always @(posedge clk or negedge rst_n) begin
 	//nextAddr <= PCNext;
 	//end
 	// let's see what's going on!
-	$display("programCounter=%d\n instruction#=%b\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n readData2=%d\n dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d", programCounter, instruction,
-	readData1, src2Wire, ALUResult, dst_addr, dst, readData2, ALUSrc, Branch, Yes, PCSrc, nextAddr,
-	negOut, ovOut, zrOut, signOutBranch, pcInc);
+	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
+	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
 	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
-   RegWrite=%b, LoadHigh=%b, Jump=%b, StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
-   ALUSrc, RegWrite, LoadHigh, Jump, StoreWord);
+   RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+   ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
 	//$display("programCounter=%d, ALUResult=%b, dst_addr=%b, dst=%b \n", programCounter, ALUResult,
 	//dst_addr, dst);
 	
 end
 
 // PC Adder
-alu2 PCAdd(PCaddOut, pcInc, signOutBranch);
+alu2 PCAdd(PCaddOut, pcInc, signOutBJ);
+assign signOutBJ = JumpAL ? signOutJump : signOutBranch;
 //assign PCNext = PCSrc ? PCaddOut : pcInc;
 assign pcInc = programCounter + 1;
-assign nextAddr = hlt ? programCounter : (PCSrc ? PCaddOut : pcInc);	//PCNext;
+assign nextAddr = JumpAL ? PCaddOut : (JumpR ? readData1 : (hlt ? programCounter : (PCSrc ? PCaddOut : pcInc)));	//PCNext;
 
 // Sign-extender
 sign_extenderALU signExtenALU(instruction[7:0], signOutALU);
 sign_extenderJump signExtenJUMP(instruction[11:0], signOutJump);
 sign_extenderBranch signExtenBranch(instruction[8:0], signOutBranch);
+sign_extenderMem signExtenMem(instruction[3:0], signOutMem);
 
 // Branch 
 branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut), .clk(clk));
@@ -133,7 +135,7 @@ rfSC registers(.clk(clk), .p0_addr(readReg1), .p1_addr(readReg2),
 assign re0 = 1'b1;
 assign re1 = 1'b1;
 // MUX: Write Register MUX. Changes for lw
-assign dst_addr = RegDst ? instruction[11:8] : instruction[3:0];
+assign dst_addr = JumpAL ? 4'b1111 : (RegDst ? instruction[11:8] : instruction[3:0]);
 assign readReg1 = LoadHigh ? instruction[11:8] : instruction[7:4]; 
 assign readReg2 = StoreWord ? instruction[11:8] : instruction[3:0];
 
@@ -144,7 +146,7 @@ ALU alu(.src0(readData1), .src1(src2Wire), .op(instruction[15:12]),
 .dst(ALUResult), .ov(ov), .zr(zr), .neg(neg), .shamt(shamt), .change_v(change_v),
 .change_z(change_z), .change_n(change_n));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
-assign src2Wire = ALUSrc ? signOutALU : readData2;
+assign src2Wire = StoreWord ? signOutMem : (ALUSrc ? signOutALU : readData2);
 
 
 
@@ -152,14 +154,14 @@ assign src2Wire = ALUSrc ? signOutALU : readData2;
 DM dataMem(.clk(clk), .addr(ALUResult), .re(MemRead), .we(MemWrite), 
 		   .wrt_data(readData2), .rd_data(rd_data));
 // MUX: data to be written back to registers
-assign dst = MemToReg ? rd_data : ALUResult;
+assign dst = JumpAL ? pcInc : (MemToReg ? rd_data : ALUResult);
 
 
 // Controller //
 controller ctrl(.OpCode(instruction[15:12]), .RegDst(RegDst), .Branch(Branch), 
 .MemRead(MemRead), .MemToReg(MemToReg), .MemWrite(MemWrite),
-.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Jump(Jump), .Halt(hlt),
-.StoreWord(StoreWord));
+.ALUSrc(ALUSrc), .RegWrite(RegWrite), .rst_n(rst_n), .LoadHigh(LoadHigh), .Halt(hlt),
+.StoreWord(StoreWord), .JumpAL(JumpAL), .JumpR(JumpR));
 
 
 /////////////////////////
