@@ -37,13 +37,15 @@ module ALU( dst,
   wire [15:0] arithout, logicout, shiftout, loadout;
   wire [1:0] Sel;
   wire v_arith, n_arith, z_arith, z_logic, z_shift;
+  wire mem_add;
+  assign mem_add = (op[3:1] == 3'b100) ? 1'b1: 1'b0; // if load or store, bypass op[1:0] in arithmod and just add.
 
-  arithmod am(arithout, v_arith, n_arith, z_arith, src0, src1, op[1:0]);
+  arithmod am(arithout, v_arith, n_arith, z_arith, src0, src1, op[1:0], mem_add);
   logicmod lm(logicout, z_logic, src0, src1, op[2]);
   shiftmod sm(shiftout, z_shift, src0, op[1:0], shamt);
   loadmod  dm(loadout, src0, src1, op[0]);
 
-  assign Sel = (op[3:1] == 3'b000 || op == 4'b0010)  ? 2'b00 :
+  assign Sel = (op[3:1] == 3'b000 || op == 4'b0010|| op[3:1] == 3'b1000)  ? 2'b00 :
 	       ((op == 4'b0011 || op == 4'b0100)  ? 2'b01 :
 	       ((op == 4'b0101 || op[3:1] == 3'b011) ? 2'b10 :
 	                                           2'b11));
@@ -91,7 +93,7 @@ module ALU( dst,
   endcase
   end
 
-  assign dst = (Sel == 2'b00)  ? arithout : 
+  assign dst = (Sel == 2'b00)  ? arithout :
 	       ((Sel == 2'b01) ? logicout :
 	       ((Sel == 2'b10) ? shiftout :
 	                         loadout));
