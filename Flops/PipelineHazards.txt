@@ -1,0 +1,58 @@
+1a.  EX/MEM.RegisterRd = ID/EX.RegisterRs 
+1b. EX/MEM.RegisterRd = ID/EX.RegisterRt 
+2a.  MEM/WB.RegisterRd = ID/EX.RegisterRs 
+2b. MEM/WB.RegisterRd = ID/EX.RegisterRt
+
+EX hazard:
+if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 10
+if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 10
+if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 10
+if (EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0) and (EX/MEM.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 10
+
+^pg.368^ - diagram of forwarding unit w/ MUX to pass to EX
+
+MEM hazard:
+if (MEM/WB.RegWrite and (MEM/WB.RegisterRd ≠ 0) and (MEM/WB.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 01
+if (MEM/WB.RegWrite and (MEM/WB.RegisterRd ≠ 0) and (MEM/WB.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 01
+
+if (MEM/WB.RegWrite and (MEM/WB.RegisterRd ≠ 0) and not(EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0))
+and (EX/MEM.RegisterRd ≠ ID/EX.RegisterRs) and (MEM/WB.RegisterRd = ID/EX.RegisterRs)) -> ForwardA = 01
+
+if (MEM/WB.RegWrite and (MEM/WB.RegisterRd ≠ 0) and not(EX/MEM.RegWrite and (EX/MEM.RegisterRd ≠ 0))
+and (EX/MEM.RegisterRd ≠ ID/EX.RegisterRt) and (MEM/WB.RegisterRd = ID/EX.RegisterRt)) -> ForwardB = 01
+
+^pg.368/371^ - diagram of forwarding unit w/ MUX to pass to EX
+
+// First ALU operand 
+ForwardA = 00
+ID/EX
+The first ALU operand comes from the register file.
+
+ForwardA = 10
+EX/MEM
+The first ALU operand is forwarded from the prior ALU result.
+
+ForwardA = 01
+MEM/WB
+The first ALU operand is forwarded from data memory or an earlier ALU result.
+
+// Second ALU operand 
+ForwardB = 00
+ID/EX
+The second ALU operand comes from the register file.
+
+ForwardB = 10
+EX/MEM
+The second ALU operand is forwarded from the prior ALU result.
+
+ForwardB = 01
+MEM/WB
+The second ALU operand is forwarded from data memory or an earlier ALU result.
+
+
+Stall hazzards:
+if (ID/EX.MemRead and ((ID/EX.RegisterRt = IF/ID.RegisterRs) or (ID/EX.RegisterRt = IF/ID.RegisterRt)))
+-> stall the pipeline
+
+
+***pg.375 - good diagram off all forwarding/hazard detection
