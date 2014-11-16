@@ -69,7 +69,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 
   // ID/EX Block wires
   wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
-  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, EX_StoreWord_ID_EX;
+  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX;
   wire DM_RegDst_ID_EX;
   wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
   wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
@@ -379,7 +379,7 @@ forwardingUnit forwarding(.EX_Rs_Addr_ID_EX(EX_Rs_Addr_ID_EX),
   ////////////////////////////
  // Hazard Detection SHIT  //
 ////////////////////////////
-stall_controller hazardDetection(.WB_dst_addr_ID_EX(WB_dst_addr_ID_EX), 
+hazardDetection hazardDetection(.WB_dst_addr_ID_EX(WB_dst_addr_ID_EX), 
 								 .DM_MemRead_ID_EX(DM_MemRead_ID_EX), 
 								 .instr_IF_ID(instr_IF_ID), 
 								 .stall(stall));
