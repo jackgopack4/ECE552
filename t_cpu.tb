@@ -24,7 +24,7 @@ always
   
 initial begin
   //@(posedge hlt);
-  @(posedge hlt);
+  #10;
   @(posedge clk);
   $stop();
 end    
