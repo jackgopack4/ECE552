@@ -23,8 +23,7 @@ always
   #1 clk = ~clk;
   
 initial begin
-  //@(posedge hlt);
-  #10;
+  @(posedge hlt);
   @(posedge clk);
   $stop();
 end    

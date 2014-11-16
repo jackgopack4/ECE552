@@ -68,6 +68,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
   wire [15:0] DM_pcInc_IF_ID;
   wire [15:0] instruction_To_IF_ID;
   wire [15:0] pcInc_To_IF_ID;
+  wire WB_hlt_IF_ID;
   
 
   // ID/EX Block wires
@@ -78,6 +79,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
   wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX, EX_Rs_Addr_ID_EX, EX_Rt_Addr_ID_EX;
   wire [15:0] EX_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX, DM_programCounter_ID_EX;
   wire [15:0] instr_ID_EX;
+  wire WB_hlt_ID_EX;
 
   // EX/DM block wires
   wire DM_Branch_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM;
@@ -88,6 +90,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
   wire [15:0] DM_programCounter_EX_DM, DM_PCaddOut_EX_DM;
   wire [3:0] DM_ccc_EX_DM, WB_dst_addr_EX_DM;
   wire [15:0] instr_EX_DM;
+  wire WB_hlt_EX_DM;
 
   // DM/WB block wires
   wire WB_RegWrite_DM_WB;
@@ -115,6 +118,8 @@ always @(posedge clk) begin
   $display("\n********** IF Stage **********");
   $display("programCounter=%h pcInc=%h nextAddr=%h\ninstruction=%h",
             programCounter,     pcInc,     nextAddr,     instruction);
+  $display("nextAddr =  DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM=%h :\n(DM_JumpR_EX_DM=%b  ? EX_readData1_EX_DM=%h :\n(DM_Halt_EX_DM=%b   ? DM_programCounter_EX_DM=%h :\n(PCSrc=%b           ? DM_PCaddOut_EX_DM=%h :\npcInc=%b)));",
+                        DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,       DM_JumpR_EX_DM,      EX_readData1_EX_DM,       DM_Halt_EX_DM,       DM_programCounter_EX_DM,       PCSrc,               DM_PCaddOut_EX_DM,      pcInc);
   $display("********** ID Stage **********");
   $display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
             DM_programCounter_IF_ID, instr_IF_ID, readReg1, readReg2, readData1, readData2);
@@ -125,6 +130,9 @@ always @(posedge clk) begin
   $display("programCounter=%h\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
             DM_programCounter_ID_EX, ALU1, ALU2, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
   $display("forwardA=%b forwardB=%b",forwardA, forwardB);
+  $display("EX_readData1_ID_EX=%h src2Wire=%h", EX_readData1_ID_EX, src2Wire);
+  $display("src2Wire = EX_StoreWord_ID_EX =%b ? EX_signOutMem_ID_EX=%h :\n(EX_ALUSrc_ID_EX=%b    ? EX_signOutALU_ID_EX=%h :\nDM_readData2_ID_EX=%h);",
+                       EX_StoreWord_ID_EX,      EX_signOutMem_ID_EX,       EX_ALUSrc_ID_EX,        EX_signOutALU_ID_EX,      DM_readData2_ID_EX);
   $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
   $display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
@@ -132,6 +140,8 @@ always @(posedge clk) begin
   $display("********** DM Stage **********");
   $display("programCounter=%h\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
             DM_programCounter_EX_DM, DM_ALUResult_EX_DM, DM_readData2_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, rd_data, DM_ccc_EX_DM, Yes, DM_Branch_EX_DM);
+    $display("dst_addr = DM_JumpAL_EX_DM=%b ? 4'b1111 : (DM_RegDst_EX_DM=%b ? instr_EX_DM[11:8]=%b : instr_EX_DM[3:0]=%b);",
+                       DM_JumpAL_EX_DM,                DM_RegDst_EX_DM,     instr_EX_DM[11:8],     instr_EX_DM[3:0]);
   $display("********** nextAddr immediate assign **********");
   $display("nextAddr=%h\nJumpAL=%b JumpR=%b Halt=%b PCSrc=%b",
             nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, DM_Halt_EX_DM, PCSrc);
@@ -145,6 +155,7 @@ always @(posedge clk) begin
   $display("********** WB Stage **********");
   $display("regWriteAddr=%d regWriteData=%h RegWrite=%b\n\n\n",
            WB_dst_addr_DM_WB , WB_dst_DM_WB, WB_RegWrite_DM_WB);
+
 end
 
 
@@ -166,7 +177,7 @@ assign rd_en = 1'b1;
 
 
 ////////////************ Registers - ID ************//////////////
-rfPL   registers(.clk(clk), 
+rf   registers(.clk(clk), 
 			   .p0_addr(readReg1), 
 			   .p1_addr(readReg2),
 			   .p0(readData1), 
@@ -217,8 +228,8 @@ assign signOutBJ = DM_JumpAL_ID_EX ? EX_signOutJump_ID_EX : EX_signOutBranch_ID_
 flags flagReg(.zr(zrOut), .neg(negOut), .ov(ovOut), .change_z(change_z), .change_n(change_n), 
 .change_v(change_v), .z_in(zr), .n_in(neg), .v_in(ov), .rst_n(rst_n), .clk(clk));
 // forwarding
-assign ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM : (forwardA == 2'b01) ? WB_dst_DM_WB : EX_readData1_ID_EX;
-assign ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM : (forwardB == 2'b01) ? WB_dst_DM_WB : src2Wire;
+assign ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM : ((forwardA == 2'b01) ? WB_dst_DM_WB : EX_readData1_ID_EX);
+assign ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM : ((forwardB == 2'b01) ? WB_dst_DM_WB : src2Wire);
 
 
 
@@ -286,7 +297,7 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
 				   .Branch(Branch), 			// DM
 				   .MemRead(MemRead), 			// DM
 				   .MemWrite(MemWrite),			// DM
-				   .Halt(hlt),					// DM
+				   .Halt(WB_hlt_IF_ID),					// DM
 				   .JumpR(JumpR),				// DM
 				   .MemToReg(MemToReg), 		// WB
 				   .RegWrite(RegWrite), 		// WB
@@ -317,10 +328,10 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
   flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);	//opCode
   flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch_To_ID_EX, clk, rst_n); // Branch
-  flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWordTo_ID_EX, clk, rst_n); // StoreWord
+  flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWord_To_ID_EX, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead_To_ID_EX, clk, rst_n); // MemRead
   flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite_To_ID_EX, clk, rst_n);    // MemWrite
-  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, Halt, clk, rst_n); // Halt
+  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, hlt, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR_To_ID_EX, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL_To_ID_EX, clk, rst_n);  // JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg_To_ID_EX, clk, rst_n);    // MemToReg
@@ -332,8 +343,9 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   // Forwarding registers addr
   flop4b f4_EX_Rs_Addr_ID_EX(EX_Rs_Addr_ID_EX, readReg1, clk, rst_n);	// instr_IF_ID[7:4]??
   flop4b f4_EX_Rt_Addr_ID_EX(EX_Rt_Addr_ID_EX, readReg2, clk, rst_n);
-  flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
+  
   flop16b f16_instr_ID_EX(instr_ID_EX, instr_IF_ID, clk, rst_n);
+  flop1b f1_WB_hlt_ID_EX(WB_hlt_ID_EX, WB_hlt_IF_ID, clk, rst_n);
 
   // EX/DM BLOCK //
   flop1b f1_DM_Branch_EX_DM(DM_Branch_EX_DM, DM_Branch_ID_EX, clk, rst_n); // Branch
@@ -356,13 +368,15 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);
   flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);
   flop1b f1_WB_RegWrite_EX_DM(WB_RegWrite_EX_DM, WB_RegWrite_ID_EX, clk, rst_n); // RegWrite
-  flop4b f4_WB_dst_addr_EX_DM(WB_dst_addr_EX_DM, WB_dst_addr_ID_EX, clk, rst_n); // dst_addr
+  
   flop16b f16_instr_EX_DM(instr_EX_DM, instr_ID_EX, clk, rst_n);
+  flop1b f1_WB_hlt_EX_DM(WB_hlt_EX_DM, WB_hlt_ID_EX, clk, rst_n);
 
   // DM/WB BLOCK //
   flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
-  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, WB_dst_addr_EX_DM, clk, rst_n); // dst_addr
+  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, dst_addr, clk, rst_n); // dst_addr
   flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
+  flop1b f16_WB_hlt_DM_WB(hlt, WB_hlt_EX_DM, clk, rst_n);
   
   
   //////////////////////
