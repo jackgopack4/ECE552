@@ -72,7 +72,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
   
 
   // ID/EX Block wires
-  wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
+  wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX;
   wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, EX_StoreWord_ID_EX;
   wire DM_RegDst_ID_EX;
   wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
@@ -83,7 +83,7 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 
   // EX/DM block wires
   wire DM_Branch_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM;
-  wire DM_Halt_EX_DM, DM_JumpR_EX_DM, DM_JumpAL_EX_DM;
+  wire DM_JumpR_EX_DM, DM_JumpAL_EX_DM;
   wire DM_MemToReg_EX_DM, DM_zrOut_EX_DM, DM_negOut_EX_DM, DM_ovOut_EX_DM, WB_RegWrite_EX_DM;
   wire DM_RegDst_EX_DM;
   wire [15:0] EX_readData1_EX_DM, DM_readData2_EX_DM, DM_ALUResult_EX_DM, DM_pcInc_EX_DM;
@@ -118,8 +118,8 @@ always @(posedge clk) begin
   $display("\n********** IF Stage **********");
   $display("programCounter=%h pcInc=%h nextAddr=%h\ninstruction=%h",
             programCounter,     pcInc,     nextAddr,     instruction);
-  $display("nextAddr =  DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM=%h :\n(DM_JumpR_EX_DM=%b  ? EX_readData1_EX_DM=%h :\n(DM_Halt_EX_DM=%b   ? DM_programCounter_EX_DM=%h :\n(PCSrc=%b           ? DM_PCaddOut_EX_DM=%h :\npcInc=%b)));",
-                        DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,       DM_JumpR_EX_DM,      EX_readData1_EX_DM,       DM_Halt_EX_DM,       DM_programCounter_EX_DM,       PCSrc,               DM_PCaddOut_EX_DM,      pcInc);
+  $display("nextAddr =  DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM=%h :\n(DM_JumpR_EX_DM=%b  ? EX_readData1_EX_DM=%h :\n(WB_hlt_EX_DM=%b   ? DM_programCounter_EX_DM=%h :\n(PCSrc=%b           ? DM_PCaddOut_EX_DM=%h :\npcInc=%b)));",
+                        DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,       DM_JumpR_EX_DM,      EX_readData1_EX_DM,       WB_hlt_EX_DM,       DM_programCounter_EX_DM,       PCSrc,               DM_PCaddOut_EX_DM,      pcInc);
   $display("********** ID Stage **********");
   $display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
             DM_programCounter_IF_ID, instr_IF_ID, readReg1, readReg2, readData1, readData2);
@@ -143,12 +143,12 @@ always @(posedge clk) begin
     $display("dst_addr = DM_JumpAL_EX_DM=%b ? 4'b1111 : (DM_RegDst_EX_DM=%b ? instr_EX_DM[11:8]=%b : instr_EX_DM[3:0]=%b);",
                        DM_JumpAL_EX_DM,                DM_RegDst_EX_DM,     instr_EX_DM[11:8],     instr_EX_DM[3:0]);
   $display("********** nextAddr immediate assign **********");
-  $display("nextAddr=%h\nJumpAL=%b JumpR=%b Halt=%b PCSrc=%b",
-            nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, DM_Halt_EX_DM, PCSrc);
-  /*$display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nDM_Halt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
+  $display("nextAddr=%h\nJumpAL=%b JumpR=%b hlt=%b PCSrc=%b",
+            nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, WB_hlt_EX_DM, PCSrc);
+  /*$display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nWB_hlt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
                    DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,
                    DM_JumpR_EX_DM,      DM_readData1_EX_DM,
-                   DM_Halt_EX_DM,       DM_programCounter_EX_DM,
+                   WB_hlt_EX_DM,       DM_programCounter_EX_DM,
                    PCSrc,               DM_PCaddOut_EX_DM,
                                         pcInc);
 */
@@ -187,7 +187,7 @@ rf   registers(.clk(clk),
 			   .dst_addr(WB_dst_addr_DM_WB), 
 			   .dst(WB_dst_DM_WB), 
 			   .we(RegWrite), 
-			   .hlt(hlt));
+			   .hlt(WB_hlt_DM_WB));
 // Power not functionality
 assign re0 = 1'b1;
 assign re1 = 1'b1;
@@ -247,7 +247,7 @@ assign dst = DM_JumpAL_EX_DM   ? DM_pcInc_EX_DM :
 // Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
 assign nextAddr =  DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : 
                   (DM_JumpR_EX_DM  ? EX_readData1_EX_DM : 
-                  (DM_Halt_EX_DM   ? DM_programCounter_EX_DM : 
+                  (WB_hlt_EX_DM   ? DM_programCounter_EX_DM : 
                   (PCSrc           ? DM_PCaddOut_EX_DM : 
                                      pcInc)));	//PCNext;
 // Branch 
@@ -331,7 +331,6 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWord_To_ID_EX, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead_To_ID_EX, clk, rst_n); // MemRead
   flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite_To_ID_EX, clk, rst_n);    // MemWrite
-  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, hlt, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR_To_ID_EX, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL_To_ID_EX, clk, rst_n);  // JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg_To_ID_EX, clk, rst_n);    // MemToReg
@@ -351,7 +350,6 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_DM_Branch_EX_DM(DM_Branch_EX_DM, DM_Branch_ID_EX, clk, rst_n); // Branch
   flop1b f1_DM_MemRead_EX_DM(DM_MemRead_EX_DM, DM_MemRead_ID_EX, clk, rst_n);	// MemRead
   flop1b f1_DM_MemWrite_EX_DM(DM_MemWrite_EX_DM, DM_MemWrite_ID_EX, clk, rst_n);	// MemWrite
-  flop1b f1_DM_Halt_EX_DM(DM_Halt_EX_DM, DM_Halt_ID_EX, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_EX_DM(DM_JumpR_EX_DM, DM_JumpR_ID_EX, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_EX_DM(DM_JumpAL_EX_DM, DM_JumpAL_ID_EX, clk, rst_n); // JumpAL
   flop1b f1_DM_MemToReg_EX_DM(DM_MemToReg_EX_DM, DM_MemToReg_ID_EX, clk, rst_n); // MemToReg
