@@ -25,7 +25,6 @@ wire [15:0] readData1, readData2;
 wire re0, re1;				// read enables (power not functionality)
 wire [3:0] dst_addr, readReg1, readReg2;	// write address (reg)
 wire [15:0] dst;			// data to be written to register file, write data (dst bus)
-wire we;					// write enable
 
 // ALU //
 wire [15:0] ALUResult;
