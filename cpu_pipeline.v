@@ -150,11 +150,23 @@ DM dataMem(.clk(clk),
 		   .wrt_data(DM_readData2_EX_DM), 
 		   .rd_data(rd_data));
 // MUX: data to be written back to registers. If JumpAL, store pc +1, otherwise store ALUResult or mem
-assign dst = DM_JumpAL_EX_DM ? DM_pcInc_EX_DM : (DM_MemToReg_EX_DM ? rd_data : DM_ALUResult_EX_DM);	
+assign dst = DM_JumpAL_EX_DM   ? DM_pcInc_EX_DM : 
+            (DM_MemToReg_EX_DM ? rd_data : 
+                                 DM_ALUResult_EX_DM);	
 // Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
-assign nextAddr = DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : (DM_JumpR_EX_DM ? DM_readData1_EX_DM : (DM_Halt_EX_DM ? DM_programCounter_EX_DM : (PCSrc ? DM_PCaddOut_EX_DM : DM_pcInc_EX_DM)));	//PCNext;
+assign nextAddr =  DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : 
+                  (DM_JumpR_EX_DM  ? DM_readData1_EX_DM : 
+                  (DM_Halt_EX_DM   ? DM_programCounter_EX_DM : 
+                  (PCSrc           ? DM_PCaddOut_EX_DM : 
+                                     pcInc)));	//PCNext;
 // Branch 
-branch_met BranchPred(.Yes(Yes), .ccc(DM_ccc_EX_DM[2:0]), .N(DM_negOut_EX_DM), .V(DM_ovOut_EX_DM), .Z(DM_zrOut_EX_DM), .clk(clk));
+branch_met BranchPred(.Yes(Yes), 
+                      .ccc(DM_ccc_EX_DM[2:0]), 
+                      .N(DM_negOut_EX_DM), 
+                      .V(DM_ovOut_EX_DM), 
+                      .Z(DM_zrOut_EX_DM), 
+                      .clk(clk)
+                      );
 //Take conditional branch if condition is met (Yes) and it is a branch instruction
 assign PCSrc = (Yes && DM_Branch_EX_DM);
 
@@ -198,7 +210,7 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   // DM/WB block wires
   wire WB_RegWrite_DM_WB;
   wire [3:0] WB_dst_addr_DM_WB;
-  wire [15:0] WB_dst_DM_WB, WB_nextAddr_DM_WB;
+  wire [15:0] WB_dst_DM_WB;
 
   ////**** d -> [FLOP] -> q ****////
   
@@ -278,6 +290,5 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
   flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, WB_dst_addr_EX_DM, clk, rst_n); // dst_addr
   flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
-  flop16b f16_WB_nextAddr_DM_WB(WB_nextAddr_DM_WB, nextAddr, clk, rst_n);
 
 endmodule
