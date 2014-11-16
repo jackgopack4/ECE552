@@ -131,8 +131,8 @@ rf   registers(.clk(clk),
 			   .p1(readData2), 
 			   .re0(re0), 
 			   .re1(re1),
-			   .dst_addr(dst_addr), 
-			   .dst(dst), 
+			   .dst_addr(WB_dst_addr_DM_WB), 
+			   .dst(WB_dst_DM_WB), 
 			   .we(RegWrite), 
 			   .hlt(hlt));
 // Power not functionality
@@ -302,7 +302,6 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop16b f16_DM_programCounter_ID_EX(DM_programCounter_ID_EX, DM_programCounter_IF_ID, clk, rst_n);
   flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);	// ccc
   flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite, clk, rst_n);		// RegWrite
-  flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
   flop16b f16_instr_ID_EX(instr_ID_EX, instr_IF_ID, clk, rst_n);
   
   // EX/DM BLOCK //
@@ -325,12 +324,11 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);
   flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);
   flop1b f1_WB_RegWrite_EX_DM(WB_RegWrite_EX_DM, WB_RegWrite_ID_EX, clk, rst_n); // RegWrite
-  flop4b f4_WB_dst_addr_EX_DM(WB_dst_addr_EX_DM, WB_dst_addr_ID_EX, clk, rst_n); // dst_addr
   flop16b f16_instr_EX_DM(instr_EX_DM, instr_ID_EX, clk, rst_n);
 
   // DM/WB BLOCK //
   flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
-  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, WB_dst_addr_EX_DM, clk, rst_n); // dst_addr
+  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, dst_addr, clk, rst_n); // dst_addr
   flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
 
 endmodule
