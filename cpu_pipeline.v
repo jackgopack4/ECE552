@@ -67,10 +67,33 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
 ////////////************ Display ************//////////////
 always @(posedge clk) begin
 	// let's see what's going on!
-	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
-	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
-	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
-   ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
+	//$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
+	//      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
+	//$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+  // ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
+  $display("\n********** IF Stage **********");
+  $display("programCounter=%d pcInc=%d nextAddr=%d\ninstruction=%b",
+            programCounter,     pcInc,     nextAddr,     instruction);
+  $display("********** ID Stage **********");
+  $display("programCounter=%d instruction=%b\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
+            DM_programCounter_IF_ID, instr_IF_ID, readReg1,    readReg2, readData1, readData2);
+  $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
+            signOutALU,   signOutMem,   signOutBranch,   signOutJump);
+  $display("********** EX Stage **********");
+  $display("programCounter=%d\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
+            DM_programCounter_ID_EX, DM_readData1_ID_EX, src2Wire, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
+  $display("StoreWord=%b ALUSrc=%b",DM_StoreWord_ID_EX, EX_ALUSrc_ID_EX);
+  $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
+            EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
+  $display("********** DM Stage **********");
+  $display("programCounter=%d\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
+            DM_programCounter_EX_DM, DM_ALUResult_EX_DM, DM_readData2_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, rd_data, DM_ccc_EX_DM, Yes, DM_Branch_EX_DM);
+  $display("********** nextAddr immediate assign **********");
+  $display("nextAddr=%d\nJumpAL=%b JumpR=%b Halt=%b PCSrc=%b",
+            nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, DM_Halt_EX_DM, PCSrc);
+  $display("********** WB Stage **********");
+  $display("regWriteAddr=%h regWriteData=%h RegWrite=%b",
+            dst_addr, dst, WB_RegWrite_DM_WB);
 end
 
 
@@ -91,7 +114,7 @@ assign rd_en = 1'b1;
 
 
 ////////////************ Registers - ID ************//////////////
-rfSC registers(.clk(clk), 
+rf   registers(.clk(clk), 
 			   .p0_addr(readReg1), 
 			   .p1_addr(readReg2),
 			   .p0(readData1), 
@@ -131,7 +154,9 @@ ALU alu(.src0(DM_readData1_ID_EX),
 		.change_z(change_z), 
 		.change_n(change_n));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
-assign src2Wire = DM_StoreWord_ID_EX ? EX_signOutMem_ID_EX : (EX_ALUSrc_ID_EX ? EX_signOutALU_ID_EX : DM_readData2_ID_EX);
+assign src2Wire = DM_StoreWord_ID_EX ? EX_signOutMem_ID_EX : 
+                 (EX_ALUSrc_ID_EX    ? EX_signOutALU_ID_EX : 
+                                       DM_readData2_ID_EX);
 // Adds Branch/Jump signed address to pcInc +1
 alu2 PCAdd(PCaddOut, DM_pcInc_ID_EX, signOutBJ);		
 // Mux to choose which signed address to add to pcInc
@@ -255,7 +280,7 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWord, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead, clk, rst_n);	// MemRead
   flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite, clk, rst_n);		// MemWrite
-  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, Halt, clk, rst_n); // Halt
+  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, hlt, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);	// JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
