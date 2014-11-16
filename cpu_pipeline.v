@@ -271,6 +271,7 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   // IF/ID BLOCK
   flop16b ID_flop(.q(instr_IF_ID), .d(instruction_To_IF_ID), .clk(clk), .rst_n(rst_n));
   flop16b f16_EX_pcInc_IF_ID(DM_pcInc_IF_ID, pcInc_To_IF_ID, clk, rst_n);
+  flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter , clk, rst_n);	// Program Counter
   // Stall MUX to flush out instruction and pcInc
   assign instruction_To_IF_ID = stall ? 16'h0000 : instruction;
   assign pcInc_To_IF_ID = stall ? 16'h0000 : pcInc;
@@ -315,8 +316,7 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop16b f16_EX_readData1_ID_EX(EX_readData1_ID_EX, readData1, clk, rst_n);// readData1
   flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
   flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);	//opCode
-
-flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch_To_ID_EX, clk, rst_n); // Branch
+  flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch_To_ID_EX, clk, rst_n); // Branch
   flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWordTo_ID_EX, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead_To_ID_EX, clk, rst_n); // MemRead
   flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite_To_ID_EX, clk, rst_n);    // MemWrite
@@ -325,10 +325,8 @@ flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch_To_ID_EX, clk, rst_n); // Bran
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL_To_ID_EX, clk, rst_n);  // JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg_To_ID_EX, clk, rst_n);    // MemToReg
   flop1b f1_DM_RegDst_ID_EX(DM_RegDst_ID_EX, RegDst, clk, rst_n);
-  
-
   flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);	//pcInc
-  flop16b f16_DM_programCounter_ID_EX(DM_programCounter_ID_EX, DM_programCounter_IF_ID, clk, rst_n);
+  flop16b f16_DM_programCounter_ID_EX(DM_programCounter_ID_EX, DM_programCounter_IF_ID, clk, rst_n);	// Program Counter
   flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);	// ccc
   flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite_To_ID_EX, clk, rst_n);		// RegWrite
   // Forwarding registers addr
