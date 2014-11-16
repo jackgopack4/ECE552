@@ -1,0 +1,735 @@
+inst1.hex OUTPUT follows:
+********** IF Stage **********
+programCounter=0000 pcInc=0001 nextAddr=0001
+instruction=b155
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0000 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0000 :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0000 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0000 :
+pcInc=0000000000000001)));
+********** ID Stage **********
+programCounter=0000 instruction=0000
+readReg1= 0 readReg2= 0
+readData1=0000 readData2=0000
+********** EX Stage **********
+programCounter=0000
+ALUSrc1=0000 ALUSrc2=0000
+OpCode=0000 ALUResult=0000
+neg=0 ov=0 zr=1
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardA == 2'b01) ? WB_dst_DM_WB=0000 : EX_readData1_ID_EX=0000);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardB == 2'b01) ? WB_dst_DM_WB=0000 : src2Wire=0000);
+signOutALU=0000 signOutMem=0000 signOutBranch=0000 signOutJump=0000
+alu2out=PCaddOut=0000 DM_pcInc_ID_EX=0000 signOutBJ=0000 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0000 EX_signOutJump_ID_EX=0000
+********** DM Stage **********
+programCounter=0000
+memAddr=0000 memWrtData=0000
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=1 Branch=0
+dst_addr=0 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=0 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=0000);
+dst=0000 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0000 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0000);
+********** nextAddr immediate assign **********
+nextAddr=0001
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 0 regWriteData=0000 RegWrite=0
+
+
+
+
+********** IF Stage **********
+programCounter=0001 pcInc=0002 nextAddr=0002
+instruction=b233
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0000 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0000 :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0000 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0000 :
+pcInc=0000000000000010)));
+********** ID Stage **********
+programCounter=0000 instruction=b155
+readReg1= 5 readReg2= 5
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0000
+ALUSrc1=0000 ALUSrc2=0000
+OpCode=0000 ALUResult=0000
+neg=0 ov=0 zr=1
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardA == 2'b01) ? WB_dst_DM_WB=0000 : EX_readData1_ID_EX=0000);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardB == 2'b01) ? WB_dst_DM_WB=0000 : src2Wire=0000);
+signOutALU=0000 signOutMem=0000 signOutBranch=0000 signOutJump=0000
+alu2out=PCaddOut=0000 DM_pcInc_ID_EX=0000 signOutBJ=0000 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0000 EX_signOutJump_ID_EX=0000
+********** DM Stage **********
+programCounter=0000
+memAddr=0000 memWrtData=0000
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=0 Branch=0
+dst_addr=0 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=0 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=0000);
+dst=0000 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0000 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0000);
+********** nextAddr immediate assign **********
+nextAddr=0002
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 0 regWriteData=0000 RegWrite=0
+
+
+
+
+********** IF Stage **********
+programCounter=0002 pcInc=0003 nextAddr=0003
+instruction=0321
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0000 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0000 :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0000 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0000 :
+pcInc=0000000000000011)));
+********** ID Stage **********
+programCounter=0001 instruction=b233
+readReg1= 3 readReg2= 3
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0000
+ALUSrc1=xxxx ALUSrc2=0055
+OpCode=1011 ALUResult=0055
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardA == 2'b01) ? WB_dst_DM_WB=0000 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardB == 2'b01) ? WB_dst_DM_WB=0000 : src2Wire=0055);
+signOutALU=0055 signOutMem=0005 signOutBranch=ff55 signOutJump=0155
+alu2out=PCaddOut=ff56 DM_pcInc_ID_EX=0001 signOutBJ=ff55 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ff55 EX_signOutJump_ID_EX=0155
+********** DM Stage **********
+programCounter=0000
+memAddr=0000 memWrtData=0000
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=0 Branch=0
+dst_addr=0 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=0000);
+dst=0000 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0000 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0000);
+********** nextAddr immediate assign **********
+nextAddr=0003
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 0 regWriteData=0000 RegWrite=0
+
+
+
+
+********** IF Stage **********
+programCounter=0003 pcInc=0004 nextAddr=0004
+instruction=2412
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ff56 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0000 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ff56 :
+pcInc=0000000000000100)));
+********** ID Stage **********
+programCounter=0002 instruction=0321
+readReg1= 2 readReg2= 1
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0001
+ALUSrc1=xxxx ALUSrc2=0033
+OpCode=1011 ALUResult=0033
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0055 : ((forwardA == 2'b01) ? WB_dst_DM_WB=0000 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0055 : ((forwardB == 2'b01) ? WB_dst_DM_WB=0000 : src2Wire=0033);
+signOutALU=0033 signOutMem=0003 signOutBranch=0033 signOutJump=0233
+alu2out=PCaddOut=0035 DM_pcInc_ID_EX=0002 signOutBJ=0033 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0033 EX_signOutJump_ID_EX=0233
+********** DM Stage **********
+programCounter=0000
+memAddr=0055 memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=1 Branch=0
+dst_addr=1 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0001 : instr_EX_DM[3:0]=0101);
+dst=0055 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0001 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0055);
+********** nextAddr immediate assign **********
+nextAddr=0004
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 0 regWriteData=0000 RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0004 pcInc=0005 nextAddr=0005
+instruction=0e34
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0035 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0001 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0035 :
+pcInc=0000000000000101)));
+********** ID Stage **********
+programCounter=0003 instruction=2412
+readReg1= 1 readReg2= 2
+readData1=0055 readData2=xxxx
+********** EX Stage **********
+programCounter=0002
+ALUSrc1=xxxx ALUSrc2=0055
+OpCode=0000 ALUResult=xxxx
+neg=x ov=x zr=x
+forwardA=00 forwardB=01
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0033 : ((forwardA == 2'b01) ? WB_dst_DM_WB=0055 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0033 : ((forwardB == 2'b01) ? WB_dst_DM_WB=0055 : src2Wire=xxxx);
+signOutALU=0021 signOutMem=0001 signOutBranch=ff21 signOutJump=0321
+alu2out=PCaddOut=ff24 DM_pcInc_ID_EX=0003 signOutBJ=ff21 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ff21 EX_signOutJump_ID_EX=0321
+********** DM Stage **********
+programCounter=0001
+memAddr=0033 memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0001 Yes=0 Branch=0
+dst_addr=2 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0010 : instr_EX_DM[3:0]=0011);
+dst=0033 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0002 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0033);
+********** nextAddr immediate assign **********
+nextAddr=0005
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 1 regWriteData=0055 RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0005 pcInc=0006 nextAddr=0006
+instruction=bdaa
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ff24 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0002 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ff24 :
+pcInc=0000000000000110)));
+********** ID Stage **********
+programCounter=0004 instruction=0e34
+readReg1= 3 readReg2= 4
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0003
+ALUSrc1=0055 ALUSrc2=0033
+OpCode=0010 ALUResult=0022
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=01
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardA == 2'b01) ? WB_dst_DM_WB=0033 : EX_readData1_ID_EX=0055);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardB == 2'b01) ? WB_dst_DM_WB=0033 : src2Wire=xxxx);
+signOutALU=0012 signOutMem=0002 signOutBranch=0012 signOutJump=0412
+alu2out=PCaddOut=0016 DM_pcInc_ID_EX=0004 signOutBJ=0012 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0012 EX_signOutJump_ID_EX=0412
+********** DM Stage **********
+programCounter=0002
+memAddr=xxxx memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0001 Yes=0 Branch=0
+dst_addr=3 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0011 : instr_EX_DM[3:0]=0001);
+dst=xxxx = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0003 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=xxxx);
+********** nextAddr immediate assign **********
+nextAddr=0006
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 2 regWriteData=0033 RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0006 pcInc=0007 nextAddr=0007
+instruction=ad00
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0016 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0055 :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0003 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0016 :
+pcInc=0000000000000111)));
+********** ID Stage **********
+programCounter=0005 instruction=bdaa
+readReg1=10 readReg2=10
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0004
+ALUSrc1=xxxx ALUSrc2=xxxx
+OpCode=0000 ALUResult=xxxx
+neg=x ov=x zr=x
+forwardA=01 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0022 : ((forwardA == 2'b01) ? WB_dst_DM_WB=xxxx : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0022 : ((forwardB == 2'b01) ? WB_dst_DM_WB=xxxx : src2Wire=xxxx);
+signOutALU=0034 signOutMem=0004 signOutBranch=0034 signOutJump=fe34
+alu2out=PCaddOut=0039 DM_pcInc_ID_EX=0005 signOutBJ=0034 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0034 EX_signOutJump_ID_EX=fe34
+********** DM Stage **********
+programCounter=0003
+memAddr=0022 memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0010 Yes=1 Branch=0
+dst_addr=4 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0100 : instr_EX_DM[3:0]=0010);
+dst=0022 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0004 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0022);
+********** nextAddr immediate assign **********
+nextAddr=0007
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 3 regWriteData=xxxx RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0007 pcInc=0008 nextAddr=0008
+instruction=20ed
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0039 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0004 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0039 :
+pcInc=0000000000001000)));
+********** ID Stage **********
+programCounter=0006 instruction=ad00
+readReg1=13 readReg2= 0
+readData1=xxxx readData2=0000
+********** EX Stage **********
+programCounter=0005
+ALUSrc1=xxxx ALUSrc2=ffaa
+OpCode=1011 ALUResult=ffaa
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardA == 2'b01) ? WB_dst_DM_WB=0022 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardB == 2'b01) ? WB_dst_DM_WB=0022 : src2Wire=ffaa);
+signOutALU=ffaa signOutMem=fffa signOutBranch=ffaa signOutJump=fdaa
+alu2out=PCaddOut=ffb0 DM_pcInc_ID_EX=0006 signOutBJ=ffaa 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ffaa EX_signOutJump_ID_EX=fdaa
+********** DM Stage **********
+programCounter=0004
+memAddr=xxxx memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0111 Yes=1 Branch=0
+dst_addr=e = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=1110 : instr_EX_DM[3:0]=0100);
+dst=xxxx = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0005 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=xxxx);
+********** nextAddr immediate assign **********
+nextAddr=0008
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 4 regWriteData=0022 RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0008 pcInc=0009 nextAddr=0009
+instruction=c02d
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ffb0 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0005 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ffb0 :
+pcInc=0000000000001001)));
+********** ID Stage **********
+programCounter=0007 instruction=20ed
+readReg1=14 readReg2=13
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0006
+ALUSrc1=xxxx ALUSrc2=0000
+OpCode=1010 ALUResult=00xx
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=ffaa : ((forwardA == 2'b01) ? WB_dst_DM_WB=xxxx : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=ffaa : ((forwardB == 2'b01) ? WB_dst_DM_WB=xxxx : src2Wire=0000);
+signOutALU=0000 signOutMem=0000 signOutBranch=ff00 signOutJump=fd00
+alu2out=PCaddOut=ff07 DM_pcInc_ID_EX=0007 signOutBJ=ff00 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ff00 EX_signOutJump_ID_EX=fd00
+********** DM Stage **********
+programCounter=0005
+memAddr=ffaa memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0110 Yes=0 Branch=0
+dst_addr=d = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=1101 : instr_EX_DM[3:0]=1010);
+dst=ffaa = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0006 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=ffaa);
+********** nextAddr immediate assign **********
+nextAddr=0009
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr=14 regWriteData=xxxx RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0009 pcInc=000a nextAddr=000a
+instruction=b577
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ff07 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0006 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ff07 :
+pcInc=0000000000001010)));
+********** ID Stage **********
+programCounter=0008 instruction=c02d
+readReg1= 2 readReg2=13
+readData1=0033 readData2=ffaa
+********** EX Stage **********
+programCounter=0007
+ALUSrc1=xxxx ALUSrc2=ffaa
+OpCode=0010 ALUResult=xxxx
+neg=x ov=x zr=x
+forwardA=00 forwardB=01
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=00xx : ((forwardA == 2'b01) ? WB_dst_DM_WB=ffaa : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=00xx : ((forwardB == 2'b01) ? WB_dst_DM_WB=ffaa : src2Wire=xxxx);
+signOutALU=ffed signOutMem=fffd signOutBranch=00ed signOutJump=00ed
+alu2out=PCaddOut=00f5 DM_pcInc_ID_EX=0008 signOutBJ=00ed 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=00ed EX_signOutJump_ID_EX=00ed
+********** DM Stage **********
+programCounter=0006
+memAddr=00xx memWrtData=0000
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0110 Yes=0 Branch=0
+dst_addr=d = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=1101 : instr_EX_DM[3:0]=0000);
+dst=00xx = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0007 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=00xx);
+********** nextAddr immediate assign **********
+nextAddr=000a
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr=13 regWriteData=ffaa RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=000a pcInc=000b nextAddr=000b
+instruction=3652
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=00f5 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0007 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=00f5 :
+pcInc=0000000000001011)));
+********** ID Stage **********
+programCounter=0009 instruction=b577
+readReg1= 7 readReg2= 7
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0008
+ALUSrc1=0033 ALUSrc2=00xx
+OpCode=1100 ALUResult=xx33
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=01
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardA == 2'b01) ? WB_dst_DM_WB=00xx : EX_readData1_ID_EX=0033);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=xxxx : ((forwardB == 2'b01) ? WB_dst_DM_WB=00xx : src2Wire=ffaa);
+signOutALU=002d signOutMem=fffd signOutBranch=002d signOutJump=002d
+alu2out=PCaddOut=0036 DM_pcInc_ID_EX=0009 signOutBJ=002d 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=002d EX_signOutJump_ID_EX=002d
+********** DM Stage **********
+programCounter=0007
+memAddr=xxxx memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=0 Branch=0
+dst_addr=0 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=1101);
+dst=xxxx = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0008 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=xxxx);
+********** nextAddr immediate assign **********
+nextAddr=000b
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr=13 regWriteData=00xx RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=000b pcInc=000c nextAddr=0036
+instruction=4732
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0036 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0033 :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0008 :
+(PCSrc=1           ? DM_PCaddOut_EX_DM=0036 :
+pcInc=0000000000001100)));
+********** ID Stage **********
+programCounter=000a instruction=3652
+readReg1= 5 readReg2= 2
+readData1=xxxx readData2=0033
+********** EX Stage **********
+programCounter=0009
+ALUSrc1=xxxx ALUSrc2=0077
+OpCode=1011 ALUResult=0077
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=xx33 : ((forwardA == 2'b01) ? WB_dst_DM_WB=xxxx : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=xx33 : ((forwardB == 2'b01) ? WB_dst_DM_WB=xxxx : src2Wire=0077);
+signOutALU=0077 signOutMem=0007 signOutBranch=ff77 signOutJump=0577
+alu2out=PCaddOut=ff81 DM_pcInc_ID_EX=000a signOutBJ=ff77 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ff77 EX_signOutJump_ID_EX=0577
+********** DM Stage **********
+programCounter=0008
+memAddr=xx33 memWrtData=ffaa
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=1 Branch=1
+dst_addr=d = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=0 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=1101);
+dst=xx33 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0009 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=xx33);
+********** nextAddr immediate assign **********
+nextAddr=0036
+JumpAL=0 JumpR=0 hlt=0 PCSrc=1
+********** WB Stage **********
+regWriteAddr= 0 regWriteData=xxxx RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0036 pcInc=0037 nextAddr=0037
+instruction=b1ff
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ff81 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0009 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ff81 :
+pcInc=0000000000110111)));
+********** ID Stage **********
+programCounter=000b instruction=4732
+readReg1= 3 readReg2= 2
+readData1=xxxx readData2=0033
+********** EX Stage **********
+programCounter=000a
+ALUSrc1=xxxx ALUSrc2=0033
+OpCode=0011 ALUResult=00XX
+neg=0 ov=0 zr=x
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0077 : ((forwardA == 2'b01) ? WB_dst_DM_WB=xx33 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0077 : ((forwardB == 2'b01) ? WB_dst_DM_WB=xx33 : src2Wire=0033);
+signOutALU=0052 signOutMem=0002 signOutBranch=0052 signOutJump=0652
+alu2out=PCaddOut=005d DM_pcInc_ID_EX=000b signOutBJ=0052 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0052 EX_signOutJump_ID_EX=0652
+********** DM Stage **********
+programCounter=0009
+memAddr=0077 memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0010 Yes=1 Branch=0
+dst_addr=5 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0101 : instr_EX_DM[3:0]=0111);
+dst=0077 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=000a :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0077);
+********** nextAddr immediate assign **********
+nextAddr=0037
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr=13 regWriteData=xx33 RegWrite=0
+
+
+
+
+********** IF Stage **********
+programCounter=0037 pcInc=0038 nextAddr=0038
+instruction=f000
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=005d :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=000a :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=005d :
+pcInc=0000000000111000)));
+********** ID Stage **********
+programCounter=0036 instruction=b1ff
+readReg1=15 readReg2=15
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=000b
+ALUSrc1=xxxx ALUSrc2=0033
+OpCode=0100 ALUResult=xxXX
+neg=0 ov=0 zr=x
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=00XX : ((forwardA == 2'b01) ? WB_dst_DM_WB=0077 : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=00XX : ((forwardB == 2'b01) ? WB_dst_DM_WB=0077 : src2Wire=0033);
+signOutALU=0032 signOutMem=0002 signOutBranch=ff32 signOutJump=0732
+alu2out=PCaddOut=ff3e DM_pcInc_ID_EX=000c signOutBJ=ff32 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ff32 EX_signOutJump_ID_EX=0732
+********** DM Stage **********
+programCounter=000a
+memAddr=00XX memWrtData=0033
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0011 Yes=0 Branch=0
+dst_addr=6 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0110 : instr_EX_DM[3:0]=0010);
+dst=00XX = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=000b :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=00XX);
+********** nextAddr immediate assign **********
+nextAddr=0038
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 5 regWriteData=0077 RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0038 pcInc=0039 nextAddr=0039
+instruction=xxxx
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=ff3e :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=000b :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=ff3e :
+pcInc=0000000000111001)));
+********** ID Stage **********
+programCounter=0037 instruction=f000
+readReg1= 0 readReg2= 0
+readData1=0000 readData2=0000
+********** EX Stage **********
+programCounter=0036
+ALUSrc1=xxxx ALUSrc2=ffff
+OpCode=1011 ALUResult=ffff
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=xxXX : ((forwardA == 2'b01) ? WB_dst_DM_WB=00XX : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=xxXX : ((forwardB == 2'b01) ? WB_dst_DM_WB=00XX : src2Wire=ffff);
+signOutALU=ffff signOutMem=ffff signOutBranch=ffff signOutJump=01ff
+alu2out=PCaddOut=0036 DM_pcInc_ID_EX=0037 signOutBJ=ffff 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=ffff EX_signOutJump_ID_EX=01ff
+********** DM Stage **********
+programCounter=000b
+memAddr=xxXX memWrtData=0033
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0011 Yes=0 Branch=0
+dst_addr=7 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0111 : instr_EX_DM[3:0]=0010);
+dst=xxXX = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=000c :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=xxXX);
+********** nextAddr immediate assign **********
+nextAddr=0039
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 6 regWriteData=00XX RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=0039 pcInc=003a nextAddr=003a
+instruction=xxxx
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0036 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=xxxx :
+(WB_hlt_EX_DM=0   ? DM_programCounter_EX_DM=0036 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0036 :
+pcInc=0000000000111010)));
+********** ID Stage **********
+programCounter=0038 instruction=xxxx
+readReg1= x readReg2= x
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0037
+ALUSrc1=0000 ALUSrc2=0000
+OpCode=1111 ALUResult=0000
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=ffff : ((forwardA == 2'b01) ? WB_dst_DM_WB=xxXX : EX_readData1_ID_EX=0000);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=ffff : ((forwardB == 2'b01) ? WB_dst_DM_WB=xxXX : src2Wire=0000);
+signOutALU=0000 signOutMem=0000 signOutBranch=0000 signOutJump=0000
+alu2out=PCaddOut=0038 DM_pcInc_ID_EX=0038 signOutBJ=0000 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=0000 EX_signOutJump_ID_EX=0000
+********** DM Stage **********
+programCounter=0036
+memAddr=ffff memWrtData=xxxx
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=1 Branch=0
+dst_addr=1 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=1 ? instr_EX_DM[11:8]=0001 : instr_EX_DM[3:0]=1111);
+dst=ffff = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0037 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=ffff);
+********** nextAddr immediate assign **********
+nextAddr=003a
+JumpAL=0 JumpR=0 hlt=0 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 7 regWriteData=xxXX RegWrite=1
+
+
+
+
+********** IF Stage **********
+programCounter=003a pcInc=003b nextAddr=003b
+instruction=xxxx
+nextAddr =  DM_JumpAL_EX_DM=0 ? DM_PCaddOut_EX_DM=0038 :
+(DM_JumpR_EX_DM=0  ? EX_readData1_EX_DM=0000 :
+(WB_hlt_EX_DM=1   ? DM_programCounter_EX_DM=0037 :
+(PCSrc=0           ? DM_PCaddOut_EX_DM=0038 :
+pcInc=0000000000111011)));
+********** ID Stage **********
+programCounter=0039 instruction=xxxx
+readReg1= x readReg2= x
+readData1=xxxx readData2=xxxx
+********** EX Stage **********
+programCounter=0038
+ALUSrc1=xxxx ALUSrc2=xxxx
+OpCode=xxxx ALUResult=xxxx
+neg=0 ov=0 zr=0
+forwardA=00 forwardB=00
+ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardA == 2'b01) ? WB_dst_DM_WB=ffff : EX_readData1_ID_EX=xxxx);
+ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=0000 : ((forwardB == 2'b01) ? WB_dst_DM_WB=ffff : src2Wire=xxxx);
+signOutALU=xxxx signOutMem=xxxx signOutBranch=xxxx signOutJump=xxxx
+alu2out=PCaddOut=xxxx DM_pcInc_ID_EX=0039 signOutBJ=xxxx 
+DM_JumpAL_ID_EX=0 EX_signOutBranch_ID_EX=xxxx EX_signOutJump_ID_EX=xxxx
+********** DM Stage **********
+programCounter=0037
+memAddr=0000 memWrtData=0000
+MemRead=0 MemWrite=0
+rd_data=xxxx
+ccc=0000 Yes=1 Branch=0
+dst_addr=0 = DM_JumpAL_EX_DM=0 ? 4'b1111 : (DM_RegDst_EX_DM=0 ? instr_EX_DM[11:8]=0000 : instr_EX_DM[3:0]=0000);
+dst=0000 = DM_JumpAL_EX_DM=0   ? DM_pcInc_EX_DM=0038 :
+(DM_MemToReg_EX_DM=0 ? rd_data=xxxx :
+DM_ALUResult_EX_DM=0000);
+********** nextAddr immediate assign **********
+nextAddr=003b
+JumpAL=0 JumpR=0 hlt=1 PCSrc=0
+********** WB Stage **********
+regWriteAddr= 1 regWriteData=ffff RegWrite=1
+
+
+
+R00000001 = ffff
+R00000002 = 0033
+R00000003 = xxxx
+R00000004 = 0022
+R00000005 = 0077
+R00000006 = 00XX
+R00000007 = xxXX
+R00000008 = xxxx
+R00000009 = xxxx
+R0000000a = xxxx
+R0000000b = xxxx
+R0000000c = xxxx
+R0000000d = 00xx
+R0000000e = xxxx
+R0000000f = xxxx
+
+********** IF Stage **********
+** VVP Stop(0) **
+** Flushing output streams.
+** Current simulation time is 37 ticks.
+> 
