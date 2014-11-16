@@ -17,7 +17,7 @@ wire [15:0] programCounter, PCaddOut, PCNext;
 wire [15:0] pcInc;			// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire reg [15:0] instruction;
+wire [15:0] instruction;
 wire rd_en;			 		// asserted when instruction read desired
 
 // Register Memory //
@@ -69,8 +69,7 @@ always @(posedge clk) begin
 	// let's see what's going on!
 	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
 	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
-	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
-   RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
    ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
 end
 
@@ -134,7 +133,7 @@ ALU alu(.src0(DM_readData1_ID_EX),
 // MUX: lw/sw instruction use the sign-extended value for src1 input
 assign src2Wire = DM_StoreWord_ID_EX ? EX_signOutMem_ID_EX : (EX_ALUSrc_ID_EX ? EX_signOutALU_ID_EX : DM_readData2_ID_EX);
 // Adds Branch/Jump signed address to pcInc +1
-alu2 PCAdd(PCaddOut, pcInc, signOutBJ);		
+alu2 PCAdd(PCaddOut, DM_pcInc_ID_EX, signOutBJ);		
 // Mux to choose which signed address to add to pcInc
 assign signOutBJ = DM_JumpAL_ID_EX ? EX_signOutJump_ID_EX : EX_signOutBranch_ID_EX;
 // Flags (should reflect for the next cycle
@@ -214,7 +213,8 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter, clk, rst_n); 
   
   // NEW Controller //
-   controller ctrl(.OpCode(instr_IF_ID[15:12]), // ID
+   controller cpu_controller(
+           .OpCode(instr_IF_ID[15:12]), // ID
 				   .RegDst(RegDst), 			// ID
 				   .LoadHigh(LoadHigh), 		// ID
 				   .StoreWord(StoreWord), 		// ID

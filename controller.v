@@ -7,11 +7,9 @@ output reg  RegDst,
 			Branch, 
 			MemRead, 
 			MemToReg, 
-			//ALUOp, //not sure if we are even using this
 			MemWrite, 
 			ALUSrc, 
-			RegWrite, 
-			//PCSrc;	//this is set with an AND gate (zr && Branch)		
+			RegWrite, 	
 			LoadHigh,
 			StoreWord,
 			JumpAL,
@@ -32,7 +30,6 @@ output reg  RegDst,
    localparam SW      = 4'b1001;
    localparam LHB     = 4'b1010;
    localparam LLB     = 4'b1011;
-   
    localparam B 	  = 4'b1100;
    localparam JAL 	  = 4'b1101;
    localparam JR 	  = 4'b1110;
@@ -48,11 +45,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 0;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
    JumpR 	= 0;
@@ -63,11 +58,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 0;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
    JumpR 	= 0;
@@ -81,11 +74,9 @@ output reg  RegDst,
    Branch   = 1'b0;
    MemRead  = 1'b0;
    MemToReg = 1'b0;
-   //ALUOp    = 1'b1;
    MemWrite = 1'b0;
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -95,11 +86,9 @@ output reg  RegDst,
    Branch   = 1'b0;
    MemRead  = 1'b0;
    MemToReg = 1'b0;
-   //ALUOp    = 1'b1;
    MemWrite = 1'b0;
    ALUSrc   = 1'b0;
    RegWrite = 1'b1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -109,11 +98,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -123,11 +110,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -137,11 +122,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -151,11 +134,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -165,11 +146,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -179,11 +158,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -193,11 +170,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 1;
    MemToReg = 1;
-   //ALUOp    = 0;
    MemWrite = 0;
    ALUSrc   = 1;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 1;
    
@@ -208,11 +183,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;	//don't care
-   //ALUOp    = 0;
    MemWrite = 1;
    ALUSrc   = 1;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 1;
    
@@ -223,11 +196,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 1;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    end
@@ -237,11 +208,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 1;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 1;
    
    end
@@ -251,11 +220,9 @@ output reg  RegDst,
    Branch   = 1;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 1;
    LoadHigh = 0;
    
    end
@@ -265,11 +232,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 1;
-   //PCSrc	= 0;
    LoadHigh = 0;
    JumpAL 	= 1;
    end
@@ -279,11 +244,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    JumpR 	= 1;
    end
@@ -293,11 +256,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 1;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    
    Halt		= 1;
@@ -307,11 +268,9 @@ output reg  RegDst,
    Branch   = 0;
    MemRead  = 0;
    MemToReg = 0;
-   //ALUOp    = 0;
    MemWrite = 0;
    ALUSrc   = 0;
    RegWrite = 0;
-   //PCSrc	= 0;
    LoadHigh = 0;
    StoreWord= 0;
    JumpR 	= 0;
