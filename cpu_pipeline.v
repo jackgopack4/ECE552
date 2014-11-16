@@ -154,7 +154,7 @@ assign dst = DM_JumpAL_EX_DM ? DM_pcInc_EX_DM : (DM_MemToReg_EX_DM ? rd_data : D
 // Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
 assign nextAddr = DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : (DM_JumpR_EX_DM ? DM_readData1_EX_DM : (DM_Halt_EX_DM ? DM_programCounter_EX_DM : (PCSrc ? DM_PCaddOut_EX_DM : DM_pcInc_EX_DM)));	//PCNext;
 // Branch 
-branch_met BranchPred(.Yes(Yes), .ccc(DM_ccc_EX_DM), .N(DM_negOut_EX_DM), .V(DM_ovOut_EX_DM), .Z(DM_zrOut_EX_DM), .clk(clk));
+branch_met BranchPred(.Yes(Yes), .ccc(DM_ccc_EX_DM[2:0]), .N(DM_negOut_EX_DM), .V(DM_ovOut_EX_DM), .Z(DM_zrOut_EX_DM), .clk(clk));
 //Take conditional branch if condition is met (Yes) and it is a branch instruction
 assign PCSrc = (Yes && DM_Branch_EX_DM);
 
@@ -178,10 +178,11 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   wire [15:0] EX_pcInc_IF_ID;
   wire [15:0] instr_IF_ID;
   wire [15:0] DM_programCounter_IF_ID;
+  wire [15:0] DM_pcInc_IF_ID;
 
   // ID/EX Block wires
   wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
-  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX;
+  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, DM_StoreWord_ID_EX;
   wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
   wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
   wire [15:0] DM_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX, DM_programCounter_ID_EX;
@@ -207,20 +208,20 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter, clk, rst_n); 
   
   // NEW Controller //
-   controller cpu_controller(
-           .OpCode(instr_IF_ID[15:12]), // ID
-				   .RegDst(RegDst), 			// ID
-				   .LoadHigh(LoadHigh), 		// ID
-				   .StoreWord(StoreWord), 		// ID
-				   .JumpAL(JumpAL), 			// EX
-				   .ALUSrc(ALUSrc),				// EX
-				   .Branch(Branch), 			// DM
-				   .MemRead(MemRead), 			// DM
-				   .MemWrite(MemWrite),			// DM
-				   .Halt(hlt),					// DM
-				   .JumpR(JumpR)				// DM
-				   .MemToReg(MemToReg), 		// WB
-				   .RegWrite(RegWrite), 		// WB
+  controller cpu_controller(
+           .OpCode(instr_IF_ID[15:12]), /*ID*/
+           .RegDst(RegDst),             /*ID*/
+           .LoadHigh(LoadHigh), 		    // ID
+				   .StoreWord(StoreWord), 		  // ID
+				   .JumpAL(JumpAL), 			      // EX
+				   .ALUSrc(ALUSrc),				      // EX
+				   .Branch(Branch), 			      // DM
+				   .MemRead(MemRead), 			    // DM
+				   .MemWrite(MemWrite),			    // DM
+				   .Halt(hlt),					        // DM
+				   .JumpR(JumpR),				        // DM
+				   .MemToReg(MemToReg), 	    	// WB
+				   .RegWrite(RegWrite), 		    // WB
 				   .rst_n(rst_n));				
 				
    // RegDst decides which value this will be
