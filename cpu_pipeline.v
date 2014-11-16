@@ -72,27 +72,35 @@ always @(posedge clk) begin
 	//$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
   // ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
   $display("\n********** IF Stage **********");
-  $display("programCounter=%d pcInc=%d nextAddr=%d\ninstruction=%b",
+  $display("programCounter=%d pcInc=%d nextAddr=%d\ninstruction=%h",
             programCounter,     pcInc,     nextAddr,     instruction);
   $display("********** ID Stage **********");
-  $display("programCounter=%d instruction=%b\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
+  $display("programCounter=%d instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
             DM_programCounter_IF_ID, instr_IF_ID, readReg1,    readReg2, readData1, readData2);
   $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             signOutALU,   signOutMem,   signOutBranch,   signOutJump);
   $display("********** EX Stage **********");
   $display("programCounter=%d\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
             DM_programCounter_ID_EX, DM_readData1_ID_EX, src2Wire, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
-  $display("StoreWord=%b ALUSrc=%b",DM_StoreWord_ID_EX, EX_ALUSrc_ID_EX);
+  $display("StoreWord=%b ALUSrc=%b",EX_StoreWord_ID_EX, EX_ALUSrc_ID_EX);
   $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
+  $display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
+            PCaddOut,           DM_pcInc_ID_EX,   signOutBJ,     DM_JumpAL_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
   $display("********** DM Stage **********");
   $display("programCounter=%d\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
             DM_programCounter_EX_DM, DM_ALUResult_EX_DM, DM_readData2_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, rd_data, DM_ccc_EX_DM, Yes, DM_Branch_EX_DM);
   $display("********** nextAddr immediate assign **********");
   $display("nextAddr=%d\nJumpAL=%b JumpR=%b Halt=%b PCSrc=%b",
             nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, DM_Halt_EX_DM, PCSrc);
+  $display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nDM_Halt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
+                   DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,
+                   DM_JumpR_EX_DM,      DM_readData1_EX_DM,
+                   DM_Halt_EX_DM,       DM_programCounter_EX_DM,
+                   PCSrc,               DM_PCaddOut_EX_DM,
+                                        pcInc);
   $display("********** WB Stage **********");
-  $display("regWriteAddr=%h regWriteData=%h RegWrite=%b",
+  $display("regWriteAddr=%d regWriteData=%h RegWrite=%b",
             dst_addr, dst, WB_RegWrite_DM_WB);
 end
 
@@ -154,7 +162,7 @@ ALU alu(.src0(DM_readData1_ID_EX),
 		.change_z(change_z), 
 		.change_n(change_n));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
-assign src2Wire = DM_StoreWord_ID_EX ? EX_signOutMem_ID_EX : 
+assign src2Wire = EX_StoreWord_ID_EX ? EX_signOutMem_ID_EX : 
                  (EX_ALUSrc_ID_EX    ? EX_signOutALU_ID_EX : 
                                        DM_readData2_ID_EX);
 // Adds Branch/Jump signed address to pcInc +1
@@ -212,14 +220,13 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
 // **************************************************************************************
 
   // IF/ID block wires
-  wire [15:0] EX_pcInc_IF_ID;
   wire [15:0] instr_IF_ID;
   wire [15:0] DM_programCounter_IF_ID;
   wire [15:0] DM_pcInc_IF_ID;
 
   // ID/EX Block wires
   wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
-  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, DM_StoreWord_ID_EX;
+  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, EX_StoreWord_ID_EX;
   wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
   wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
   wire [15:0] DM_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX, DM_programCounter_ID_EX;
@@ -241,7 +248,7 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   
   // IF/ID BLOCK
   flop16b ID_flop(.q(instr_IF_ID), .d(instruction), .clk(clk), .rst_n(rst_n));
-  flop16b f16_EX_pcInc_IF_ID(EX_pcInc_IF_ID, pcInc, clk, rst_n);
+  flop16b f16_DM_pcInc_IF_ID(DM_pcInc_IF_ID, pcInc, clk, rst_n);
   flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter, clk, rst_n); 
   
   // NEW Controller //
