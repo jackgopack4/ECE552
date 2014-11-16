@@ -1,4 +1,4 @@
-module cpu(clk, rst_n, hlt, pc);
+module pipeline_final(clk, rst_n, hlt, pc);
 
 ////////////////////////////////
 // initialize inputs/outputs //
@@ -117,14 +117,14 @@ always @(posedge clk) begin
             programCounter,     pcInc,     nextAddr,     instruction);
   $display("********** ID Stage **********");
   $display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
-            DM_programCounter_IF_ID, instr_IF_ID, readReg1,    readReg2, readData1, readData2);
+            DM_programCounter_IF_ID, instr_IF_ID, readReg1, readReg2, readData1, readData2);
   /*$display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             signOutALU,   signOutMem,   signOutBranch,   signOutJump);
 */
   $display("********** EX Stage **********");
   $display("programCounter=%h\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
-            DM_programCounter_ID_EX, DM_readData1_ID_EX, src2Wire, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
-  $display("StoreWord=%b ALUSrc=%b",EX_StoreWord_ID_EX, EX_ALUSrc_ID_EX);
+            DM_programCounter_ID_EX, ALU1, ALU2, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
+  $display("forwardA=%b forwardB=%b",forwardA, forwardB);
   $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
   $display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
@@ -143,8 +143,8 @@ always @(posedge clk) begin
                                         pcInc);
 */
   $display("********** WB Stage **********");
-  $display("regWriteAddr=%d regWriteData=%h RegWrite=%b",
-            dst_addr, dst, WB_RegWrite_DM_WB);
+  $display("regWriteAddr=%d regWriteData=%h RegWrite=%b\n\n\n",
+           WB_dst_addr_DM_WB , WB_dst_DM_WB, WB_RegWrite_DM_WB);
 end
 
 
@@ -166,7 +166,7 @@ assign rd_en = 1'b1;
 
 
 ////////////************ Registers - ID ************//////////////
-rf   registers(.clk(clk), 
+rfPL   registers(.clk(clk), 
 			   .p0_addr(readReg1), 
 			   .p1_addr(readReg2),
 			   .p0(readData1), 
