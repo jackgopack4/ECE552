@@ -142,7 +142,7 @@ assign re1 = 1'b1;
 assign readReg1 = LoadHigh ? instr_IF_ID[11:8] : instr_IF_ID[7:4]; 
 assign readReg2 = StoreWord ? instr_IF_ID[11:8] : instr_IF_ID[3:0];
 // MUX for write register addr. JumpAL stores in R13, RegDst controls addr
-assign dst_addr = JumpAL ? 4'b1111 : (RegDst ? instr_IF_ID[11:8] : instr_IF_ID[3:0]);
+assign dst_addr = DM_JumpAL_EX_DM ? 4'b1111 : (RegDst ? instr_IF_ID[11:8] : instr_IF_ID[3:0]);
 // Sign-extenders 
 sign_extenderALU signExtenALU(instr_IF_ID[7:0], signOutALU);
 sign_extenderJump signExtenJUMP(instr_IF_ID[11:0], signOutJump);
