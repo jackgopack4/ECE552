@@ -99,7 +99,7 @@ wire [1:0] forwardA, forwardB;
 
 // Hazard Detection //
 wire stall, StoreWord_To_ID_EX, JumpAL_To_ID_EX, ALUSrc_To_ID_EX, Branch_To_ID_EX, MemRead_To_ID_EX,
-MemWrite_To_ID_EX, JumpR_To_ID_EX, MemToReg_To_ID_EX, RegWrite_To_ID_EX, EX_StoreWord_ID_EX;
+MemWrite_To_ID_EX, JumpR_To_ID_EX, MemToReg_To_ID_EX, RegWrite_To_ID_EX;
 
 /////////////////////////
 // Initialize Modules //
@@ -382,7 +382,7 @@ forwardingUnit forwarding(.EX_Rs_Addr_ID_EX(EX_Rs_Addr_ID_EX),
   ////////////////////////////
  // Hazard Detection SHIT  //
 ////////////////////////////
-stall_controller hazardDetection(.WB_dst_addr_ID_EX(WB_dst_addr_ID_EX), 
+hazardDetection hazardDetection(.WB_dst_addr_ID_EX(WB_dst_addr_ID_EX), 
 								 .DM_MemRead_ID_EX(DM_MemRead_ID_EX), 
 								 .instr_IF_ID(instr_IF_ID), 
 								 .stall(stall));
