@@ -142,7 +142,7 @@ assign re1 = 1'b1;
 assign readReg1 = LoadHigh ? instr_IF_ID[11:8] : instr_IF_ID[7:4]; 
 assign readReg2 = StoreWord ? instr_IF_ID[11:8] : instr_IF_ID[3:0];
 // MUX for write register addr. JumpAL stores in R13, RegDst controls addr
-assign dst_addr = DM_JumpAL_EX_DM ? 4'b1111 : (RegDst ? instr_IF_ID[11:8] : instr_IF_ID[3:0]);
+assign dst_addr = DM_JumpAL_EX_DM ? 4'b1111 : (DM_RegDst_EX_DM ? instr_EX_DM[11:8] : instr_EX_DM[3:0]);
 // Sign-extenders 
 sign_extenderALU signExtenALU(instr_IF_ID[7:0], signOutALU);
 sign_extenderJump signExtenJUMP(instr_IF_ID[11:0], signOutJump);
@@ -229,17 +229,21 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   // ID/EX Block wires
   wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
   wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, EX_StoreWord_ID_EX;
+  wire DM_RegDst_ID_EX;
   wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
   wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
   wire [15:0] DM_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX, DM_programCounter_ID_EX;
+  wire [15:0] instr_ID_EX;
 
   // EX/DM block wires
   wire DM_Branch_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM;
   wire DM_Halt_EX_DM, DM_JumpR_EX_DM, DM_JumpAL_EX_DM;
   wire DM_MemToReg_EX_DM, DM_zrOut_EX_DM, DM_negOut_EX_DM, DM_ovOut_EX_DM, WB_RegWrite_EX_DM;
+  wire DM_RegDst_EX_DM;
   wire [15:0] DM_readData1_EX_DM, DM_readData2_EX_DM, DM_ALUResult_EX_DM, DM_pcInc_EX_DM;
   wire [15:0] DM_programCounter_EX_DM, DM_PCaddOut_EX_DM;
   wire [3:0] DM_ccc_EX_DM, WB_dst_addr_EX_DM;
+  wire [15:0] instr_EX_DM;
 
   // DM/WB block wires
   wire WB_RegWrite_DM_WB;
@@ -292,12 +296,14 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, hlt, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);	// JumpAL
-  flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
+  flop1b f1_DM_MemToReg_ID_EX(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
+  flop1b f1_DM_RegDst_ID_EX(DM_RegDst_ID_EX, RegDst, clk, rst_n);
   flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);	//pcInc
   flop16b f16_DM_programCounter_ID_EX(DM_programCounter_ID_EX, DM_programCounter_IF_ID, clk, rst_n);
   flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);	// ccc
   flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite, clk, rst_n);		// RegWrite
   flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
+  flop16b f16_instr_ID_EX(instr_ID_EX, instr_IF_ID, clk, rst_n);
   
   // EX/DM BLOCK //
   flop1b f1_DM_Branch_EX_DM(DM_Branch_EX_DM, DM_Branch_ID_EX, clk, rst_n); // Branch
@@ -313,12 +319,14 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop16b f16_DM_programCounter_EX_DM(DM_programCounter_EX_DM, DM_programCounter_ID_EX, clk, rst_n);
   flop16b f16_DM_pcInc_EX_DM(DM_pcInc_EX_DM, DM_pcInc_ID_EX, clk, rst_n);
   flop16b f16_DM_PCaddOut_EX_DM(DM_PCaddOut_EX_DM, PCaddOut, clk, rst_n);
+  flop1b f1_DM_RegDst_EX_DM(DM_RegDst_EX_DM, DM_RegDst_ID_EX, clk, rst_n);
   flop1b f1_DM_zrOut_EX_DM(DM_zrOut_EX_DM, zrOut, clk, rst_n);
   flop1b f1_DM_negOut_EX_DM(DM_negOut_EX_DM, negOut, clk, rst_n);
   flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);
   flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);
   flop1b f1_WB_RegWrite_EX_DM(WB_RegWrite_EX_DM, WB_RegWrite_ID_EX, clk, rst_n); // RegWrite
   flop4b f4_WB_dst_addr_EX_DM(WB_dst_addr_EX_DM, WB_dst_addr_ID_EX, clk, rst_n); // dst_addr
+  flop16b f16_instr_EX_DM(instr_EX_DM, instr_ID_EX, clk, rst_n);
 
   // DM/WB BLOCK //
   flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
