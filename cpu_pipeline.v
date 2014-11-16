@@ -66,6 +66,9 @@ wire 	RegDst,		// 1: write back instr[11:8] to register, 0: (sw don't care) lw i
   wire [15:0] instr_IF_ID;
   wire [15:0] DM_programCounter_IF_ID;
   wire [15:0] DM_pcInc_IF_ID;
+  wire [15:0] instruction_To_IF_ID;
+  wire [15:0] pcInc_To_IF_ID;
+  
 
   // ID/EX Block wires
   wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
