@@ -186,8 +186,8 @@ rf   registers(.clk(clk),
 			   .re1(re1),
 			   .dst_addr(WB_dst_addr_DM_WB), 
 			   .dst(WB_dst_DM_WB), 
-			   .we(RegWrite), 
-			   .hlt(WB_hlt_DM_WB));
+			   .we(WB_RegWrite_DM_WB), 
+			   .hlt(hlt));
 // Power not functionality
 assign re0 = 1'b1;
 assign re1 = 1'b1;
@@ -247,9 +247,8 @@ assign dst = DM_JumpAL_EX_DM   ? DM_pcInc_EX_DM :
 // Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
 assign nextAddr =  DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : 
                   (DM_JumpR_EX_DM  ? EX_readData1_EX_DM : 
-                  (WB_hlt_EX_DM   ? DM_programCounter_EX_DM : 
                   (PCSrc           ? DM_PCaddOut_EX_DM : 
-                                     pcInc)));	//PCNext;
+                                     pcInc));	//PCNext;
 // Branch 
 branch_met BranchPred(.Yes(Yes), 
                       .ccc(DM_ccc_EX_DM[2:0]), 
@@ -375,6 +374,8 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, dst_addr, clk, rst_n); // dst_addr
   flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
   flop1b f16_WB_hlt_DM_WB(hlt, WB_hlt_EX_DM, clk, rst_n);
+
+  // Extra flop for halt //
   
   
   //////////////////////
