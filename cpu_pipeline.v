@@ -17,7 +17,7 @@ wire [15:0] programCounter, PCaddOut, PCNext;
 wire [15:0] pcInc;			// to mediate between PC and nextAddr
 
 // Instruction Memory //
-wire [15:0] instruction;
+wire reg [15:0] instruction;
 wire rd_en;			 		// asserted when instruction read desired
 
 // Register Memory //
@@ -25,6 +25,7 @@ wire [15:0] readData1, readData2;
 wire re0, re1;				// read enables (power not functionality)
 wire [3:0] dst_addr, readReg1, readReg2;	// write address (reg)
 wire [15:0] dst;			// data to be written to register file, write data (dst bus)
+wire we;					// write enable
 
 // ALU //
 wire [15:0] ALUResult;
@@ -96,43 +97,11 @@ MemWrite_To_ID_EX, JumpR_To_ID_EX, MemToReg_To_ID_EX, RegWrite_To_ID_EX, EX_Stor
 ////////////************ Display ************//////////////
 always @(posedge clk) begin
 	// let's see what's going on!
-	//$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
-	//      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
-	//$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
-  // ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
-  $display("\n********** IF Stage **********");
-  $display("programCounter=%h pcInc=%h nextAddr=%h\ninstruction=%h",
-            programCounter,     pcInc,     nextAddr,     instruction);
-  $display("********** ID Stage **********");
-  $display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
-            DM_programCounter_IF_ID, instr_IF_ID, readReg1,    readReg2, readData1, readData2);
-  /*$display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
-            signOutALU,   signOutMem,   signOutBranch,   signOutJump);
-*/
-  $display("********** EX Stage **********");
-  $display("programCounter=%h\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
-            DM_programCounter_ID_EX, DM_readData1_ID_EX, src2Wire, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
-  $display("StoreWord=%b ALUSrc=%b",EX_StoreWord_ID_EX, EX_ALUSrc_ID_EX);
-  $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
-            EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
-  $display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
-            PCaddOut,           DM_pcInc_ID_EX,   signOutBJ,     DM_JumpAL_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
-  $display("********** DM Stage **********");
-  $display("programCounter=%h\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
-            DM_programCounter_EX_DM, DM_ALUResult_EX_DM, DM_readData2_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, rd_data, DM_ccc_EX_DM, Yes, DM_Branch_EX_DM);
-  $display("********** nextAddr immediate assign **********");
-  $display("nextAddr=%h\nJumpAL=%b JumpR=%b Halt=%b PCSrc=%b",
-            nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, DM_Halt_EX_DM, PCSrc);
-  /*$display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nDM_Halt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
-                   DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,
-                   DM_JumpR_EX_DM,      DM_readData1_EX_DM,
-                   DM_Halt_EX_DM,       DM_programCounter_EX_DM,
-                   PCSrc,               DM_PCaddOut_EX_DM,
-                                        pcInc);
-*/
-  $display("********** WB Stage **********");
-  $display("regWriteAddr=%d regWriteData=%h RegWrite=%b",
-            dst_addr, dst, WB_RegWrite_DM_WB);
+	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
+	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
+	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, 
+   RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+   ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
 end
 
 
@@ -154,15 +123,15 @@ assign rd_en = 1'b1;
 
 
 ////////////************ Registers - ID ************//////////////
-rf   registers(.clk(clk), 
+rfSC registers(.clk(clk), 
 			   .p0_addr(readReg1), 
 			   .p1_addr(readReg2),
 			   .p0(readData1), 
 			   .p1(readData2), 
 			   .re0(re0), 
 			   .re1(re1),
-			   .dst_addr(WB_dst_addr_DM_WB), 
-			   .dst(WB_dst_DM_WB), 
+			   .dst_addr(dst_addr), 
+			   .dst(dst), 
 			   .we(RegWrite), 
 			   .hlt(hlt));
 // Power not functionality
@@ -172,7 +141,7 @@ assign re1 = 1'b1;
 assign readReg1 = LoadHigh ? instr_IF_ID[11:8] : instr_IF_ID[7:4]; 
 assign readReg2 = StoreWord ? instr_IF_ID[11:8] : instr_IF_ID[3:0];
 // MUX for write register addr. JumpAL stores in R13, RegDst controls addr
-assign dst_addr = DM_JumpAL_EX_DM ? 4'b1111 : (DM_RegDst_EX_DM ? instr_EX_DM[11:8] : instr_EX_DM[3:0]);
+assign dst_addr = JumpAL ? 4'b1111 : (RegDst ? instr_IF_ID[11:8] : instr_IF_ID[3:0]);
 // Sign-extenders 
 sign_extenderALU signExtenALU(instr_IF_ID[7:0], signOutALU);
 sign_extenderJump signExtenJUMP(instr_IF_ID[11:0], signOutJump);
@@ -182,13 +151,8 @@ sign_extenderMem signExtenMem(instr_IF_ID[3:0], signOutMem);
 
 
 ////////////************ ALU - EX ************//////////////
-<<<<<<< HEAD
 ALU alu(.src0(ALU1), 
 		.src1(ALU2), 
-=======
-ALU alu(.src0(DM_readData1_ID_EX), 
-		.src1(src2Wire), 
->>>>>>> origin/testMerge
 		.op(EX_opCode_ID_EX), 
 		.dst(ALUResult), 
 		.ov(ov), 
@@ -199,15 +163,9 @@ ALU alu(.src0(DM_readData1_ID_EX),
 		.change_z(change_z), 
 		.change_n(change_n));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
-<<<<<<< HEAD
 assign src2Wire = EX_StoreWord_ID_EX ? EX_signOutMem_ID_EX : (EX_ALUSrc_ID_EX ? EX_signOutALU_ID_EX : DM_readData2_ID_EX);
-=======
-assign src2Wire = EX_StoreWord_ID_EX ? EX_signOutMem_ID_EX : 
-                 (EX_ALUSrc_ID_EX    ? EX_signOutALU_ID_EX : 
-                                       DM_readData2_ID_EX);
->>>>>>> origin/testMerge
 // Adds Branch/Jump signed address to pcInc +1
-alu2 PCAdd(PCaddOut, DM_pcInc_ID_EX, signOutBJ);		
+alu2 PCAdd(PCaddOut, pcInc, signOutBJ);		
 // Mux to choose which signed address to add to pcInc
 assign signOutBJ = DM_JumpAL_ID_EX ? EX_signOutJump_ID_EX : EX_signOutBranch_ID_EX;
 // Flags (should reflect for the next cycle
@@ -221,39 +179,19 @@ assign ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM : (forwardB == 2'b01) ? W
 
 ////////////************ Data Memory - MEM ************//////////////
 DM dataMem(.clk(clk), 
-		   .addr(DM_ALUResult_EX_DM), 
-		   .re(DM_MemRead_EX_DM), 
-		   .we(DM_MemWrite_EX_DM), 
-		   .wrt_data(DM_readData2_EX_DM), 
+		   .addr(ALUResult), 
+		   .re(MemRead), 
+		   .we(MemWrite), 
+		   .wrt_data(readData2), 
 		   .rd_data(rd_data));
 // MUX: data to be written back to registers. If JumpAL, store pc +1, otherwise store ALUResult or mem
-assign dst = DM_JumpAL_EX_DM   ? DM_pcInc_EX_DM : 
-            (DM_MemToReg_EX_DM ? rd_data : 
-                                 DM_ALUResult_EX_DM);	
+assign dst = JumpAL ? pcInc : (MemToReg ? rd_data : ALUResult);	
 // Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
-<<<<<<< HEAD
 assign nextAddr = JumpAL ? PCaddOut : JumpR ? readData1 : hlt ? programCounter : stall ? programCounterDec : PCSrc ? PCaddOut : pcInc;	//PCNext;
 // Branch 
 branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut), .clk(clk));
 //Take conditional branch if condition is met (Yes) and it is a branch instruction
 assign PCSrc = (Yes && Branch);
-=======
-assign nextAddr =  DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM : 
-                  (DM_JumpR_EX_DM  ? DM_readData1_EX_DM : 
-                  (DM_Halt_EX_DM   ? DM_programCounter_EX_DM : 
-                  (PCSrc           ? DM_PCaddOut_EX_DM : 
-                                     pcInc)));	//PCNext;
-// Branch 
-branch_met BranchPred(.Yes(Yes), 
-                      .ccc(DM_ccc_EX_DM[2:0]), 
-                      .N(DM_negOut_EX_DM), 
-                      .V(DM_ovOut_EX_DM), 
-                      .Z(DM_zrOut_EX_DM), 
-                      .clk(clk)
-                      );
-//Take conditional branch if condition is met (Yes) and it is a branch instruction
-assign PCSrc = (Yes && DM_Branch_EX_DM);
->>>>>>> origin/testMerge
 
 
 ////////////************ Write Back - WB ************//////////////
@@ -271,47 +209,15 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
 //TODO: also need to connect the block outputs to the correct modules above
 // **************************************************************************************
 
-<<<<<<< HEAD
   // IF block input 
   //input [15:0] instr;
 
   // global clock and reset for DFFs
   //input clk, rst_n;
-=======
-  // IF/ID block wires
-  wire [15:0] instr_IF_ID;
-  wire [15:0] DM_programCounter_IF_ID;
-  wire [15:0] DM_pcInc_IF_ID;
-
-  // ID/EX Block wires
-  wire EX_ALUSrc_ID_EX, DM_Branch_ID_EX, DM_MemRead_ID_EX, DM_MemWrite_ID_EX, DM_Halt_ID_EX;
-  wire DM_JumpR_ID_EX, DM_JumpAL_ID_EX, DM_MemToReg_ID_EX, WB_RegWrite_ID_EX, EX_StoreWord_ID_EX;
-  wire DM_RegDst_ID_EX;
-  wire [15:0] EX_signOutBranch_ID_EX, EX_signOutALU_ID_EX, EX_signOutMem_ID_EX, EX_signOutJump_ID_EX;
-  wire [3:0] EX_shamt_ID_EX, EX_opCode_ID_EX, DM_ccc_ID_EX, WB_dst_addr_ID_EX;
-  wire [15:0] DM_readData1_ID_EX, DM_readData2_ID_EX, DM_pcInc_ID_EX, DM_programCounter_ID_EX;
-  wire [15:0] instr_ID_EX;
-
-  // EX/DM block wires
-  wire DM_Branch_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM;
-  wire DM_Halt_EX_DM, DM_JumpR_EX_DM, DM_JumpAL_EX_DM;
-  wire DM_MemToReg_EX_DM, DM_zrOut_EX_DM, DM_negOut_EX_DM, DM_ovOut_EX_DM, WB_RegWrite_EX_DM;
-  wire DM_RegDst_EX_DM;
-  wire [15:0] DM_readData1_EX_DM, DM_readData2_EX_DM, DM_ALUResult_EX_DM, DM_pcInc_EX_DM;
-  wire [15:0] DM_programCounter_EX_DM, DM_PCaddOut_EX_DM;
-  wire [3:0] DM_ccc_EX_DM, WB_dst_addr_EX_DM;
-  wire [15:0] instr_EX_DM;
-
-  // DM/WB block wires
-  wire WB_RegWrite_DM_WB;
-  wire [3:0] WB_dst_addr_DM_WB;
-  wire [15:0] WB_dst_DM_WB;
->>>>>>> origin/testMerge
 
   ////**** d -> [FLOP] -> q ****////
   
   // IF/ID BLOCK
-<<<<<<< HEAD
   flop16b ID_flop(.q(instr_IF_ID), .d(instruction_To_IF_ID), .clk(clk), .rst_n(rst_n));
   flop16b f16_EX_pcInc_IF_ID(DM_pcInc_IF_ID, pcInc_To_IF_ID, clk, rst_n);
   // Stall MUX to flush out instruction and pcInc
@@ -333,27 +239,6 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
 				   .JumpR(JumpR),				// DM
 				   .MemToReg(MemToReg), 		// WB
 				   .RegWrite(RegWrite), 		// WB
-=======
-  flop16b ID_flop(.q(instr_IF_ID), .d(instruction), .clk(clk), .rst_n(rst_n));
-  flop16b f16_DM_pcInc_IF_ID(DM_pcInc_IF_ID, pcInc, clk, rst_n);
-  flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter, clk, rst_n); 
-  
-  // NEW Controller //
-  controller cpu_controller(
-           .OpCode(instr_IF_ID[15:12]), /*ID*/
-           .RegDst(RegDst),             /*ID*/
-           .LoadHigh(LoadHigh), 		    // ID
-				   .StoreWord(StoreWord), 		  // ID
-				   .JumpAL(JumpAL), 			      // EX
-				   .ALUSrc(ALUSrc),				      // EX
-				   .Branch(Branch), 			      // DM
-				   .MemRead(MemRead), 			    // DM
-				   .MemWrite(MemWrite),			    // DM
-				   .Halt(hlt),					        // DM
-				   .JumpR(JumpR),				        // DM
-				   .MemToReg(MemToReg), 	    	// WB
-				   .RegWrite(RegWrite), 		    // WB
->>>>>>> origin/testMerge
 				   .rst_n(rst_n));				
 				
 // Stall MUX to flush out pipeline flops
@@ -377,10 +262,9 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop16b f16_EX_signOutMem_ID_EX(EX_signOutMem_ID_EX, signOutMem, clk, rst_n);	// signOutMem
   flop16b f16_EX_signOutJump_ID_EX(EX_signOutJump_ID_EX, signOutJump, clk, rst_n); // signOutJump
   flop4b f4_EX_shamt_ID_EX(EX_shamt_ID_EX, instr_IF_ID[3:0], clk, rst_n);	// shamt
-  flop16b f16_DM_readData1_ID_EX(DM_readData1_ID_EX, readData1, clk, rst_n);// readData1
+  flop16b f16_EX_readData1_ID_EX(EX_readData1_ID_EX, readData1, clk, rst_n);// readData1
   flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
   flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);	//opCode
-<<<<<<< HEAD
   flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch_To_ID_EX, clk, rst_n); // Branch
   flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWordTo_ID_EX, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead_To_ID_EX, clk, rst_n);	// MemRead
@@ -389,31 +273,14 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR_To_ID_EX, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL_To_ID_EX, clk, rst_n);	// JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg_To_ID_EX, clk, rst_n);		// MemToReg
-=======
-  flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch, clk, rst_n); // Branch
-  flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWord, clk, rst_n); // StoreWord
-  flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead, clk, rst_n);	// MemRead
-  flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite, clk, rst_n);		// MemWrite
-  flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, hlt, clk, rst_n); // Halt
-  flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR, clk, rst_n); // JumpR
-  flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);	// JumpAL
-  flop1b f1_DM_MemToReg_ID_EX(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
-  flop1b f1_DM_RegDst_ID_EX(DM_RegDst_ID_EX, RegDst, clk, rst_n);
->>>>>>> origin/testMerge
   flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);	//pcInc
-  flop16b f16_DM_programCounter_ID_EX(DM_programCounter_ID_EX, DM_programCounter_IF_ID, clk, rst_n);
   flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);	// ccc
-<<<<<<< HEAD
   flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite_To_ID_EX, clk, rst_n);		// RegWrite
   // Forwarding registers addr
   flop4b f4_EX_Rs_Addr_ID_EX(EX_Rs_Addr_ID_EX, readReg1, clk, rst_n);	// instr_IF_ID[7:4]??
   flop4b f4_EX_Rt_Addr_ID_EX(EX_Rt_Addr_ID_EX, readReg2, clk, rst_n);
   flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
   //flop4b f4_DM_Rd_Addr_ID_EX(DM_Rd_Addr_ID_EX, dst_addr, clk, rst_n);	WB_dst_addr_ID_EX
-=======
-  flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite, clk, rst_n);		// RegWrite
-  flop16b f16_instr_ID_EX(instr_ID_EX, instr_IF_ID, clk, rst_n);
->>>>>>> origin/testMerge
   
   // EX/DM BLOCK //
   flop1b f1_DM_Branch_EX_DM(DM_Branch_EX_DM, DM_Branch_ID_EX, clk, rst_n); // Branch
@@ -423,9 +290,7 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_DM_JumpR_EX_DM(DM_JumpR_EX_DM, DM_JumpR_ID_EX, clk, rst_n); // JumpR
   flop1b f1_DM_JumpAL_EX_DM(DM_JumpAL_EX_DM, DM_JumpAL_ID_EX, clk, rst_n); // JumpAL
   flop1b f1_DM_MemToReg_EX_DM(DM_MemToReg_EX_DM, DM_MemToReg_ID_EX, clk, rst_n); // MemToReg
-  flop16b f16_DM_readData1_EX_DM(DM_readData1_EX_DM, DM_readData1_ID_EX, clk, rst_n);
   flop16b f16_DM_readData2_EX_DM(DM_readData2_EX_DM, DM_readData2_ID_EX, clk, rst_n); // readData2
-<<<<<<< HEAD
   flop16b f16_DM_ALUResult_EX_DM(DM_ALUResult_EX_DM, ALUResult, clk, rst_n);	// ALUResult
   flop16b f16_DM_pcInc_EX_DM(DM_pcInc_EX_DM, DM_pcInc_ID_EX, clk, rst_n);	// pcInc
   flop16b f16_DM_pcAddOut_EX_DM(DM_pcAddOut_EX_DM, pcAddOut, clk, rst_n);	// pcAddOut
@@ -433,23 +298,12 @@ assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
   flop1b f1_DM_negOut_EX_DM(DM_negOut_EX_DM, negOut, clk, rst_n);	// negOut
   flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);		// ovOut
   flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);	// DM_ccc_ID_EX
-=======
-  flop16b f16_DM_ALUResult_EX_DM(DM_ALUResult_EX_DM, ALUResult, clk, rst_n);
-  flop16b f16_DM_programCounter_EX_DM(DM_programCounter_EX_DM, DM_programCounter_ID_EX, clk, rst_n);
-  flop16b f16_DM_pcInc_EX_DM(DM_pcInc_EX_DM, DM_pcInc_ID_EX, clk, rst_n);
-  flop16b f16_DM_PCaddOut_EX_DM(DM_PCaddOut_EX_DM, PCaddOut, clk, rst_n);
-  flop1b f1_DM_RegDst_EX_DM(DM_RegDst_EX_DM, DM_RegDst_ID_EX, clk, rst_n);
-  flop1b f1_DM_zrOut_EX_DM(DM_zrOut_EX_DM, zrOut, clk, rst_n);
-  flop1b f1_DM_negOut_EX_DM(DM_negOut_EX_DM, negOut, clk, rst_n);
-  flop1b f1_DM_ovOut_EX_DM(DM_ovOut_EX_DM, ovOut, clk, rst_n);
-  flop4b f4_DM_ccc_EX_DM(DM_ccc_EX_DM, DM_ccc_ID_EX, clk, rst_n);
->>>>>>> origin/testMerge
   flop1b f1_WB_RegWrite_EX_DM(WB_RegWrite_EX_DM, WB_RegWrite_ID_EX, clk, rst_n); // RegWrite
-  flop16b f16_instr_EX_DM(instr_EX_DM, instr_ID_EX, clk, rst_n);
+  flop4b f4_WB_dst_addr_EX_DM(WB_dst_addr_EX_DM, WB_dst_addr_ID_EX, clk, rst_n); // dst_addr
 
   // DM/WB BLOCK //
   flop1b f1_WB_RegWrite_DM_WB(WB_RegWrite_DM_WB, WB_RegWrite_EX_DM, clk, rst_n); // RegWrite
-  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, dst_addr, clk, rst_n); // dst_addr
+  flop4b f4_WB_dst_addr_DM_WB(WB_dst_addr_DM_WB, WB_dst_addr_EX_DM, clk, rst_n); // dst_addr
   flop16b f16_WB_dst_DM_WB(WB_dst_DM_WB, dst, clk, rst_n); // data to be written to register
   
   
