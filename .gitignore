@@ -1,2 +1,4 @@
 testCPU.vvp
 testCPU_Pipeline.vvp
+cpu_pipeline.v.orig
+	runsim
