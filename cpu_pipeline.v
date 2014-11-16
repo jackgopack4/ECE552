@@ -82,27 +82,9 @@ PC pcMod(.nextAddr(nextAddr),
 		.rst(rst_n), 
 		.programCounter(programCounter));
 assign pcInc = programCounter + 1;
-// Adds Branch/Jump signed address to pcInc +1
-alu2 PCAdd(PCaddOut, pcInc, signOutBJ);		
-// Mux to choose which signed address to add to pcInc
-assign signOutBJ = JumpAL ? signOutJump : signOutBranch;	
-// Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
-assign nextAddr = JumpAL ? PCaddOut : (JumpR ? readData1 : (hlt ? programCounter : (PCSrc ? PCaddOut : pcInc)));	//PCNext;
-// Sign-extenders 
-sign_extenderALU signExtenALU(instruction[7:0], signOutALU);
-sign_extenderJump signExtenJUMP(instruction[11:0], signOutJump);
-sign_extenderBranch signExtenBranch(instruction[8:0], signOutBranch);
-sign_extenderMem signExtenMem(instruction[3:0], signOutMem);
-// Branch 
-branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut), .clk(clk));
-Take conditional branch if condition is met (Yes) and it is a branch instruction
-assign PCSrc = (Yes && Branch);
-// Flags (should reflect for the next cycle
-flags flagReg(.zr(zrOut), .neg(negOut), .ov(ovOut), .change_z(change_z), .change_n(change_n), 
-.change_v(change_v), .z_in(zr), .n_in(neg), .v_in(ov), .rst_n(rst_n), .clk(clk));
 
 
-////////////************ Instruction Memory ************//////////////
+////////////************ Instruction Memory - IF ************//////////////
 IM instMem(.clk(clk), 
 		   .addr(programCounter), 
 		   .rd_en(rd_en), 
@@ -110,7 +92,7 @@ IM instMem(.clk(clk),
 assign rd_en = 1'b1;
 
 
-////////////************ Registers ************//////////////
+////////////************ Registers - ID ************//////////////
 rfSC registers(.clk(clk), 
 			   .p0_addr(readReg1), 
 			   .p1_addr(readReg2),
@@ -126,30 +108,43 @@ rfSC registers(.clk(clk),
 assign re0 = 1'b1;
 assign re1 = 1'b1;
 // MUX for choosing which registers addr to load from register memory
-assign readReg1 = LoadHigh ? instruction[11:8] : instruction[7:4]; 
-assign readReg2 = StoreWord ? instruction[11:8] : instruction[3:0];
+assign readReg1 = LoadHigh ? instr_IF_ID[11:8] : instr_IF_ID[7:4]; 
+assign readReg2 = StoreWord ? instr_IF_ID[11:8] : instr_IF_ID[3:0];
 // MUX for write register addr. JumpAL stores in R13, RegDst controls addr
-assign dst_addr = JumpAL ? 4'b1111 : (RegDst ? instruction[11:8] : instruction[3:0]);
+assign dst_addr = JumpAL ? 4'b1111 : (RegDst ? instr_IF_ID[11:8] : instr_IF_ID[3:0]);
+// Sign-extenders 
+sign_extenderALU signExtenALU(instr_IF_ID[7:0], signOutALU);
+sign_extenderJump signExtenJUMP(instr_IF_ID[11:0], signOutJump);
+sign_extenderBranch signExtenBranch(instr_IF_ID[8:0], signOutBranch);
+sign_extenderMem signExtenMem(instr_IF_ID[3:0], signOutMem);
 
 
-////////////************ ALU ************//////////////
-ALU alu(.src0(readData1), 
+
+////////////************ ALU - EX ************//////////////
+ALU alu(.src0(EX_readData1_ID_EX), 
 		.src1(src2Wire), 
-		.op(instruction[15:12]), 
+		.op(EX_opCode_ID_EX), 
 		.dst(ALUResult), 
 		.ov(ov), 
 		.zr(zr), 
 		.neg(neg), 
-		.shamt(shamt), 
+		.shamt(EX_shamt_ID_EX), 
 		.change_v(change_v),
 		.change_z(change_z), 
 		.change_n(change_n));
 // MUX: lw/sw instruction use the sign-extended value for src1 input
-assign src2Wire = StoreWord ? signOutMem : (ALUSrc ? signOutALU : readData2);
+assign src2Wire = DM_StoreWord_ID_EX ? EX_signOutMem_ID_EX : (EX_ALUSrc_ID_EX ? EX_signOutALU_ID_EX : DM_readData2_ID_EX);
+// Adds Branch/Jump signed address to pcInc +1
+alu2 PCAdd(PCaddOut, pcInc, signOutBJ);		
+// Mux to choose which signed address to add to pcInc
+assign signOutBJ = DM_JumpAL_ID_EX ? EX_signOutJump_ID_EX : EX_signOutBranch_ID_EX;
+// Flags (should reflect for the next cycle
+flags flagReg(.zr(zrOut), .neg(negOut), .ov(ovOut), .change_z(change_z), .change_n(change_n), 
+.change_v(change_v), .z_in(zr), .n_in(neg), .v_in(ov), .rst_n(rst_n), .clk(clk));
 
 
 
-////////////************ Data Memory ************//////////////
+////////////************ Data Memory - MEM ************//////////////
 DM dataMem(.clk(clk), 
 		   .addr(ALUResult), 
 		   .re(MemRead), 
@@ -157,24 +152,16 @@ DM dataMem(.clk(clk),
 		   .wrt_data(readData2), 
 		   .rd_data(rd_data));
 // MUX: data to be written back to registers. If JumpAL, store pc +1, otherwise store ALUResult or mem
-assign dst = JumpAL ? pcInc : (MemToReg ? rd_data : ALUResult);
+assign dst = JumpAL ? pcInc : (MemToReg ? rd_data : ALUResult);	
+// Mux to choose what next addr should be. Chooses between branch, jump, jump and link, halt,  or PCSrc
+assign nextAddr = JumpAL ? PCaddOut : (JumpR ? readData1 : (hlt ? programCounter : (PCSrc ? PCaddOut : pcInc)));	//PCNext;
+// Branch 
+branch_met BranchPred(.Yes(Yes), .ccc(instruction[11:9]), .N(negOut), .V(ovOut), .Z(zrOut), .clk(clk));
+Take conditional branch if condition is met (Yes) and it is a branch instruction
+assign PCSrc = (Yes && Branch);
 
 
-////////////************ Controller ************//////////////
-controller ctrl(.OpCode(instruction[15:12]), 
-				.RegDst(RegDst), 
-				.Branch(Branch), 
-				.MemRead(MemRead), 
-				.MemToReg(MemToReg), 
-				.MemWrite(MemWrite),
-				.ALUSrc(ALUSrc), 
-				.RegWrite(RegWrite), 
-				.rst_n(rst_n), 
-				.LoadHigh(LoadHigh), 
-				.Halt(hlt),
-				.StoreWord(StoreWord), 
-				.JumpAL(JumpAL), 
-				.JumpR(JumpR));
+////////////************ Write Back - WB ************//////////////
 
 
 
@@ -239,47 +226,33 @@ controller ctrl(.OpCode(instruction[15:12]),
 				   .MemToReg(MemToReg), 		// WB
 				   .RegWrite(RegWrite), 		// WB
 				   .rst_n(rst_n));				
-   
-   // OLD CONTROLLER //
-   controller ctrl(.OpCode(instruction[15:12]), 
-				.RegDst(RegDst), 
-				.Branch(Branch), 
-				.MemRead(MemRead), 
-				.MemToReg(MemToReg), 
-				.MemWrite(MemWrite),
-				.ALUSrc(ALUSrc), 
-				.RegWrite(RegWrite), 
-				.rst_n(rst_n), 
-				.LoadHigh(LoadHigh), 
-				.Halt(hlt),
-				.StoreWord(StoreWord), 
-				.JumpAL(JumpAL), 
-				.JumpR(JumpR));
 				
    // RegDst decides which value this will be
    //assign RF_dst_addr = dst_addr;
   // Example Format:
   //     Destination_Signal_From_To(Output, Input, clk, rst_n);
+  
   // ID/EX BLOCK //
   flop1b f1_EX_ALUSrc_ID_EX(EX_ALUSrc_ID_EX, ALUSrc, clk, rst_n);// ALUSrc
-  flop16b f16_EX_signOutBranch_ID_EX(EX_signOutBranch_ID_EX, signOutBranch, clk, rst_n);
-  flop16b f16_EX_signOutALU_ID_EX(EX_signOutALU_ID_EX, signOutALU, clk, rst_n);
-  flop16b f16_EX_signOutMem_ID_EX(EX_signOutMem_ID_EX, signOutMem, clk, rst_n);
-  flop16b f16_EX_signOutJump_ID_EX(EX_signOutJump_ID_EX, signOutJump, clk, rst_n); // Signextended value
-  flop4b f4_EX_shamt_ID_EX(EX_shamt_ID_EX, instr_IF_ID[3:0], clk, rst_n);
+  flop16b f16_EX_signOutBranch_ID_EX(EX_signOutBranch_ID_EX, signOutBranch, clk, rst_n);	// signOutBranch
+  flop16b f16_EX_signOutALU_ID_EX(EX_signOutALU_ID_EX, signOutALU, clk, rst_n);	// signOutALU
+  flop16b f16_EX_signOutMem_ID_EX(EX_signOutMem_ID_EX, signOutMem, clk, rst_n);	// signOutMem
+  flop16b f16_EX_signOutJump_ID_EX(EX_signOutJump_ID_EX, signOutJump, clk, rst_n); // signOutJump
+  flop4b f4_EX_shamt_ID_EX(EX_shamt_ID_EX, instr_IF_ID[3:0], clk, rst_n);	// shamt
   flop16b f16_EX_readData1_ID_EX(EX_readData1_ID_EX, readData1, clk, rst_n);// readData1
-  flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);
+  flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
+  flop4b f4_EX_opCode_ID_EX(EX_opCode_ID_EX, instr_IF_ID[15:12], clk, rst_n);	//opCode
   flop1b f1_DM_Branch_ID_EX(DM_Branch_ID_EX, Branch, clk, rst_n); // Branch
+  flop1b f1_EX_StoreWord_ID_EX(EX_StoreWord_ID_EX, StoreWord, clk, rst_n); // StoreWord
   flop1b f1_DM_MemRead_ID_EX(DM_MemRead_ID_EX, MemRead, clk, rst_n);	// MemRead
   flop1b f1_DM_MemWrite_ID_EX(DM_MemWrite_ID_EX, MemWrite, clk, rst_n);		// MemWrite
   flop1b f1_DM_Halt_ID_EX(DM_Halt_ID_EX, Halt, clk, rst_n); // Halt
   flop1b f1_DM_JumpR_ID_EX(DM_JumpR_ID_EX, JumpR, clk, rst_n); // JumpR
-  flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);
+  flop1b f1_DM_JumpAL_ID_EX(DM_JumpAL_ID_EX, JumpAL, clk, rst_n);	// JumpAL
   flop1b f1_DM_MemToReg(DM_MemToReg_ID_EX, MemToReg, clk, rst_n);		// MemToReg
-  flop16b f16_DM_readData2_ID_EX(DM_readData2_ID_EX, readData2, clk, rst_n); // readData2
-  flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);
-  flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);
-  flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RF_we, clk, rst_n);			// RegWrite
+  flop16b f16_DM_pcInc_ID_EX(DM_pcInc_ID_EX, DM_pcInc_IF_ID, clk, rst_n);	//pcInc
+  flop4b f4_DM_ccc_ID_EX(DM_ccc_ID_EX, {1'b0, instr_IF_ID[11:9]}, clk, rst_n);	// ccc
+  flop1b f1_WB_RegWrite_ID_EX(WB_RegWrite_ID_EX, RegWrite, clk, rst_n);		// RegWrite
   flop4b f4_WB_dst_addr_ID_EX(WB_dst_addr_ID_EX, dst_addr, clk, rst_n);		// Register Write Addr (dst_addr)
   
   // EX/DM BLOCK //
