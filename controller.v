@@ -1,5 +1,17 @@
-module controller(OpCode, rst_n, RegDst, Branch, MemRead, MemToReg, MemWrite,
-					ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, Halt, StoreWord);
+module controller(OpCode, 
+                  rst_n, 
+                  RegDst, 
+                  Branch, 
+                  MemRead, 
+                  MemToReg, 
+                  MemWrite, 
+                  ALUSrc, 
+                  RegWrite, 
+                  LoadHigh, 
+                  JumpR, 
+                  JumpAL, 
+                  Halt, 
+                  StoreWord);
 
 input [3:0] OpCode; 
 input rst_n;

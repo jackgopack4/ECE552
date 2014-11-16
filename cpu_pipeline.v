@@ -174,12 +174,6 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
 //TODO: also need to connect the block outputs to the correct modules above
 // **************************************************************************************
 
-  // IF block input 
-  //input [15:0] instr;
-
-  // global clock and reset for DFFs
-  //input clk, rst_n;
-
   // IF/ID block wires
   wire [15:0] EX_pcInc_IF_ID;
   wire [15:0] instr_IF_ID;
