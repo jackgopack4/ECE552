@@ -254,11 +254,12 @@ assign nextAddr =  DM_JumpAL_EX_DM ? DM_PCaddOut_EX_DM :
                                      pcInc));    //PCNext;
 // Branch
 branch_met BranchPred(.Yes(Yes),
-                      .ccc(DM_ccc_EX_DM[2:0]),
+                      .ccc(DM_ccc_ID_EX[2:0]),
                       .N(DM_negOut_EX_DM),
                       .V(DM_ovOut_EX_DM),
                       .Z(DM_zrOut_EX_DM),
-                      .clk(clk)
+                      .clk(clk),
+                      .op(instr_ID_EX[15:12])
                       );
 //Take conditional branch if condition is met (Yes) and it is a branch instruction
 assign PCSrc = (Yes && DM_Branch_EX_DM);
@@ -286,8 +287,8 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
   flop16b f16_EX_pcInc_IF_ID(DM_pcInc_IF_ID, pcInc_To_IF_ID, clk, rst_n);
   flop16b f16_DM_programCounter_IF_ID(DM_programCounter_IF_ID, programCounter , clk, rst_n);    // Program Counter
   // Stall MUX to flush out instruction and pcInc
-  assign instruction_To_IF_ID = stall ? 16'h0000 : instruction;
-  assign pcInc_To_IF_ID = stall ? 16'h0000 : pcInc;
+  assign instruction_To_IF_ID = (stall || PCSrc) ? 16'h0000 : instruction;
+  assign pcInc_To_IF_ID = (stall || PCSrc) ? 16'h0000 : pcInc;
 
   // NEW Controller //
    controller ctrl(.OpCode(instr_IF_ID[15:12]), // ID
@@ -306,15 +307,15 @@ assign PCSrc = (Yes && DM_Branch_EX_DM);
                    .rst_n(rst_n));
 
 // Stall MUX to flush out pipeline flops
-assign StoreWord_To_ID_EX = stall ? 1'b0 : StoreWord;
-assign JumpAL_To_ID_EX = stall ? 1'b0 : JumpAL;
-assign ALUSrc_To_ID_EX = stall ? 1'b0 : ALUSrc;
-assign Branch_To_ID_EX = stall ? 1'b0 : Branch;
-assign MemRead_To_ID_EX = stall ? 1'b0 : MemRead;
-assign MemWrite_To_ID_EX = stall ? 1'b0 : MemWrite;
-assign JumpR_To_ID_EX = stall ? 1'b0 : JumpR;
-assign MemToReg_To_ID_EX = stall ? 1'b0 : MemToReg;
-assign RegWrite_To_ID_EX = stall ? 1'b0 : RegWrite;
+assign StoreWord_To_ID_EX = (stall || PCSrc) ? 1'b0 : StoreWord;
+assign JumpAL_To_ID_EX = (stall || PCSrc) ? 1'b0 : JumpAL;
+assign ALUSrc_To_ID_EX = (stall || PCSrc) ? 1'b0 : ALUSrc;
+assign Branch_To_ID_EX = (stall || PCSrc) ? 1'b0 : Branch;
+assign MemRead_To_ID_EX = (stall || PCSrc) ? 1'b0 : MemRead;
+assign MemWrite_To_ID_EX = (stall || PCSrc) ? 1'b0 : MemWrite;
+assign JumpR_To_ID_EX = (stall || PCSrc) ? 1'b0 : JumpR;
+assign MemToReg_To_ID_EX = (stall || PCSrc) ? 1'b0 : MemToReg;
+assign RegWrite_To_ID_EX = (stall || PCSrc) ? 1'b0 : RegWrite;
 
   // Example Format:
   //     Destination_Signal_From_To(Output, Input, clk, rst_n);

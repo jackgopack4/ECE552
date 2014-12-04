@@ -1,0 +1,5 @@
+./makefile
+clear
+clear
+clear
+vvp testCPU_Pipeline.vvp

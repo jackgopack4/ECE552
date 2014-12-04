@@ -4,7 +4,7 @@ module flags(zr, neg, ov, change_z, change_n, change_v, z_in, n_in, v_in, rst_n,
   input z_in, n_in, v_in, rst_n, clk;
   output reg zr, neg, ov;
 
-  always@(*) begin
+  always@(posedge clk) begin
     if(~rst_n) begin
 	  zr <= 1'b0;
 	  neg <= 1'b0;
