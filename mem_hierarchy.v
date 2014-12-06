@@ -44,9 +44,7 @@ module mem_hierarchy(instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_d
   					.rd_data(m_line),
   					.rdy(m_rdy_n));
 
-  cache_controller controller(	.clk(clk),
-  								.rst_n(rst_n),
-  								/* INSTANTIATE REST HERE */);
+  cache_controller controller();
 
 
   assign i_we = 1'b0;
