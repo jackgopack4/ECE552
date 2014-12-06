@@ -1,4 +1,4 @@
-module mem_hierarchy(instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_data, clk, rst_n);
+module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_data);
 
   input clk, rst_n, re, we;
   input [15:0] i_addr, d_addr, wrt_data;
@@ -6,54 +6,43 @@ module mem_hierarchy(instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_d
   output i_rdy, d_rdy;
   output [15:0] instr, rd_data;
 
-  wire i_hit, d_hit, d_dirt_in, i_we, i_re, m_we, m_re, m_rdy_n, clean, dirty;
-  wire [7:0] i_tag, d_tag;
+  wire [63:0] i_rd_data, i_wr_data;
+  wire [7:0] i_tag;
+  wire i_hit, i_dirty, i_we;
+  wire [1:0] i_sel;
+
   wire [13:0] m_addr;
-  wire [63:0] i_line, d_line, m_line, i_data, d_data, m_data;
+  wire m_re, m_we, m_rdy;
+  wire [63:0] m_wr_data, m_rd_data;
+  
+  cache iCache(clk,rst_n,i_addr[15:2],i_wr_data,1'b0,i_we,1'b1,i_rd_data,i_tag,i_hit,i_dirty);
 
-  cache iCache( .clk(clk),
-  			   	.rst_n(rst_n)
-  			   	.addr(i_addr[15:2]),
-  			   	.wr_data(i_data),
-  			   	.we(i_we),
-  			   	.re(i_re),
-  			   	.wdirty(clean),
-  			   	.hit(i_hit),
-  			   	.dirty(clean),
-  			   	.rd_data(i_line),
-  			   	.tag_out(i_tag));
+  unified_mem memory(clk,rst_n,m_addr,m_re,m_we,m_wr_data,m_rd_data,m_rdy);
 
-  cache dCache( .clk(clk),
-  				.rst_n(rst_n),
-  				.addr(d_addr[15:2]),
-  				.wr_data(d_data),
-  				.wdirty(d_dirt_in),
-  				.we(we),
-  				.re(d_acc),
-  				.hit(d_hit),
-  				.dirty(dirty),
-  				.rd_data(d_line),
-  				.tag_out(d_tag));
+  cache_controller controller(.clk(clk),
+                              .rst_n(rst_n),
+                              .i_rdy(i_rdy),
+                              .i_sel(i_sel),
+                              .i_wr_data(i_wr_data),
+                              .i_we(i_we),
+                              .m_addr(m_addr),
+                              .m_re(m_re),
+                              .m_we(m_we),
+                              .m_wr_data(m_wr_data),
+                              .i_addr(i_addr),
+                              .i_hit(i_hit),
+                              .i_tag(i_tag),
+                              .m_rd_data(m_rd_data),
+                              .m_rdy(m_rdy));
+  
+  // mux for instruction output
+  always@(*) begin
+    if     (i_sel == 2'b00) instr = i_rd_data[15:0];
+    else if(i_sel == 2'b01) instr = i_rd_data[31:16];
+    else if(i_sel == 2'b10) instr = i_rd_data[47:32];
+    else                    instr = i_rd_data[63:48];
+  end
 
-  unifed_mem mem(	.clk(clk),
-  					.rst_n(rst_n),
-  					.re(m_re),
-  					.we(m_we),
-  					.addr(m_addr),
-  					.wdata(m_data),
-  					.rd_data(m_line),
-  					.rdy(m_rdy_n));
-
-  cache_controller controller();
-
-
-  assign i_we = 1'b0;
-  assign i_re = 1'b1;
-  assign clean = 1'b0;
-  assign d_acc = re | we; 
-
-  assign instr = !rst_n ? 16'hB0FF : i_addr[1] ? (i_addr[0] ? i_line[63:48] : i_line[47:32]) : (i_addr[0] ? i_line[31:16] : i_line[15:0]);
-
-  assign data = !rst_n ? 16'h0000 : d_addr[1] ? (d_addr[0] ? d_line[63:48] : d_line[47:32]) : (d_addr[0] ? d_line[31:16] : d_line[15:0]);
   
 endmodule
+
