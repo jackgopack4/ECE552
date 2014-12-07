@@ -6,6 +6,8 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
   output i_rdy, d_rdy;
   output [15:0] instr, rd_data;
 
+  reg [15:0] instr;
+
   wire [63:0] i_rd_data, i_wr_data;
   wire [7:0] i_tag;
   wire i_hit, i_dirty, i_we;
@@ -15,9 +17,26 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
   wire m_re, m_we, m_rdy;
   wire [63:0] m_wr_data, m_rd_data;
   
-  cache iCache(clk,rst_n,i_addr[15:2],i_wr_data,1'b0,i_we,1'b1,i_rd_data,i_tag,i_hit,i_dirty);
+  cache iCache( clk,
+                rst_n,
+                i_addr[15:2],
+                i_wr_data,
+                1'b0,
+                i_we,
+                1'b1,
+                i_rd_data,
+                i_tag,
+                i_hit,
+                i_dirty );
 
-  unified_mem memory(clk,rst_n,m_addr,m_re,m_we,m_wr_data,m_rd_data,m_rdy);
+  unified_mem memory( clk,
+                      rst_n,
+                      m_addr,
+                      m_re,
+                      m_we,
+                      m_wr_data,
+                      m_rd_data,
+                      m_rdy);
 
   cache_controller controller(.clk(clk),
                               .rst_n(rst_n),
@@ -33,7 +52,11 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
                               .i_hit(i_hit),
                               .i_tag(i_tag),
                               .m_rd_data(m_rd_data),
-                              .m_rdy(m_rdy));
+                              .m_rdy(m_rdy),
+                              .re(re),
+                              .we(we),
+                              .d_addr(d_addr),
+                              .wrt_data(wrt_data));
   
   // mux for instruction output
   always@(*) begin
