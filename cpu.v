@@ -24,21 +24,42 @@ wire [1:0] src1sel_ID_EX;		// select for src1 bus
 wire [2:0] cc_ID_EX;			// condition code pipeline from instr[11:9]
 wire [15:0] p0_EX_DM;			// data to be stored for SW
 
+// memory //
+wire i_rdy, d_rdy, re, we, stall_pipeline;
+wire [15:0] rd_data, wrt_data, d_addr;
 
+// test output //
+always @(posedge clk) begin
+		if(i_rdy) begin
+			$display("iCache valid, instr=%h",instr);
+		end else begin
+			$display("iCache invalid, reading from mem");
+			$display("instr=%h\n",instr);
+		end
+		
+		$display("stall_pipeline=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pipeline, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
+	end
 
-
+///////////////////////////////////
+// Instantiate memory hierarchy //
+/////////////////////////////////
+mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), 
+.rd_data(rd_data), .i_addr(iaddr), .d_addr(d_addr), .re(re), .we(we), .wrt_data(wrt_data));
 
 
 //////////////////////////////////
 // Instantiate program counter //
 ////////////////////////////////
-pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
-       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX));
+pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_pipeline), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
+       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), .i_rdy(i_rdy));
+
+// assign when to stall pipeline
+assign stall_pipeline = stall_IM_ID ? stall_IM_ID : !i_rdy;
 	   
 /////////////////////////////////////
 // Instantiate instruction memory //
 ///////////////////////////////////
-IM iIM(.clk(clk), .addr(iaddr), .rd_en(1'b1), .instr(instr));
+//IM iIM(.clk(clk), .addr(iaddr), .rd_en(1'b1), .instr(instr));
 
 //////////////////////////////////////////////
 // Instantiate register instruction decode //
