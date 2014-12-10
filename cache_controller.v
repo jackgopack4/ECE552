@@ -14,17 +14,17 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
   output reg [13:0] m_addr;
   output reg [1:0] i_sel;
   
-  reg [1:0] state, nextState; // allows 8 states should be enough
+  reg [1:0] state, nextState; // allows 4 states should be enough
   
   // States //
-  localparam IDLE 			= 2'b00;
-  localparam COMPARE_TAG 	= 2'b01;
-  localparam ALLOCATE 		= 2'b10;
-  localparam WRITE_BACK 	= 2'b11;
+  localparam CACHE_READ 	= 2'b00;
+  localparam MEM_READ 	 	= 2'b01;
+  localparam WRITE_BACK		= 2'b10;
+
   
   always @(posedge clk, negedge rst_n) begin
 	if(!rst_n) begin
-      state <= IDLE;
+      state <= CACHE_READ;
     end else begin
       state <= nextState;
     end
@@ -32,55 +32,65 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
   
   /* FSM */
   always @ (*) begin
-    
+        $display("STATE=%b", state);
     // default values
     i_rdy = 1'b0;
     i_we  = 1'b0;
     m_we  = 1'b0;
     m_re  = 1'b0;
     i_sel = 2'b00;
-    nextState = IDLE;
+    nextState = CACHE_READ;
     m_addr = i_addr[15:2];
-    i_wr_data = m_rd_data;
+    i_wr_data = m_rd_data; // data read from mem is auto put into instr to write to cache
     m_wr_data = 64'b0; //switch to d_rd_data in the future
     
     case (state)
-      IDLE: begin // receive Valid CPU request, transition to compare tag
-        
-        // do shit here
+    
+      CACHE_READ: begin // receive Valid CPU request, transition to compare tag
+
+        // IF A HIT
         if (i_hit) begin
-          i_sel = i_addr[1:0];
-          i_rdy = 1;
+		    $display("icache hit!!");
+		      i_sel = i_addr[1:0];
+		      i_rdy = 1;
+		      nextState = CACHE_READ;
+	 
+		    // IF NOT A HIT
         end else begin
-        	// m_addr already at default
+		    // test output
+		    $display("icache miss!!");
+	    	// enable mem read
 			m_re = 1'b1;
-			nextState = ALLOCATE;
-        end 
-          
-          
-         
-        
+			// enter into mem read for 4 clk cycles
+			nextState = MEM_READ;
+        end     
       end
-      
-      COMPARE_TAG: begin
-        
-        // do stuff
-        
-      end
-      
-      ALLOCATE: begin
+
+      MEM_READ: begin
+		// IF MEM IS NOT READY TO BE READ      
         if(!m_rdy) begin
-        	nextState = ALLOCATE;
+		    // test output
+		    $display("still reading mem");
+        	nextState = MEM_READ;
+        	// mem read must be high until mem is ready
         	m_re = 1'b1;
+
+        // IF MEMORY IS READY TO BE READ
         end else begin
+        // test output
+        $display("mem finished! change state to cache_read");
+        	// enable write to cache
         	i_we = 1'b1;
-        end
-        // do stuff 
-        
+      		// set state back to cache read
+        	nextState = CACHE_READ;
+        end 
       end
-      
+       
+      // currently not using this
       WRITE_BACK: begin
         
+        // buffer for cache to write
+        nextState = CACHE_READ;
         
       end
       
