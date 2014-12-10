@@ -1,5 +1,5 @@
 module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
-          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM);
+          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM,i_rdy);
 ////////////////////////////////////////////////////////////////////////////\
 // This module implements the program counter logic. It normally increments \\
 // the PC by 1, but when a branch is taken will add the 9-bit immediate      \\
@@ -8,7 +8,7 @@ module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
 // port zero (p0) register access as the new value of the PC.  It also     //
 // provides PC+1 as nxt_pc for JAL instructions.                          //
 ///////////////////////////////////////////////////////////////////////////
-input clk,rst_n;
+input clk,rst_n, i_rdy;
 input flow_change_ID_EX;			// asserted from branch boolean on jump or taken branch
 input stall_IM_ID;					// asserted if we need to stall the pipe
 input [15:0] dst_ID_EX;				// branch target address comes in on this bus
@@ -31,8 +31,8 @@ assign nxt_pc = pc + 1;
 //////////////////////////////
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
-    pc <= 16'h0000;
-  else if (!stall_IM_ID)	// all stalls stall the PC
+    pc <= 16'h0000;			// can't pass sumLoop... but passed everything else!
+  else if (!stall_IM_ID || (flow_change_ID_EX && !i_rdy))	// all stalls stall the PC
     if (flow_change_ID_EX)
       pc <= dst_ID_EX;
     else
