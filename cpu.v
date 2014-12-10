@@ -25,7 +25,7 @@ wire [2:0] cc_ID_EX;			// condition code pipeline from instr[11:9]
 wire [15:0] p0_EX_DM;			// data to be stored for SW
 
 // memory //
-wire i_rdy, d_rdy, re, we, stall_pipeline;
+wire i_rdy, d_rdy, re, we, stall_pc, stall_IM_ID;
 wire [15:0] rd_data, wrt_data, d_addr;
 
 // test output //
@@ -37,7 +37,7 @@ always @(posedge clk) begin
 			$display("instr=%h\n",instr);
 		end
 		
-		$display("stall_pipeline=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pipeline, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
+		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
 	end
 
 ///////////////////////////////////
@@ -50,11 +50,11 @@ mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_r
 //////////////////////////////////
 // Instantiate program counter //
 ////////////////////////////////
-pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_pipeline), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
+pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
        .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), .i_rdy(i_rdy));
 
-// assign when to stall pipeline
-assign stall_pipeline = stall_IM_ID ? stall_IM_ID : !i_rdy;
+// assign when to stall pc
+//assign stall_pc = stall_IM_ID ? stall_IM_ID : !i_rdy;
 	   
 /////////////////////////////////////
 // Instantiate instruction memory //
@@ -74,7 +74,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), /*.zr_EX_DM(zr_EX_DM),*/ .br_ins
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
 		.flow_change_ID_EX(flow_change_ID_EX),
-		.padd_ID_EX(padd_ID_EX));
+		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy));
 	   
 ////////////////////////////////
 // Instantiate register file //
@@ -86,11 +86,16 @@ rf iRF(.clk(clk), .p0_addr(rf_p0_addr), .p1_addr(rf_p1_addr), .p0(p0), .p1(p1),
 ///////////////////////////////////
 // Instantiate register src mux //
 /////////////////////////////////
-src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM),
+src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_ID_EX),
                 .src0sel_ID_EX(src0sel_ID_EX), .src1sel_ID_EX(src1sel_ID_EX), .p0(p0), .p1(p1),
                 .imm_ID_EX(instr_ID_EX), .pc_ID_EX(pc_ID_EX), .p0_EX_DM(p0_EX_DM),
 				.src0(src0), .src1(src1), .dst_EX_DM(dst_EX_DM), .dst_DM_WB(rf_w_data_DM_WB),
 			    .byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM));
+			    
+// assign when to stall srcMux
+//assign stall_srcMux1 = stall_ID_EX ? stall_ID_EX : !i_rdy;
+//assign stall_srcMux2 = stall_EX_DM ? stall_EX_DM : !i_rdy;
+
 	   
 //////////////////////
 // Instantiate ALU //
