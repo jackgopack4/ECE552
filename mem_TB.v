@@ -27,7 +27,7 @@ module mem_TB();
 		wrt_data = 16'b0;
 		#5;
 		rst_n = 1;
-		#200;
+		#400;
 		$stop;
 	end
 
