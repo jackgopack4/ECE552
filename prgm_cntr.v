@@ -32,7 +32,7 @@ assign nxt_pc = pc + 1;
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
     pc <= 16'h0000;			// can't pass sumLoop... but passed everything else!
-  else if (!stall_IM_ID || (flow_change_ID_EX && !i_rdy))	// all stalls stall the PC
+  else if (!stall_IM_ID) //|| (flow_change_ID_EX && !i_rdy))	// all stalls stall the PC
     if (flow_change_ID_EX)
       pc <= dst_ID_EX;
     else
