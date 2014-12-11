@@ -55,7 +55,7 @@ assign tag_out = line[71:64];							// need the tag for evictions
 
 /*
 always @(clk) begin
-$display("line[71:64]=%h, addr[13:6]=%h\n", line, addr);
+//$display("line[71:64]=%h, addr[13:6]=%h\n", line, addr);
 end
 */
 

@@ -12,96 +12,96 @@ valu
 Z0 V`JN@9S9cnhjKRR_L]QIcM3
 r1
 31
-IBJjkTnbM;5i8k^GLQS<mY2
-Z1 d/userspace/h/hartman/ece552/Phase2/ECE552-master
-Z2 w1417911033
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v
+ITkoJ>n]idj@n1G9GEEfVB0
+Z1 d/userspace/h/hartman/ece552/Phase2
+Z2 w1418265839
+8/userspace/h/hartman/ece552/Phase2/alu.v
+F/userspace/h/hartman/ece552/Phase2/alu.v
 Z3 Fcommon_params.inc
 L0 1
 Z4 OL;L;10.2c;57
 Z5 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
-!s100 0YZZgNA7nUY`Z8gCzo?VG3
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v|
-!s108 1418175752.730518
-!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v|
 !s85 0
+!s100 NSG5fA=CEIH>K5G`fX4[L2
+!s108 1418272351.600412
+!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/alu.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/alu.v|
 !i10b 1
 !i111 0
 vbr_bool
 Z6 V`JN@9S9cnhjKRR_L]QIcM3
 r1
+!s85 0
 31
-IE?76`;X2KIWlj?]iJ84Q?3
+I63;LKH0iXz5_hIHSX9<Bf0
 R1
-R2
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/br_bool.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/br_bool.v
+w1418271460
+8/userspace/h/hartman/ece552/Phase2/br_bool.v
+F/userspace/h/hartman/ece552/Phase2/br_bool.v
 L0 1
 R4
 R5
-!s100 ON]U@JeYeI<?fY<z0>@N82
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/br_bool.v|
-!s108 1418175752.829131
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/br_bool.v|
-!s85 0
+!s100 a0zAJz8NM:cF[=]@PDMO30
+!s108 1418272351.727405
+!s107 /userspace/h/hartman/ece552/Phase2/br_bool.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/br_bool.v|
 !i10b 1
 !i111 0
 vcache
 R6
 r1
 31
-IW?OLVLB`QS4628;kBUdlW1
+Ienc<=mLRZIFV^eAkILFXC1
 R1
-w1418016259
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/cache.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/cache.v
+w1418267283
+8/userspace/h/hartman/ece552/Phase2/cache.v
+F/userspace/h/hartman/ece552/Phase2/cache.v
 L0 1
 R4
 R5
-!s100 K]zXQFN8aJC8h:YC:]bc12
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/cache.v|
-!s108 1418175752.885068
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/cache.v|
 !s85 0
+!s100 zFjnRnni?ZVNS1@o>^<2c3
+!s108 1418272351.790272
+!s107 /userspace/h/hartman/ece552/Phase2/cache.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/cache.v|
 !i10b 1
 !i111 0
 vcache_controller
 R6
 r1
 31
-I:fL2Si15kAo6^codEWl^U1
+IT_W2fYN6^kS0j^Kn[]k>42
 R1
-w1418031555
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v
+w1418269006
+8/userspace/h/hartman/ece552/Phase2/cache_controller.v
+F/userspace/h/hartman/ece552/Phase2/cache_controller.v
 L0 1
 R4
 R5
-!s100 >:Cbh`IUe2PdB:<S2gZ040
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v|
-!s108 1418175752.937934
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v|
 !s85 0
+!s100 mNXKTQ^5:S5n@cMe:gA6[1
+!s108 1418272351.855283
+!s107 /userspace/h/hartman/ece552/Phase2/cache_controller.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/cache_controller.v|
 !i10b 1
 !i111 0
 vcpu
 R6
 r1
 31
-Il>fC8^4o@WTJcCcbgFTj<3
+IU[dXD7n@;UAGPd^9Rk@@j1
 R1
-w1418177943
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/cpu.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/cpu.v
+w1418272030
+8/userspace/h/hartman/ece552/Phase2/cpu.v
+F/userspace/h/hartman/ece552/Phase2/cpu.v
 L0 1
 R4
 R5
 !s85 0
-!s100 GF0GdncK3n4I?]AdYcc3;1
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/cpu.v|
-!s108 1418178258.290065
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/cpu.v|
+!s100 =3N3o0:FGK1V?WmH=>m_L1
+!s108 1418272351.925648
+!s107 /userspace/h/hartman/ece552/Phase2/cpu.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/cpu.v|
 !i10b 1
 !i111 0
 vDM
@@ -109,8 +109,8 @@ R6
 r1
 31
 ICiNJaojof7Jmko_@1Xk0b1
-R1
-R2
+Z7 d/userspace/h/hartman/ece552/Phase2/ECE552-master
+w1417911033
 8/userspace/h/hartman/ece552/Phase2/ECE552-master/data_mem.v
 F/userspace/h/hartman/ece552/Phase2/ECE552-master/data_mem.v
 L0 1
@@ -128,45 +128,45 @@ vdst_mux
 R6
 r1
 31
-I3GhAfeH3@z[dRBz_2Cl@U2
+I0<B^TDD2XF^g11_0FaPR^0
 R1
 R2
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/dst_mux.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/dst_mux.v
+8/userspace/h/hartman/ece552/Phase2/dst_mux.v
+F/userspace/h/hartman/ece552/Phase2/dst_mux.v
 L0 1
 R4
 R5
-!s100 aGcJJXBF1=Z=zG0gK6Who0
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/dst_mux.v|
-!s108 1418175753.093404
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/dst_mux.v|
 !s85 0
+!s100 lJC<To3DU=gUR53<de8272
+!s108 1418272351.991394
+!s107 /userspace/h/hartman/ece552/Phase2/dst_mux.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/dst_mux.v|
 !i10b 1
 !i111 0
 vid
 R6
 r1
 31
-IBYm??A0g@oLJejVVcgaUe3
+IF:`SEZ9?T2kXj;Vn1?dVn3
 R1
-R2
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/id.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/id.v
+w1418269394
+8/userspace/h/hartman/ece552/Phase2/id.v
+F/userspace/h/hartman/ece552/Phase2/id.v
 R3
 L0 1
 R4
 R5
-!s100 UN@8PM^5FlMTEF:NM@6`53
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/id.v|
-!s108 1418175753.145667
-!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/ECE552-master/id.v|
 !s85 0
+!s100 HNbB;kbZg5UNZQO2?H1f@0
+!s108 1418272352.052737
+!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/id.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/id.v|
 !i10b 1
 !i111 0
 vIM
 IIDm4:@0Q]JF7`9ZV801:m2
 R6
-R1
+R7
 w1418026506
 8/userspace/h/hartman/ece552/Phase2/ECE552-master/instr_mem.v
 F/userspace/h/hartman/ece552/Phase2/ECE552-master/instr_mem.v
@@ -188,114 +188,114 @@ vmem_hierarchy
 R6
 r1
 31
-I;CV=66DNN@Wn:XS2P2eR^1
+IaTOZF5Y?2dP7UjKjU79K@2
 R1
-w1418040835
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/mem_hierarchy.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/mem_hierarchy.v
+w1418271013
+8/userspace/h/hartman/ece552/Phase2/mem_hierarchy.v
+F/userspace/h/hartman/ece552/Phase2/mem_hierarchy.v
 L0 1
 R4
 R5
-!s100 B=a?Bz?3`MjK2]?3<P5fj0
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/mem_hierarchy.v|
-!s108 1418175753.317451
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/mem_hierarchy.v|
 !s85 0
+!s100 ?T6e_XkDZB5;=3V=[@9031
+!s108 1418272353.708784
+!s107 /userspace/h/hartman/ece552/Phase2/mem_hierarchy.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/mem_hierarchy.v|
 !i10b 1
 !i111 0
 vpc
 R6
 r1
 31
-IL2IGR593l>mFj;[F6m`Cf0
+I@GdzO9[d0KKHgVznDU]9I2
 R1
-w1418177806
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/prgm_cntr.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/prgm_cntr.v
+Z8 w1418265840
+8/userspace/h/hartman/ece552/Phase2/prgm_cntr.v
+F/userspace/h/hartman/ece552/Phase2/prgm_cntr.v
 L0 1
 R4
 R5
-!s100 4OFER1V3Ug1m6T4Bc?[l:0
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/prgm_cntr.v|
-!s108 1418177855.753099
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/prgm_cntr.v|
 !s85 0
+!s100 g>`[C6CLe_2WCmWPC`dD]3
+!s108 1418272353.842502
+!s107 /userspace/h/hartman/ece552/Phase2/prgm_cntr.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/prgm_cntr.v|
 !i10b 1
 !i111 0
 vrf
 R6
 r1
 31
-I@462T7l_PO57iMn8>_11g3
+I5VC^2G1BQBHMdzzABIj`A0
 R1
-R2
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v
+w1418271997
+8/userspace/h/hartman/ece552/Phase2/rf_pipelined.v
+F/userspace/h/hartman/ece552/Phase2/rf_pipelined.v
 L0 1
 R4
 R5
-!s100 9^19nOS1A>Mi73ZDo7SeK2
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v|
-!s108 1418175753.430018
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v|
 !s85 0
+!s100 h;ZkSOeQjg[jSJcMGUNCF1
+!s108 1418272353.902945
+!s107 /userspace/h/hartman/ece552/Phase2/rf_pipelined.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/rf_pipelined.v|
 !i10b 1
 !i111 0
 vsrc_mux
 R6
 r1
 31
-IUA@]jn6_0113W=5zSjcjE1
+I;EHW=P[l>Si1nUEZW5OHU3
 R1
-R2
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/src_mux.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/src_mux.v
+R8
+8/userspace/h/hartman/ece552/Phase2/src_mux.v
+F/userspace/h/hartman/ece552/Phase2/src_mux.v
 R3
 L0 1
 R4
 R5
-!s100 3>eBgHUXKWUOmHh5;_SZj0
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/src_mux.v|
-!s108 1418175753.481587
-!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/ECE552-master/src_mux.v|
 !s85 0
+!s100 3>eBgHUXKWUOmHh5;_SZj0
+!s108 1418272353.958135
+!s107 common_params.inc|/userspace/h/hartman/ece552/Phase2/src_mux.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/src_mux.v|
 !i10b 1
 !i111 0
 vt_cpu
 R6
 r1
 31
-IbIWYJH?mA9?kR@j_e:d>m0
+IOR45CD=m1[IW0IdP5H_`d0
 R1
-w1418021235
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v
+w1418272144
+8/userspace/h/hartman/ece552/Phase2/t_cpu.v
+F/userspace/h/hartman/ece552/Phase2/t_cpu.v
 L0 1
 R4
 R5
-!s100 5K?gHdK_I?n7>a5A?2@2<1
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v|
-!s108 1418175753.547424
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v|
 !s85 0
+!s100 N=XAOn763XV@]hN^c:Jk`0
+!s108 1418272354.024436
+!s107 /userspace/h/hartman/ece552/Phase2/t_cpu.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/t_cpu.v|
 !i10b 1
 !i111 0
 vunified_mem
 R6
 r1
-!s85 0
 31
-IEMi2EdCXT25>Kj]ck17m;0
+IQn0`Qn6ahPmHb7?<k1LJ81
 R1
-w1418178243
-8/userspace/h/hartman/ece552/Phase2/ECE552-master/unified_mem.v
-F/userspace/h/hartman/ece552/Phase2/ECE552-master/unified_mem.v
+w1418271206
+8/userspace/h/hartman/ece552/Phase2/unified_mem.v
+F/userspace/h/hartman/ece552/Phase2/unified_mem.v
 L0 1
 R4
 R5
-!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/ECE552-master/unified_mem.v|
+!s85 0
 !i10b 1
-!s100 3nW6cYWN_oDSjboZ=CHGL0
-!s108 1418178258.358618
-!s107 /userspace/h/hartman/ece552/Phase2/ECE552-master/unified_mem.v|
+!s100 EXKNYnBPWoMDE[>EXlPZ41
+!s108 1418272354.082714
+!s107 /userspace/h/hartman/ece552/Phase2/unified_mem.v|
+!s90 -reportprogress|300|-work|work|-vopt|/userspace/h/hartman/ece552/Phase2/unified_mem.v|
 !i111 0

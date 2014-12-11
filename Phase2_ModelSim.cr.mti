@@ -1,20 +1,12 @@
-/userspace/h/hartman/ece552/Phase2/ECE552-master/data_mem.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/data_mem.v
+/userspace/h/hartman/ece552/Phase2/src_mux.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/src_mux.v
 Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 ** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
--- Compiling module DM
+-- Compiling module src_mux
 
 Top level modules:
-	DM
+	src_mux
 
-} {} {}} /userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/rf_pipelined.v
-Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
-** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
--- Compiling module rf
-
-Top level modules:
-	rf
-
-} {} {}} /userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/alu.v
+} {} {}} /userspace/h/hartman/ece552/Phase2/alu.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/alu.v
 Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 ** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
 -- Compiling module alu
@@ -22,28 +14,44 @@ Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 Top level modules:
 	alu
 
-} {} {}} /userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/t_cpu.v
+} {} {}} /userspace/h/hartman/ece552/Phase2/id.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/id.v
 Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 ** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
--- Compiling module t_cpu
+-- Compiling module id
 
 Top level modules:
-	t_cpu
+	id
 
-} {} {}} /userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/cache_controller.v
+} {} {}} /userspace/h/hartman/ece552/Phase2/br_bool.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/br_bool.v
 Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 ** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
--- Compiling module cache_controller
+-- Compiling module br_bool
 
 Top level modules:
-	cache_controller
+	br_bool
 
-} {} {}} /userspace/h/hartman/ece552/Phase2/ECE552-master/instr_mem.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/ECE552-master/instr_mem.v
+} {} {}} /userspace/h/hartman/ece552/Phase2/cache.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/cache.v
 Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
 ** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
--- Compiling module IM
+-- Compiling module cache
 
 Top level modules:
-	IM
+	cache
+
+} {} {}} /userspace/h/hartman/ece552/Phase2/dst_mux.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/dst_mux.v
+Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
+** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
+-- Compiling module dst_mux
+
+Top level modules:
+	dst_mux
+
+} {} {}} /userspace/h/hartman/ece552/Phase2/prgm_cntr.v {2 {vlog -work work -vopt /userspace/h/hartman/ece552/Phase2/prgm_cntr.v
+Model Technology ModelSim SE-64 vlog 10.2c Compiler 2013.07 Jul 18 2013
+** Warning: (vlog-98) "/cae/apps/data/mentor-2013/libs/MS/OS/aol/libadmslib_64.so" is not present; ADMS design-units may not be handled properly
+-- Compiling module pc
+
+Top level modules:
+	pc
 
 } {} {}}
