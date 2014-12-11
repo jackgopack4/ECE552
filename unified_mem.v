@@ -1,3 +1,4 @@
+
 module unified_mem(clk,rst_n,addr,re,we,wdata,rd_data,rdy);
 
 /////////////////////////////////////////////////////////////////////
@@ -30,7 +31,7 @@ reg clr_cnt,int_we,int_re;								// state machine outputs
 // initial load of instr.hex //
 //////////////////////////////
 initial
-  $readmemh("move_stuff.hex",mem);
+  $readmemh("instr.hex",mem);
   
 /////////////////////////////////////////////////
 // Capture address at start of read or write  //

@@ -30,7 +30,7 @@ wire allow_hlt;
 wire i_rdy, d_rdy, re, we, stall_pc, stall_IM_ID;
 wire [15:0] rd_data, wrt_data, d_addr;
 
-
+/*
 // test output //
  always @(posedge clk) begin
 		if(i_rdy) begin
@@ -42,7 +42,7 @@ wire [15:0] rd_data, wrt_data, d_addr;
 		
 		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h,zr=%b,rf_w_data_DM_WB=%h, rf_dst_addr_DM_WB=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX,zr,rf_w_data_DM_WB,rf_dst_addr_DM_WB);
  	end
-
+*/
 
 ///////////////////////////////////
 // Instantiate memory hierarchy //
