@@ -1,0 +1,57 @@
+###################################################
+# Longer yet Simpler Test, Has a multiply Routine #
+###################################################
+
+##################################################################
+# First Load two 8-bit numbers you wish to multiply in R1 and R2 #
+##################################################################
+		LLB R1, 0x22
+		LLB R2, 0x33
+		############################
+		# Then JAL to Mult routine #
+		############################
+		JAL M8x8
+		LLB R1, 0xC6		# load R1 with correct answer
+		LHB R1, 0x06
+		SUB R0, R1, R5
+		B	NEQ, FAIL
+		###################################
+		# Now for one more set of numbers #
+		###################################
+		LLB R1, 0x55
+		LLB R2, 0x67
+		############################
+		# Then JAL to Mult routine #
+		############################
+		JAL M8x8
+		LLB R1, 0x33		# load R1 with correct answer
+		LHB R1, 0x22
+		SUB R0, R1, R5
+		B	NEQ, FAIL
+		B 	UNCOND, PASS
+		
+######################################################
+# Mult routine.  Passed two 8-bit numbers in R1 & R2 #
+# will return product in R5, modifies R3, R4, R5     #
+######################################################
+M8x8:	LLB R5, 0x00		# zero out the accumulator
+        LLB R4, 0x80		# bit mask
+		LHB R4, 0x00		# previous load was sign extended
+		SLL R3, R1, 0x7		# Promote R1 by 7-bits
+SH_ADD:	AND R0, R4, R2		# check if bit set in multiplier
+		B	EQ, ARND
+		ADD R5, R5, R3
+ARND:	SRL R3, R3, 0x1
+		SRL	R4, R4, 0x1
+		B	NEQ, SH_ADD
+		JR	R15
+
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+	    ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10   # R11++
+		
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT

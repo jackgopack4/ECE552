@@ -1,0 +1,24 @@
+		LLB R1, 0x55
+		LLB R2, 0x33
+		LLB R10, 0x01
+		LLB R11, 0x01
+		ADD R3, R2, R1		# (should be 0x88)	
+		SW R3, R2, 0x03		# should store 0x88 to location 0x36
+		LW R4, R2, 0x03		# should read 0x88 from 0x36 (can load immediately after a store)
+		# ADD R0, R0, R0		# Nop for write backs to occur
+        SUB R0, R4, R3
+		B EQ, ARND
+	    ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10   # R11++
+		ADD R11, R11, R10   # R11++
+ARND: 	SUB R0, R10, R11	# compare R11 to R10, should still both be 1
+		B EQ, PASS
+		
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT
+		

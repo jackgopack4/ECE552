@@ -1,0 +1,609 @@
+tux-44:~/ece552/Phase2/ECE552-master$ vvp phase2
+rst assert
+
+line[71:64]=xxxxxxxxxxxxxxxxxxx, addr[13:6]=zzzz
+
+STATE=xx
+STATE=xx
+iCache invalid, reading from mem
+instr=b155
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=x, iaddr=0000, flow_change_ID_EX=x
+
+
+
+clk=    x    x    x    x    x    x    x    x    x    x    x    x    x
+
+
+rst deassert
+
+iCache invalid, reading from mem
+instr=b155
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0000, flow_change_ID_EX=0
+
+
+
+clk=    0    0    0    0    0    0    0    0    0    0    0    0    0
+
+
+iCache invalid, reading from mem
+instr=b233
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0001, flow_change_ID_EX=0
+
+
+
+clk=    1    1    1    1    1    1    1    1    1    1    1    1    1
+
+
+iCache invalid, reading from mem
+instr=0321
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0002, flow_change_ID_EX=0
+
+
+
+clk=    2    2    2    2    2    2    2    2    2    2    2    2    2
+
+
+iCache invalid, reading from mem
+instr=c001
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0003, flow_change_ID_EX=0
+
+
+
+clk=    3    3    3    3    3    3    3    3    3    3    3    3    3
+
+
+iCache invalid, reading from mem
+instr=ce29
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0004, flow_change_ID_EX=0
+
+
+
+clk=    4    4    4    4    4    4    4    4    4    4    4    4    4
+
+
+iCache invalid, reading from mem
+instr=2022
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0005, flow_change_ID_EX=1
+
+
+
+clk=    5    5    5    5    5    5    5    5    5    5    5    5    5
+
+
+iCache invalid, reading from mem
+instr=2022
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0005, flow_change_ID_EX=0
+
+
+
+clk=    6    6    6    6    6    6    6    6    6    6    6    6    6
+
+
+iCache invalid, reading from mem
+instr=c027
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0006, flow_change_ID_EX=0
+
+
+
+clk=    7    7    7    7    7    7    7    7    7    7    7    7    7
+
+
+iCache invalid, reading from mem
+instr=c201
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0007, flow_change_ID_EX=0
+
+
+
+clk=    8    8    8    8    8    8    8    8    8    8    8    8    8
+
+
+iCache invalid, reading from mem
+instr=ce25
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0008, flow_change_ID_EX=0
+
+
+
+clk=    9    9    9    9    9    9    9    9    9    9    9    9    9
+
+
+iCache invalid, reading from mem
+instr=2012
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0009, flow_change_ID_EX=1
+
+
+
+clk=   10   10   10   10   10   10   10   10   10   10   10   10   10
+
+
+iCache invalid, reading from mem
+instr=2012
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0009, flow_change_ID_EX=0
+
+
+
+clk=   11   11   11   11   11   11   11   11   11   11   11   11   11
+
+
+iCache invalid, reading from mem
+instr=c223
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000a, flow_change_ID_EX=0
+
+
+
+clk=   12   12   12   12   12   12   12   12   12   12   12   12   12
+
+
+iCache invalid, reading from mem
+instr=c401
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000b, flow_change_ID_EX=0
+
+
+
+clk=   13   13   13   13   13   13   13   13   13   13   13   13   13
+
+
+iCache invalid, reading from mem
+instr=ce21
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000c, flow_change_ID_EX=0
+
+
+
+clk=   14   14   14   14   14   14   14   14   14   14   14   14   14
+
+
+iCache invalid, reading from mem
+instr=2011
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000d, flow_change_ID_EX=1
+
+
+
+clk=   15   15   15   15   15   15   15   15   15   15   15   15   15
+
+
+iCache invalid, reading from mem
+instr=2011
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000d, flow_change_ID_EX=0
+
+
+
+clk=   16   16   16   16   16   16   16   16   16   16   16   16   16
+
+
+iCache invalid, reading from mem
+instr=c41f
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000e, flow_change_ID_EX=0
+
+
+
+clk=   17   17   17   17   17   17   17   17   17   17   17   17   17
+
+
+iCache invalid, reading from mem
+instr=c61e
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=000f, flow_change_ID_EX=0
+
+
+
+clk=   18   18   18   18   18   18   18   18   18   18   18   18   18
+
+
+iCache invalid, reading from mem
+instr=2021
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0010, flow_change_ID_EX=0
+
+
+
+clk=   19   19   19   19   19   19   19   19   19   19   19   19   19
+
+
+iCache invalid, reading from mem
+instr=c601
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0011, flow_change_ID_EX=0
+
+
+
+clk=   20   20   20   20   20   20   20   20   20   20   20   20   20
+
+
+iCache invalid, reading from mem
+instr=ce1b
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0012, flow_change_ID_EX=0
+
+
+
+clk=   21   21   21   21   21   21   21   21   21   21   21   21   21
+
+
+iCache invalid, reading from mem
+instr=2033
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0013, flow_change_ID_EX=1
+
+
+
+clk=   22   22   22   22   22   22   22   22   22   22   22   22   22
+
+
+iCache invalid, reading from mem
+instr=2033
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0013, flow_change_ID_EX=0
+
+
+
+clk=   23   23   23   23   23   23   23   23   23   23   23   23   23
+
+
+iCache invalid, reading from mem
+instr=c801
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0014, flow_change_ID_EX=0
+
+
+
+clk=   24   24   24   24   24   24   24   24   24   24   24   24   24
+
+
+iCache invalid, reading from mem
+instr=ce18
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0015, flow_change_ID_EX=0
+
+
+
+clk=   25   25   25   25   25   25   25   25   25   25   25   25   25
+
+
+iCache invalid, reading from mem
+instr=2013
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0016, flow_change_ID_EX=1
+
+
+
+clk=   26   26   26   26   26   26   26   26   26   26   26   26   26
+
+
+iCache invalid, reading from mem
+instr=2013
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0016, flow_change_ID_EX=0
+
+
+
+clk=   27   27   27   27   27   27   27   27   27   27   27   27   27
+
+
+iCache invalid, reading from mem
+instr=c816
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0017, flow_change_ID_EX=0
+
+
+
+clk=   28   28   28   28   28   28   28   28   28   28   28   28   28
+
+
+iCache invalid, reading from mem
+instr=2031
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0018, flow_change_ID_EX=0
+
+
+
+clk=   29   29   29   29   29   29   29   29   29   29   29   29   29
+
+
+iCache invalid, reading from mem
+instr=c801
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0019, flow_change_ID_EX=0
+
+
+
+clk=   30   30   30   30   30   30   30   30   30   30   30   30   30
+
+
+iCache invalid, reading from mem
+instr=ce13
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001a, flow_change_ID_EX=0
+
+
+
+clk=   31   31   31   31   31   31   31   31   31   31   31   31   31
+
+
+iCache invalid, reading from mem
+instr=2013
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001b, flow_change_ID_EX=1
+
+
+
+clk=   32   32   32   32   32   32   32   32   32   32   32   32   32
+
+
+iCache invalid, reading from mem
+instr=2013
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001b, flow_change_ID_EX=0
+
+
+
+clk=   33   33   33   33   33   33   33   33   33   33   33   33   33
+
+
+iCache invalid, reading from mem
+instr=ca01
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001c, flow_change_ID_EX=0
+
+
+
+clk=   34   34   34   34   34   34   34   34   34   34   34   34   34
+
+
+iCache invalid, reading from mem
+instr=ce10
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001d, flow_change_ID_EX=0
+
+
+
+clk=   35   35   35   35   35   35   35   35   35   35   35   35   35
+
+
+iCache invalid, reading from mem
+instr=2011
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001e, flow_change_ID_EX=1
+
+
+
+clk=   36   36   36   36   36   36   36   36   36   36   36   36   36
+
+
+iCache invalid, reading from mem
+instr=2011
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001e, flow_change_ID_EX=0
+
+
+
+clk=   37   37   37   37   37   37   37   37   37   37   37   37   37
+
+
+iCache invalid, reading from mem
+instr=ca01
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=001f, flow_change_ID_EX=0
+
+
+
+clk=   38   38   38   38   38   38   38   38   38   38   38   38   38
+
+
+iCache invalid, reading from mem
+instr=ce0d
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0020, flow_change_ID_EX=0
+
+
+
+clk=   39   39   39   39   39   39   39   39   39   39   39   39   39
+
+
+iCache invalid, reading from mem
+instr=2031
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0021, flow_change_ID_EX=1
+
+
+
+clk=   40   40   40   40   40   40   40   40   40   40   40   40   40
+
+
+iCache invalid, reading from mem
+instr=2031
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0021, flow_change_ID_EX=0
+
+
+
+clk=   41   41   41   41   41   41   41   41   41   41   41   41   41
+
+
+iCache invalid, reading from mem
+instr=ca0b
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0022, flow_change_ID_EX=0
+
+
+
+clk=   42   42   42   42   42   42   42   42   42   42   42   42   42
+
+
+iCache invalid, reading from mem
+instr=a17f
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0023, flow_change_ID_EX=0
+
+
+
+clk=   43   43   43   43   43   43   43   43   43   43   43   43   43
+
+
+iCache invalid, reading from mem
+instr=a370
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0024, flow_change_ID_EX=0
+
+
+
+clk=   44   44   44   44   44   44   44   44   44   44   44   44   44
+
+
+iCache invalid, reading from mem
+instr=0013
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0025, flow_change_ID_EX=0
+
+
+
+clk=   45   45   45   45   45   45   45   45   45   45   45   45   45
+
+
+iCache invalid, reading from mem
+instr=cc01
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0026, flow_change_ID_EX=0
+
+
+
+clk=   46   46   46   46   46   46   46   46   46   46   46   46   46
+
+
+iCache invalid, reading from mem
+instr=ce06
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0027, flow_change_ID_EX=0
+
+
+
+clk=   47   47   47   47   47   47   47   47   47   47   47   47   47
+
+
+iCache invalid, reading from mem
+instr=2031
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0028, flow_change_ID_EX=1
+
+
+
+clk=   48   48   48   48   48   48   48   48   48   48   48   48   48
+
+
+iCache invalid, reading from mem
+instr=2031
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0028, flow_change_ID_EX=0
+
+
+
+clk=   49   49   49   49   49   49   49   49   49   49   49   49   49
+
+
+iCache invalid, reading from mem
+instr=cc04
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=0029, flow_change_ID_EX=0
+
+
+
+clk=   50   50   50   50   50   50   50   50   50   50   50   50   50
+
+
+iCache invalid, reading from mem
+instr=b1aa
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=002a, flow_change_ID_EX=0
+
+
+
+clk=   51   51   51   51   51   51   51   51   51   51   51   51   51
+
+
+iCache invalid, reading from mem
+instr=a1aa
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=002b, flow_change_ID_EX=0
+
+
+
+clk=   52   52   52   52   52   52   52   52   52   52   52   52   52
+
+
+iCache invalid, reading from mem
+instr=f000
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=0, iaddr=002c, flow_change_ID_EX=0
+
+
+
+clk=   53   53   53   53   53   53   53   53   53   53   53   53   53
+
+
+iCache invalid, reading from mem
+instr=0000
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0
+
+
+
+clk=   54   54   54   54   54   54   54   54   54   54   54   54   54
+
+
+iCache invalid, reading from mem
+instr=0000
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0
+
+
+
+clk=   55   55   55   55   55   55   55   55   55   55   55   55   55
+
+
+iCache invalid, reading from mem
+instr=0000
+
+stall_pipeline=z, i_rdy=z, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0
+
+
+
+clk=   56   56   56   56   56   56   56   56   56   56   56   56   56
+
+
+R00000001 = aaaa
+R00000002 = 0033
+R00000003 = 7088
+R00000004 = xxxx
+R00000005 = xxxx
+R00000006 = xxxx
+R00000007 = xxxx
+R00000008 = xxxx
+R00000009 = xxxx
+R0000000a = xxxx
+R0000000b = xxxx
+R0000000c = xxxx
+R0000000d = xxxx
+R0000000e = xxxx
+R0000000f = xxxx
+** VVP Stop(0) **
+** Flushing output streams.
+** Current simulation time is 585 ticks.
+> 
+

@@ -1,0 +1,7 @@
+add R0, R0, R0
+sw R0, R0, 5
+lw R0, R0, 5
+add R0, R0, R0
+lw R0, R0, 5
+add R0, R0, R0
+hlt					#All about performance here - all nops, no real dependences since R0 is read-only; no need to load-use stall if lw is to R0

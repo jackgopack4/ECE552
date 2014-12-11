@@ -1,0 +1,5 @@
+		LLB R3, 0x00
+		LLB R13, 3
+		JAL POC1
+POC1: 	ADD	R3, R3, R13
+		HLT

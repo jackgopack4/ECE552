@@ -1,0 +1,72 @@
+##############################
+# Used for Exercising Caches #
+##############################
+
+##########################################################
+# Write some data to location 0x0150.  This will be used #
+# later to test eviction upon read for address 0x0050    #
+##########################################################
+		LLB R1, 0x5A		# R1 is random data to write to 0x0150
+		LLB R6, 0x50		# R6 = 0x0050
+		LHB R6, 0x01		# R6 = 0x0150 = Address to write to
+		SW R1, R6, 0x0		# write 0x5A to location 0x0150
+		
+######################################################
+# Write some data to locations 0x0040 through 0x004F #
+######################################################
+		LLB R1, 0x10		# R1 will be loop counter
+		LLB R2, 0x40		# R2 will be base address
+		LLB R3, 0x01		# R3 contains 1
+WR_LP1:	SW  R1, R2, 0x0	    # Store 0x10 @ 0x40, 0x0F at 0x41, ...0x01 at 0x4F
+        ADD R2, R2, R3		# R2 = R2 + 1
+		SUB R1, R1, R3		# R1 = R1 - 1
+		B NEQ, WR_LP1
+	
+#########################################################
+# Now move the data from 0x0040-0x004F to 0x0050-0x005F #
+#########################################################
+        LLB R1, 0x10		# R1 = 0x10
+		LLB R2, 0x40		# R2 = 0x40
+		LLB R5, 0x50		# R5 = 0x50
+MV_LP:	LW R4, R2, 0x0		# R4 = @(R2)
+        ADD R2, R2, R3		# R2++
+        SW R4, R5, 0x0      # Copy data from 0x004x to 0x005x
+		ADD R5, R5, R3		# R5++
+		SUB R1, R1, R3
+		B NEQ, MV_LP
+		
+##########################################################
+# Now check that the data at 0x005x is what it should be #
+##########################################################
+        LLB R1, 0x10		# R1 = 0x10
+		LLB R5, 0x50		# R5 = 0x50
+CHK_LP:	LW R4, R5, 0x0		# read data at 0x005x
+        SUB R0, R4, R1		# compare to 0x10, 0x0F, 0x0E, ...
+		B NEQ, FAIL			# data should equal counter
+        ADD R5, R5, R3		# R5++
+        SUB R1, R1, R3		# R1--
+        B NEQ, CHK_LP		
+		
+###########################################################
+# Now load data from 0x0150 into register R2, this should #
+# cause an eviction of data currently cache for 0x0050    #
+###########################################################
+        LW R2, R6, 0x0		# read address 0x0150 which should cause an eviction
+		LLB R1, 0x5A		# data at 0x0150 should be 0x005A
+		SUB R0, R1, R2	
+        B NEQ, FAIL
+		LLB R6, 0x50		# now setup R6 (address) with 0x0050
+		LW R2, R6, 0x0		# read location 0x0050 into R2 (should be 0x0010)
+		LLB R1, 0x10
+		SUB R0, R1, R2
+		B EQ, PASS
+				
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+	    ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10   # R11++
+		
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT
