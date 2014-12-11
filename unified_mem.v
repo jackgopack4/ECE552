@@ -30,7 +30,7 @@ reg clr_cnt,int_we,int_re;								// state machine outputs
 // initial load of instr.hex //
 //////////////////////////////
 initial
-  $readmemh("instr.hex",mem);
+  $readmemh("move_stuff.hex",mem);
   
 /////////////////////////////////////////////////
 // Capture address at start of read or write  //

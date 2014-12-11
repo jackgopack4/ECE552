@@ -136,6 +136,6 @@ br_bool iBRL(.clk(clk), .rst_n(rst_n), .clk_z_ID_EX(clk_z_ID_EX), .clk_nv_ID_EX(
 
 
 assign pc = iaddr;
-assign hlt = hlt_DM_WB; // waits until last Dcache processed?.
+assign hlt = hlt_DM_WB && allow_hlt; // waits until last Dcache processed.
    
 endmodule
