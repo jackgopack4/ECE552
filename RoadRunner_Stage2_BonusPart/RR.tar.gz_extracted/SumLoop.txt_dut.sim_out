@@ -1,8 +1,8 @@
-R00000001 = aaaa
-R00000002 = ffff
-R00000003 = 13ba
-R00000004 = 0001
-R00000005 = 13ba
+R00000001 = xxxx
+R00000002 = xxxx
+R00000003 = xxxx
+R00000004 = xxxx
+R00000005 = xxxx
 R00000006 = xxxx
 R00000007 = xxxx
 R00000008 = xxxx
@@ -13,6 +13,6 @@ R0000000c = xxxx
 R0000000d = xxxx
 R0000000e = xxxx
 R0000000f = xxxx
-Time:      12661
-Cycles:     1266
-PC:         0016
+Time:        601
+Cycles:       60
+PC:         0010

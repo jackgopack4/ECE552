@@ -1,5 +1,5 @@
-R00000001 = 0000
-R00000002 = 0001
+R00000001 = xxxx
+R00000002 = xxxx
 R00000003 = xxxx
 R00000004 = xxxx
 R00000005 = xxxx
@@ -13,6 +13,6 @@ R0000000c = xxxx
 R0000000d = xxxx
 R0000000e = xxxx
 R0000000f = xxxx
-Time:      10341
-Cycles:     1034
+Time:        261
+Cycles:       26
 PC:         0005

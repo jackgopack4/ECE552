@@ -85,7 +85,8 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), /*.zr_EX_DM(zr_EX_DM),*/ .br_ins
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
 		.flow_change_ID_EX(flow_change_ID_EX),
-		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy),.stall_DM_WB(stall_DM_WB));
+		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy),.stall_DM_WB(stall_DM_WB),
+	.d_rdy(d_rdy));
 	   
 ////////////////////////////////
 // Instantiate register file //

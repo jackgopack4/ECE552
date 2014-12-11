@@ -1,18 +1,4 @@
-R00000001 = aaaa
-R00000002 = 0033
-R00000003 = 0088
-R00000004 = 0088
-R00000005 = xxxx
-R00000006 = xxxx
-R00000007 = xxxx
-R00000008 = xxxx
-R00000009 = xxxx
-R0000000a = xxxx
-R0000000b = xxxx
-R0000000c = xxxx
-R0000000d = xxxx
-R0000000e = xxxx
-R0000000f = xxxx
-Time:        801
-Cycles:       80
-PC:         0017
+ERROR at time 1000010: simulation is running for too long; limit of 100000 cycles exceeded!
+Time:    1000011
+Cycles:   100001
+PC:         000a

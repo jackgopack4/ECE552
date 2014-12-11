@@ -1,18 +1,4 @@
-R00000001 = 7fff
-R00000002 = 7fff
-R00000003 = 7fff
-R00000004 = xxxx
-R00000005 = 0001
-R00000006 = xxxx
-R00000007 = xxxx
-R00000008 = xxxx
-R00000009 = xxxx
-R0000000a = xxxx
-R0000000b = xxxx
-R0000000c = xxxx
-R0000000d = 003f
-R0000000e = 0001
-R0000000f = 0000
-Time:      20531
-Cycles:     2053
-PC:         001e
+ERROR at time 1000010: simulation is running for too long; limit of 100000 cycles exceeded!
+Time:    1000011
+Cycles:   100001
+PC:         000a

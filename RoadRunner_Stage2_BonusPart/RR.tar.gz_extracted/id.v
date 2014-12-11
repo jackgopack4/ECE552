@@ -4,11 +4,12 @@ rf_we_DM_WB,rf_p0_addr,rf_p1_addr,rf_dst_addr_DM_WB,alu_func_ID_EX,src0sel_ID_EX
 src1sel_ID_EX,dm_re_EX_DM,dm_we_EX_DM,clk_z_ID_EX,clk_nv_ID_EX,instr_ID_EX,
 cc_ID_EX, stall_IM_ID,stall_ID_EX,stall_EX_DM,hlt_DM_WB,byp0_EX,byp0_DM,
 byp1_EX,byp1_DM,flow_change_ID_EX,
-padd_ID_EX,i_rdy,stall_DM_WB);
+padd_ID_EX,i_rdy,stall_DM_WB, d_rdy);
 input clk,rst_n, i_rdy;
 input [15:0] instr; // instruction to decode and execute direct from IM, flop first
 //input zr_EX_DM; // zero flag from ALU (used for ADDZ)
 input flow_change_ID_EX;
+input d_rdy;
 output reg jmp_imm_ID_EX;
 output reg jmp_reg_ID_EX;
 output reg br_instr_ID_EX; // set if instruction is branch instruction
@@ -176,7 +177,7 @@ assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) ||
 assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
 assign stall_ID_EX = !i_rdy; // hlt_EX_DM;
 assign stall_EX_DM = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
-assign stall_DM_WB = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
+assign stall_DM_WB =  !d_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
 //assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
 //assign stall_ID_EX = stall_IM_ID//!i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
 //assign stall_EX_DM = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
