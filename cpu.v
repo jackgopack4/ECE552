@@ -24,8 +24,26 @@ wire [1:0] src1sel_ID_EX;		// select for src1 bus
 wire [2:0] cc_ID_EX;			// condition code pipeline from instr[11:9]
 wire [15:0] p0_EX_DM;			// data to be stored for SW
 
+// memory //
+wire i_rdy, d_rdy, re, we, stall_pc, stall_IM_ID;
+wire [15:0] rd_data, wrt_data, d_addr;
 
+// test output //
+always @(posedge clk) begin
+		if(i_rdy) begin
+			$display("iCache valid, instr=%h",instr);
+		end else begin
+			$display("iCache invalid, reading from mem");
+			$display("instr=%h\n",instr);
+		end
+		
+		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h,zr=%b,rf_w_data_DM_WB=%h, rf_dst_addr_DM_WB=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX,zr,rf_w_data_DM_WB,rf_dst_addr_DM_WB);
+	end
 
+///////////////////////////////////
+// Instantiate memory hierarchy //
+/////////////////////////////////
+mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), .i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM));
 
 
 
@@ -33,12 +51,22 @@ wire [15:0] p0_EX_DM;			// data to be stored for SW
 // Instantiate program counter //
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
-       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX));
+       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), .i_rdy(i_rdy),
+       .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM));
+
+// assign when to stall pc
+//assign stall_pc = stall_IM_ID ? stall_IM_ID : !i_rdy;
 	   
 /////////////////////////////////////
 // Instantiate instruction memory //
 ///////////////////////////////////
-IM iIM(.clk(clk), .addr(iaddr), .rd_en(1'b1), .instr(instr));
+//IM iIM(.clk(clk), .addr(iaddr), .rd_en(1'b1), .instr(instr));
+
+//////////////////////////////
+// Instantiate data memory //
+////////////////////////////
+//DM iDM(.clk(clk),.addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM),
+//       .rd_data(dm_rd_data_EX_DM));
 
 //////////////////////////////////////////////
 // Instantiate register instruction decode //
@@ -53,7 +81,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), /*.zr_EX_DM(zr_EX_DM),*/ .br_ins
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
 		.flow_change_ID_EX(flow_change_ID_EX),
-		.padd_ID_EX(padd_ID_EX));
+		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy),.stall_DM_WB(stall_DM_WB));
 	   
 ////////////////////////////////
 // Instantiate register file //
@@ -70,25 +98,26 @@ src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM),
                 .imm_ID_EX(instr_ID_EX), .pc_ID_EX(pc_ID_EX), .p0_EX_DM(p0_EX_DM),
 				.src0(src0), .src1(src1), .dst_EX_DM(dst_EX_DM), .dst_DM_WB(rf_w_data_DM_WB),
 			    .byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM));
+			    
+// assign when to stall srcMux
+//assign stall_srcMux1 = stall_ID_EX ? stall_ID_EX : !i_rdy;
+//assign stall_srcMux2 = stall_EX_DM ? stall_EX_DM : !i_rdy;
+
 	   
 //////////////////////
 // Instantiate ALU //
 ////////////////////
 alu iALU(.clk(clk), .src0(src0), .src1(src1), .shamt(instr_ID_EX[3:0]), .func(alu_func_ID_EX),
          .dst(dst_ID_EX), .dst_EX_DM(dst_EX_DM), .ov(ov), .zr(zr), .neg(neg),
-	 .padd(padd_ID_EX));		   
-//////////////////////////////
-// Instantiate data memory //
-////////////////////////////
-DM iDM(.clk(clk),.addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM),
-       .rd_data(dm_rd_data_EX_DM));
+	 .padd(padd_ID_EX),.stall_EX_DM(stall_EX_DM));		   
+
 
 //////////////////////////
 // Instantiate dst mux //
 ////////////////////////
 dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(dm_rd_data_EX_DM),
                 .dst_EX_DM(dst_EX_DM), .pc_EX_DM(pc_EX_DM), .rf_w_data_DM_WB(rf_w_data_DM_WB),
-				.jmp_imm_EX_DM(jmp_imm_EX_DM));
+				.jmp_imm_EX_DM(jmp_imm_EX_DM),.stall_DM_WB(stall_DM_WB));
 	
 /////////////////////////////////////////////
 // Instantiate branch determination logic //
@@ -96,12 +125,13 @@ dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(dm_rd_da
 br_bool iBRL(.clk(clk), .rst_n(rst_n), .clk_z_ID_EX(clk_z_ID_EX), .clk_nv_ID_EX(clk_nv_ID_EX),
              .br_instr_ID_EX(br_instr_ID_EX), .jmp_imm_ID_EX(jmp_imm_ID_EX),
 	     .jmp_reg_ID_EX(jmp_reg_ID_EX), .cc_ID_EX(cc_ID_EX), .zr(zr), .ov(ov),
-           /*.zr_EX_DM(zr_EX_DM),*/ .neg(neg), .flow_change_ID_EX(flow_change_ID_EX));	
+           /*.zr_EX_DM(zr_EX_DM),*/ .neg(neg), .flow_change_ID_EX(flow_change_ID_EX),.stall_EX_DM(stall_EX_DM),
+           .stall_ID_EX(stall_ID_EX));	
 	
 
 
 
 assign pc = iaddr;
-assign hlt = hlt_DM_WB;
+assign hlt = hlt_DM_WB && i_rdy; // waits until last Dcache processed.
    
 endmodule
