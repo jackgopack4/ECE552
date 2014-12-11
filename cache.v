@@ -43,6 +43,7 @@ always @(clk or we_filt or negedge rst_n)
 always @(clk or re or addr)
   if (clk && re)				// read is on clock high
     line = mem[addr[5:0]];
+    
 	
 /////////////////////////////////////////////////////////////
 // If tag bits match and line is valid then we have a hit //
@@ -51,5 +52,11 @@ assign hit = ((line[71:64]==addr[13:6]) && (re | we)) ? line[73] : 1'b0;
 assign dirty = line[73]&line[72];						// if line is valid and dirty bit set
 assign rd_data = line[63:0];
 assign tag_out = line[71:64];							// need the tag for evictions
-	
+
+/*
+always @(clk) begin
+$display("line[71:64]=%h, addr[13:6]=%h\n", line, addr);
+end
+*/
+
 endmodule
