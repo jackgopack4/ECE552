@@ -41,7 +41,7 @@ module mem_TB();
 			$display("instr=%h\n",instr);
 			i_addr = i_addr + 1;
 		end else begin
-			$display("iCache invalid, reading from mem\n");
+			//$display("iCache invalid, reading from mem\n");
 		end
 
 	end

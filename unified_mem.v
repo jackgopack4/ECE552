@@ -29,8 +29,10 @@ reg clr_cnt,int_we,int_re;								// state machine outputs
 ////////////////////////////////
 // initial load of instr.hex //
 //////////////////////////////
-initial
+initial begin
   $readmemh("inst1.hex",mem);
+  //$display("\n\nmem=%h\n\n\n", mem[0]);
+end
   
 /////////////////////////////////////////////////
 // Capture address at start of read or write  //
@@ -94,6 +96,7 @@ nxt_state = IDLE;
 	
 case (state)
 	IDLE : if (we) begin
+		   //$display("mem_state = IDLE");
 	       clr_cnt = 0;
 	       rdy = 0;
 	       nxt_state = WRITE;
@@ -106,7 +109,8 @@ case (state)
 	       else rdy = 1;
 	  
 	WRITE : if (&wait_state_cnt) begin
-	        int_we = 1;		// write completes and next state is IDLE
+	    //$display("mem_state = WRITE");
+	    int_we = 1;		// write completes and next state is IDLE
 		rdy = 1;
 		end
 		else begin
@@ -116,6 +120,7 @@ case (state)
 		end
 	  
 	default : if (&wait_state_cnt) begin	// this state is READ
+		  //$display("mem_state = READ");
 		  int_re = 1;	// read completes and next state is IDLE
 		  rdy = 1;
 		  end
