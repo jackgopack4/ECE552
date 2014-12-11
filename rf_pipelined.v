@@ -74,7 +74,7 @@ always @(clk,re1,p1_addr)
 // Dump register contents at program //
 // halt for debug purposes          //
 /////////////////////////////////////
-always @(posedge hlt)
+always @(posedge clk) //replace with hlt
   for(indx=1; indx<16; indx = indx+1)
     $display("R%1h = %h",indx,mem[indx]);
 	

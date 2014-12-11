@@ -41,12 +41,12 @@ always @(clk or we_filt or negedge rst_n) begin
 	end
 	else if(~clk && we_filt) begin
 		if(LRU[addr[4:0]] == 1'b0) begin
-			//$display("LRU = low, writing");
+			$display("LRU = low, writing");
 			mem0[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
 			if(toggle == 1'b1) LRU[addr[4:0]] = 1'b1;
 		end
 		else begin
-			//$display("LRU = high, writing");
+			$display("LRU = high, writing");
 			mem1[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
 			if(toggle == 1'b1) LRU[addr[4:0]] = 1'b0;
 		end
@@ -69,13 +69,13 @@ assign hit0 = ((mem0_line[72:64]==addr[13:5]) && (re | we)) ? mem0_line[74] : 1'
 assign dirty = (LRU[addr[4:0]]) ? (mem1_line[74]&mem1_line[73]) : (mem0_line[74]&mem0_line[73]);
 always @(*) begin
 	hit = (hit1 | hit0);
-	//$display("hit1=%b, hit0=%b", hit1, hit0);
+	$display("hit1=%b, hit0=%b", hit1, hit0);
 	if(hit1==1'b1) begin
-		//$display("Accessing high");
+		$display("Accessing high");
 			rd_data = mem1_line[63:0];
 			tag_out = mem1_line[72:64];
 	end else if(hit0 == 1'b1) begin
-		//$display("Accessing low");
+		$display("Accessing low");
 			rd_data = mem0_line[63:0];
 			tag_out = mem0_line[72:64];
 	end
