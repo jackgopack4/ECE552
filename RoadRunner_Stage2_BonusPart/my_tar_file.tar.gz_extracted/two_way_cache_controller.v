@@ -67,13 +67,13 @@ module two_way_cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_add
         allow_hlt = 1'b1;
         d_re = 1'b1;
         if(we) begin
-          ////$display("we signal raised");
+          //$display("we signal raised");
           nextState=(d_hit)? WRITE_DCACHE : ((d_dirty_read) ? DCACHE_TO_MEM : MEM_TO_DCACHE);
         end else if(re) begin
-          ////$display("re signal raised, no we");
+          //$display("re signal raised, no we");
           nextState=(d_hit)? READ_DCACHE : ((d_dirty_read) ? DCACHE_TO_MEM : MEM_TO_DCACHE);
         end else begin
-          ////$display("neither we nor re");
+          //$display("neither we nor re");
           nextState = (i_hit) ? READ_ICACHE : MEM_TO_ICACHE;
         end
       end
