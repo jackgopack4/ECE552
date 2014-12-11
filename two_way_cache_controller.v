@@ -56,7 +56,7 @@ module two_way_cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_add
     d_wr_data = d_rd_data;
     d_sel = d_addr[1:0];
     d_rdy = 1'b0;
-	allow_hlt = 1'b0;
+    allow_hlt = 1'b0;
     d_toggle = 1'b0;
     
     nextState = IDLE;

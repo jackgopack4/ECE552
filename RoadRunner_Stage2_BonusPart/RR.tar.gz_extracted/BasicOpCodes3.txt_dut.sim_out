@@ -1,0 +1,727 @@
+instr=xxxx
+
+stall_pc=z, i_rdy=x, stall_IM_ID=x, iaddr=xxxx, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=x, hit0=x
+hit1=x, hit0=x
+hit1=0, hit0=0
+hit1=x, hit0=x
+hit1=0, hit0=0
+hit1=x, hit0=x
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=b155
+stall_pc=z, i_rdy=1, stall_IM_ID=x, iaddr=0000, flow_change_ID_EX=x,zr=x,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=x, hit0=x
+instr=b155
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0000, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=0, hit0=0
+iCache valid, instr=b155
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0000, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+hit1=0, hit0=0
+instr=b233
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0001, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+iCache valid, instr=b233
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0001, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=xxxx, rf_dst_addr_DM_WB=x
+
+instr=0321
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0002, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=0321
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0002, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=c001
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0003, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=c001
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0003, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=ce29
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0004, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0055, rf_dst_addr_DM_WB=1
+
+instr=2022
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0005, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=2
+
+iCache valid, instr=2022
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0005, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=2
+
+instr=2022
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0005, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0088, rf_dst_addr_DM_WB=3
+
+iCache valid, instr=2022
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0005, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0088, rf_dst_addr_DM_WB=3
+
+instr=c027
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0006, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0005, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=c027
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0006, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0005, rf_dst_addr_DM_WB=0
+
+instr=c201
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0007, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=c201
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0007, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=ce25
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0008, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=2012
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0009, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2012
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0009, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=2012
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0009, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2012
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0009, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=0
+
+instr=c223
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0009, rf_dst_addr_DM_WB=2
+
+iCache valid, instr=c223
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0009, rf_dst_addr_DM_WB=2
+
+instr=c401
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=c401
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=ce21
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+instr=2011
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000d, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2011
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000d, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0022, rf_dst_addr_DM_WB=0
+
+instr=2011
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=2
+
+iCache valid, instr=2011
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=2
+
+instr=c41f
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000e, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=000d, rf_dst_addr_DM_WB=4
+
+iCache valid, instr=c41f
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000e, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=000d, rf_dst_addr_DM_WB=4
+
+instr=c61e
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=000f, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=c61e
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=000f, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=2021
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0010, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=c601
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0011, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=c601
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0011, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=ce1b
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0012, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=4
+
+iCache valid, instr=ce1b
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0012, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=4
+
+instr=2033
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0013, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=6
+
+iCache valid, instr=2033
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0013, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=6
+
+instr=2033
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0013, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffde, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2033
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0013, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffde, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=c801
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0014, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=0013, rf_dst_addr_DM_WB=6
+
+instr=ce18
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0015, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=ce18
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0015, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=2013
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0016, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2013
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0016, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=2013
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0016, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2013
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0016, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=c816
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0017, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0016, rf_dst_addr_DM_WB=8
+
+iCache valid, instr=c816
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0017, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0016, rf_dst_addr_DM_WB=8
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=2031
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0018, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=c801
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0019, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=c801
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0019, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+instr=ce13
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=ce13
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+instr=2013
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001b, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=8
+
+iCache valid, instr=2013
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001b, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=8
+
+instr=2013
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2013
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=ca01
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=001b, rf_dst_addr_DM_WB=8
+
+instr=ce10
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=ce10
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=2011
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001e, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2011
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001e, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+instr=2011
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001e, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2011
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001e, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffcd, rf_dst_addr_DM_WB=0
+
+instr=ca01
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=001f, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=001e, rf_dst_addr_DM_WB=a
+
+iCache valid, instr=ca01
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=001f, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=001e, rf_dst_addr_DM_WB=a
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=ce0d
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0020, flow_change_ID_EX=0,zr=1,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=2031
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0021, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2031
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0021, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=2031
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0021, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2031
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0021, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0000, rf_dst_addr_DM_WB=0
+
+instr=ca0b
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0022, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0021, rf_dst_addr_DM_WB=a
+
+iCache valid, instr=ca0b
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0022, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0021, rf_dst_addr_DM_WB=a
+
+instr=a17f
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0023, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=a17f
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0023, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=a370
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0024, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+instr=0013
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0025, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=0013
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0025, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0033, rf_dst_addr_DM_WB=0
+
+instr=cc01
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0026, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=a
+
+iCache valid, instr=cc01
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0026, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=a
+
+instr=ce06
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0027, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=7f55, rf_dst_addr_DM_WB=1
+
+iCache valid, instr=ce06
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0027, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=7f55, rf_dst_addr_DM_WB=1
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=2031
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0028, flow_change_ID_EX=1,zr=0,rf_w_data_DM_WB=7088, rf_dst_addr_DM_WB=3
+
+instr=2031
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0028, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=7fff, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=2031
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0028, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=7fff, rf_dst_addr_DM_WB=0
+
+instr=cc04
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=0029, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0028, rf_dst_addr_DM_WB=c
+
+iCache valid, instr=cc04
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=0029, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=0028, rf_dst_addr_DM_WB=c
+
+instr=b1aa
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+iCache valid, instr=b1aa
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=002a, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=e
+
+instr=a1aa
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+iCache valid, instr=a1aa
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=002b, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=1
+Accessing low
+hit1=0, hit0=0
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+LRU = low, writing
+instr=xxxx
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+hit1=0, hit0=0
+hit1=0, hit0=x
+hit1=0, hit0=1
+Accessing low
+iCache valid, instr=f000
+stall_pc=z, i_rdy=1, stall_IM_ID=0, iaddr=002c, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=f133, rf_dst_addr_DM_WB=0
+
+instr=0000
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=c
+
+iCache valid, instr=0000
+stall_pc=z, i_rdy=1, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=002e, rf_dst_addr_DM_WB=c
+
+instr=0000
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffaa, rf_dst_addr_DM_WB=1
+
+iCache valid, instr=0000
+stall_pc=z, i_rdy=1, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=ffaa, rf_dst_addr_DM_WB=1
+
+instr=0000
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=aaaa, rf_dst_addr_DM_WB=1
+
+iCache valid, instr=0000
+stall_pc=z, i_rdy=1, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=aaaa, rf_dst_addr_DM_WB=1
+
+R00000001 = aaaa
+R00000002 = 0033
+R00000003 = 7088
+R00000004 = xxxx
+R00000005 = xxxx
+R00000006 = xxxx
+R00000007 = xxxx
+R00000008 = xxxx
+R00000009 = xxxx
+R0000000a = xxxx
+R0000000b = xxxx
+R0000000c = xxxx
+R0000000d = xxxx
+R0000000e = xxxx
+R0000000f = xxxx
+Time:       1641
+Cycles:      164
+PC:         002d
+instr=0000
+
+stall_pc=z, i_rdy=0, stall_IM_ID=1, iaddr=002d, flow_change_ID_EX=0,zr=0,rf_w_data_DM_WB=7fff, rf_dst_addr_DM_WB=0
+
