@@ -1,0 +1,37 @@
+#Fibonacci series
+llb R15, 0x00 #R15 = 0x0000 //start address
+llb R14, 0xFF #R14 = 0xFFFF //increment index
+llb R13, 0x3F
+lhb R13, 0x00 #R13 = 0x003F //array size
+llb R1, 0x01 #R1 = 0x0001 //a
+llb R2, 0x01 #R2 = 0x0001 //b
+llb R3, 0x00 #R3 = 0x0000 //tmp register
+
+generate_loop:
+sw R1, R15, 0xFF
+add R15, R15, R14
+add R3, R1, R2
+add R1, R2, R0
+add R2, R3, R0
+add R0, R15, R13
+b gt, generate_loop
+
+add R15, R15, R14 #Adjust R15 down so that R15 + 0x01 points back to last written location in memory
+llb R14, 0x01 #R14 = 0x0001
+
+move_loop:
+lw R5, R15, 0x01
+sw R5, R15, 0x02
+add R15, R15, R14
+lw R5, R15, 0x01
+sw R5, R15, 0x02
+add R15, R15, R14
+lw R5, R15, 0x01
+sw R5, R15, 0x02
+add R15, R15, R14
+lw R5, R15, 0x01
+sw R5, R15, 0x02
+add R15, R15, R14
+b lt, move_loop
+
+hlt
