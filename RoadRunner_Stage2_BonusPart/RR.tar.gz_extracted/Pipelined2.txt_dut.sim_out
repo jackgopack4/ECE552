@@ -1,4 +1,0 @@
-ERROR at time 1000010: simulation is running for too long; limit of 100000 cycles exceeded!
-Time:    1000011
-Cycles:   100001
-PC:         0009
