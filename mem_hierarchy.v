@@ -13,11 +13,6 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
   wire i_hit, i_dirty, i_we;
   wire [1:0] i_sel;
 
-  wire [63:0] d_rd_data, d_wr_data;
-  wire [7:0] d_tag;
-  wire d_hit, d_dirty, d_we, d_dirty_in, d_re;
-  wire [1:0] d_sel;
-
   wire [13:0] m_addr;
   wire m_re, m_we, m_rdy;
   wire [63:0] m_wr_data, m_rd_data;
@@ -33,18 +28,6 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
                 i_tag,		// tag of instr
                 i_hit,		// high if hit
                 i_dirty );	// high if dirty
-
-  cache dCache( clk,
-                rst_n,
-                d_addr[15:2],
-                d_wr_data,
-                d_dirty_in,
-                d_we,
-                d_re,
-                d_rd_data,
-                d_tag,
-                d_hit,
-                d_dirty);
 	
 	cache_controller controller(.clk(clk),
                               .rst_n(rst_n),
@@ -64,17 +47,7 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
                               .re(re),			// read enable? for hwat?
                               .we(we),			// write enable?
                               .d_addr(d_addr),
-                              .wrt_data(wrt_data),
-                              .d_wr_data(d_wr_data),
-                              .d_dirty_write(d_dirty_in),
-                              .d_we(d_we),
-                              .d_re(d_re),
-                              .d_tag(d_tag),
-                              .d_hit(d_hit),
-                              .d_dirty_read(d_dirty),
-                              .d_sel(d_sel),
-                              .d_rd_data(d_rd_data),
-                              .d_rdy(d_rdy));
+                              .wrt_data(wrt_data));
 	
 	unified_mem memory( clk,
                       rst_n,
@@ -94,22 +67,14 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
     else if(i_sel == 2'b10) instr = i_rd_data[47:32];
     else                    instr = i_rd_data[63:48];
   end
+  
 
-  // mux for data read output
-  always@(negedge clk) begin
-    if     (d_sel == 2'b00) instr = d_rd_data[15:0];
-    else if(d_sel == 2'b01) instr = d_rd_data[31:16];
-    else if(d_sel == 2'b10) instr = d_rd_data[47:32];
-    else                    instr = d_rd_data[63:48];
-  end
-
-/*
 // test output //
 always @(*) begin
 		$display("m_rdy=%b, i_rdy=%b, i_hit=%b, i_sel=%b, instr=%h,\n m_rd_data=%h, i_rd_data=%h, i_we=%b,\n i_wr_data=%h, m_re=%b, i_addr=%h\n", m_rdy, i_rdy, i_hit, i_sel, instr, m_rd_data, i_rd_data, i_we, i_wr_data, m_re, i_addr);
 		//$display("instr=%h\n",instr);
 	end  
- */
+ 
   
   
 endmodule
