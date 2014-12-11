@@ -29,7 +29,7 @@ i <= 0;
 end else begin
 i <= i + 1;
 end
-$display("\n\nclk=%d%d%d%d%d%d%d%d%d%d%d%d%d\n\n", i,i,i,i,i,i,i,i,i,i,i,i,i);
+//$display("\n\nclk=%d%d%d%d%d%d%d%d%d%d%d%d%d\n\n", i,i,i,i,i,i,i,i,i,i,i,i,i);
 if (i == 100) begin
   //$finish();
 end

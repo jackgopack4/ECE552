@@ -30,9 +30,10 @@ wire allow_hlt;
 wire i_rdy, d_rdy, re, we, stall_pc, stall_IM_ID;
 wire [15:0] rd_data, wrt_data, d_addr;
 
-/*
+
 // test output //
- always @(posedge clk) begin
+/* 
+always @(posedge clk) begin
 		if(i_rdy) begin
 			$display("iCache valid, instr=%h",instr);
 		end else begin

@@ -60,22 +60,22 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
     
     case (state)
       IDLE: begin
-        $display("State = IDLE");
+        //$display("State = IDLE");
         allow_hlt = 1'b1;
         d_re = 1'b1;
         if(we) begin
-          $display("we signal raised");
+          //$display("we signal raised");
           nextState=(d_hit)? WRITE_DCACHE : ((d_dirty_read) ? DCACHE_TO_MEM : MEM_TO_DCACHE);
         end else if(re) begin
-          $display("re signal raised, no we");
+          //$display("re signal raised, no we");
           nextState=(d_hit)? READ_DCACHE : ((d_dirty_read) ? DCACHE_TO_MEM : MEM_TO_DCACHE);
         end else begin
-          $display("neither we nor re");
+          //$display("neither we nor re");
           nextState = (i_hit) ? READ_ICACHE : MEM_TO_ICACHE;
         end
       end
       WRITE_DCACHE: begin
-        $display("State = WRITE_DCACHE");
+        //$display("State = WRITE_DCACHE");
         d_we = 1'b1;
         d_dirty_write = 1'b1;
         case (d_addr[1:0])
@@ -84,14 +84,14 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
           2'b10: d_wr_data[47:32] = wrt_data;
           2'b11: d_wr_data[63:48] = wrt_data;
           default: begin
-            $display("nothing to see here\n");
+            //$display("nothing to see here\n");
           end
         endcase
         d_rdy = 1'b1;
         nextState=(i_hit)? READ_ICACHE: MEM_TO_ICACHE;
       end
       DCACHE_TO_MEM: begin
-        $display("State = DCACHE_TO_MEM");
+       // $display("State = DCACHE_TO_MEM");
         m_we = 1'b1;
         d_re = 1'b1;
         m_addr={d_tag,d_addr[7:2]};
@@ -101,7 +101,7 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
         end
       end
       MEM_TO_DCACHE: begin
-        $display("State = MEM_TO_DCACHE");
+        //$display("State = MEM_TO_DCACHE");
         m_re = 1'b1;
         m_addr = d_addr[15:2];
         d_wr_data = m_rd_data;
@@ -112,18 +112,18 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
         end
       end
       READ_DCACHE: begin
-        $display("State = READ_DCACHE");
+        //$display("State = READ_DCACHE");
         d_re = 1'b1;
         d_rdy = 1'b1;
         nextState=(i_hit)? READ_ICACHE: MEM_TO_ICACHE;
       end
       READ_ICACHE: begin
-        $display("State = READ_ICACHE");
+        //$display("State = READ_ICACHE");
         i_rdy = 1'b1;
         nextState = IDLE;
       end
       MEM_TO_ICACHE: begin
-        $display("State = MEM_TO_ICACHE");
+        //$display("State = MEM_TO_ICACHE");
         m_re = 1'b1;
         if(!m_rdy) nextState=MEM_TO_ICACHE;
         else begin
