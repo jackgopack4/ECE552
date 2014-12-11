@@ -1,0 +1,24 @@
+BasicOpCodes1.txt, pass, 187, 120
+BasicOpCodes2.txt, pass, 121, 78
+BasicOpCodes3.txt, pass, 165, 105
+BasicOpCodes4.txt, pass, 67, 42
+branch_prediction.txt, fail
+cache_2way01.txt, pass, 151, 106
+cache_2way02.txt, pass, 16059, 5049
+JaredTest.txt, pass, 31, 18
+JunkTest.txt, pass, 77, 49
+move_stuff.txt, fail
+MultRoutine.txt, pass, 383, 202
+NOP_test.txt, pass, 55, 34
+Pipelined1.txt, pass, 77, 45
+Pipelined2.txt, pass, 106, 63
+prog0.txt, pass, 57, 37
+prog1.txt, pass, 37, 23
+prog2.txt, pass, 42, 25
+prog3.txt, pass, 29, 17
+prog4.txt, fail
+prog5.txt, pass, 1035, 274
+R0_bypass.txt, pass, 79, 50
+SimplePipelined.txt, pass, 81, 53
+StalledMEMnoWB.txt, pass, 79, 51
+SumLoop.txt, pass, 1267, 448
