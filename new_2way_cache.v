@@ -44,23 +44,15 @@ always @(clk or we_filt or negedge rst_n) begin
 		if(LRU[addr[4:0]] == 1'b0) begin
 			//$display("LRU = low, writing");
 			mem0[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
-<<<<<<< HEAD
 			LRU[addr[4:0]] = 1'b1;
-=======
 			if(toggle == 1'b1) LRU[addr[4:0]] = 1'b1;
->>>>>>> e4ee67a6ef5c41c6e0e815d667c85ade48098560
 		end
 		else begin
 			//$display("LRU = high, writing");
 			mem1[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
-<<<<<<< HEAD
 			LRU[addr[4:0]] = 1'b0;
 		end
-=======
-			if(toggle == 1'b1) LRU[addr[4:0]] = 1'b0;
-		end
 		//if(toggle == 1'b1) LRU[addr[4:0]] = !LRU[addr[4:0]];
->>>>>>> e4ee67a6ef5c41c6e0e815d667c85ade48098560
 	end
 end
 
