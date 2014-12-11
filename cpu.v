@@ -37,7 +37,7 @@ always @(posedge clk) begin
 			$display("instr=%h\n",instr);
 		end
 		
-		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
+		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h,zr=%b,rf_w_data_DM_WB=%h, rf_dst_addr_DM_WB=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX,zr,rf_w_data_DM_WB,rf_dst_addr_DM_WB);
 	end
 
 ///////////////////////////////////
@@ -51,7 +51,8 @@ mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_r
 // Instantiate program counter //
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
-       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), .i_rdy(i_rdy));
+       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), .i_rdy(i_rdy),
+       .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM));
 
 // assign when to stall pc
 //assign stall_pc = stall_IM_ID ? stall_IM_ID : !i_rdy;
@@ -74,7 +75,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), /*.zr_EX_DM(zr_EX_DM),*/ .br_ins
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
 		.flow_change_ID_EX(flow_change_ID_EX),
-		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy));
+		.padd_ID_EX(padd_ID_EX), .i_rdy(i_rdy),.stall_DM_WB(stall_DM_WB));
 	   
 ////////////////////////////////
 // Instantiate register file //
@@ -86,7 +87,7 @@ rf iRF(.clk(clk), .p0_addr(rf_p0_addr), .p1_addr(rf_p1_addr), .p0(p0), .p1(p1),
 ///////////////////////////////////
 // Instantiate register src mux //
 /////////////////////////////////
-src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_ID_EX),
+src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM),
                 .src0sel_ID_EX(src0sel_ID_EX), .src1sel_ID_EX(src1sel_ID_EX), .p0(p0), .p1(p1),
                 .imm_ID_EX(instr_ID_EX), .pc_ID_EX(pc_ID_EX), .p0_EX_DM(p0_EX_DM),
 				.src0(src0), .src1(src1), .dst_EX_DM(dst_EX_DM), .dst_DM_WB(rf_w_data_DM_WB),
@@ -102,7 +103,7 @@ src_mux ISRCMUX(.clk(clk), .stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_ID_EX),
 ////////////////////
 alu iALU(.clk(clk), .src0(src0), .src1(src1), .shamt(instr_ID_EX[3:0]), .func(alu_func_ID_EX),
          .dst(dst_ID_EX), .dst_EX_DM(dst_EX_DM), .ov(ov), .zr(zr), .neg(neg),
-	 .padd(padd_ID_EX));		   
+	 .padd(padd_ID_EX),.stall_EX_DM(stall_EX_DM));		   
 //////////////////////////////
 // Instantiate data memory //
 ////////////////////////////
@@ -114,7 +115,7 @@ DM iDM(.clk(clk),.addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data
 ////////////////////////
 dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(dm_rd_data_EX_DM),
                 .dst_EX_DM(dst_EX_DM), .pc_EX_DM(pc_EX_DM), .rf_w_data_DM_WB(rf_w_data_DM_WB),
-				.jmp_imm_EX_DM(jmp_imm_EX_DM));
+				.jmp_imm_EX_DM(jmp_imm_EX_DM),.stall_DM_WB(stall_DM_WB));
 	
 /////////////////////////////////////////////
 // Instantiate branch determination logic //
@@ -122,7 +123,8 @@ dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(dm_rd_da
 br_bool iBRL(.clk(clk), .rst_n(rst_n), .clk_z_ID_EX(clk_z_ID_EX), .clk_nv_ID_EX(clk_nv_ID_EX),
              .br_instr_ID_EX(br_instr_ID_EX), .jmp_imm_ID_EX(jmp_imm_ID_EX),
 	     .jmp_reg_ID_EX(jmp_reg_ID_EX), .cc_ID_EX(cc_ID_EX), .zr(zr), .ov(ov),
-           /*.zr_EX_DM(zr_EX_DM),*/ .neg(neg), .flow_change_ID_EX(flow_change_ID_EX));	
+           /*.zr_EX_DM(zr_EX_DM),*/ .neg(neg), .flow_change_ID_EX(flow_change_ID_EX),.stall_EX_DM(stall_EX_DM),
+           .stall_ID_EX(stall_ID_EX));	
 	
 
 
