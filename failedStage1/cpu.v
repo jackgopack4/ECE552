@@ -72,9 +72,9 @@ PC pcMod(.nextAddr(nextAddr), .clk(clk), .rst(rst_n), .programCounter(programCou
 // Program Counter
 always @(posedge clk or negedge rst_n) begin
 	// let's see what's going on!
-	$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
+	//$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h", 
 	      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
-	$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+	//$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
    ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
 	
 end

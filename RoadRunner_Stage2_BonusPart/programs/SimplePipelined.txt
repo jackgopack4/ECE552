@@ -1,0 +1,27 @@
+		LLB R1, 0x55
+		LLB R2, 0x33
+		ADD R0, R0, R0		# Nop for write backs to occur
+		ADD R0, R0, R0		# Nop for write back to occur
+		ADD R3, R2, R1		# (should be 0x88)
+		ADD R0, R0, R0		# Nop for write backs to occur
+		ADD R0, R0, R0		# Nop for write back to occur		
+		SW R3, R2, 0x03		# should store 0x88 to location 0x36
+		LW R4, R2, 0x03		# should read 0x88 from 0x36 (can load immediately after a store)
+		ADD R0, R0, R0		# Nop for write backs to occur
+		ADD R0, R0, R0		# Nop for write back to occur
+        SUB R0, R4, R3
+		B EQ, PASS
+	
+		ADD R0, R0, R0		# Nop for write backs to occur
+		ADD R0, R0, R0		# Nop for write back to occur
+		
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		ADD R0, R0, R0		# Nop for write backs to occur
+		ADD R0, R0, R0		# Nop for write back to occur
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		ADD R0, R0, R0		# Nop for write back to occur
+		HLT
+		

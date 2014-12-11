@@ -1,0 +1,17 @@
+	LLB R1, 1             #R1<=0x0001
+	LLB R2, 2             #R2<=0x0002
+	LLB R11, 32           #R11<=0x0020
+	LLB R12, 32           #R12<=0x0020
+	LHB R12, 1            #R12<=0x0120
+	SW R1, R11, 0         #mem[32]  <= 0x0001
+	SW R2, R12, 0         #mem[288] <= 0x0002
+	LLB R6, 1             #R6<=0x0001
+	LLB R7, 0xE8          #R7<=0x00E8
+	LHB R7, 0x03	      #R7<=0x03E8
+	LLB R8, 0             #R8<=0x0000
+LOOP:	LW R3, R11, 0         #R3 <= mem[32]  <= 0x0001
+	LW R4, R12, 0         #R4 <= mem[288] <= 0x0002
+	ADD R8, R8, R6        #R8<=R8+R6
+	SUB R9, R7, R8
+	B NEQ, LOOP 
+	HLT

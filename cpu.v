@@ -30,24 +30,24 @@ wire allow_hlt;
 wire i_rdy, d_rdy, re, we, stall_pc, stall_IM_ID;
 wire [15:0] rd_data, wrt_data, d_addr;
 
-/*
+
 // test output //
  always @(posedge clk) begin
 		if(i_rdy) begin
 			$display("iCache valid, instr=%h",instr);
 		end else begin
-			//$display("iCache invalid, reading from mem");
+			////$display("iCache invalid, reading from mem");
 			$display("instr=%h\n",instr);
 		end
 		
 		$display("stall_pc=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h,zr=%b,rf_w_data_DM_WB=%h, rf_dst_addr_DM_WB=%h\n",stall_pc, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX,zr,rf_w_data_DM_WB,rf_dst_addr_DM_WB);
 	end
-*/
+
 
 ///////////////////////////////////
 // Instantiate memory hierarchy //
 /////////////////////////////////
-mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), .i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
+two_way_mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), .i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
 
 
 

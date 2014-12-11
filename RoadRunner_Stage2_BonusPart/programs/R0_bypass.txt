@@ -1,0 +1,29 @@
+########################################################
+# Tests that writes to R0 are not bypassed as non-zero #
+########################################################
+		LLB R1, 0x22		# R1 = 0x0022
+		LLB R2, 0x11		# R2 = 0x0011
+		ADD R0, R2, R1
+		ADD R3, R0, R1		# R3 should equal 0x0022 not 0x0044
+		LLB R4, 0x44		# R4 = 0x0044
+		SUB R0, R3, R4
+		B 	EQ, FAIL
+		SUB R0, R3, R1
+		B	EQ, ARND
+		B 	UNCOND, FAIL
+ARND:	ADD R0, R2, R1
+		ADD R5, R4, R4		# this time put one instruction in between R0 write and R0 read
+		ADD R3, R0, R1		# R3 should equal 0x0022 not 0x44
+		SUB R0, R3, R4
+		B	EQ, FAIL
+		SUB R0, R3, R1
+		B	EQ, PASS
+		B	UNCOND, FAIL
+
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT
+		
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+		

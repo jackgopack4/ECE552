@@ -11,12 +11,12 @@ cpu iCPU(.clk(clk), .rst_n(rst_n), .hlt(hlt), .pc(pc));
 
 initial begin
   clk = 0;
-  $display("rst assert\n");
+  //$display("rst assert\n");
   rst_n = 0;
   @(posedge clk);
   @(negedge clk);
   rst_n = 1;
-  $display("rst deassert\n");
+  //$display("rst deassert\n");
 end 
   
 always
@@ -43,13 +43,13 @@ end
     
    initial begin 
    // ADD 
-   $display("********************ADD********************");
+   //$display("********************ADD********************");
    #5
    func = ADD;   //4'b0000;
    src0 = 16'b0000000000000110;
    src1 = 16'b0000000000001001;
    #5  
-   $display("src0=%d, src1=%d, func=%d, dst=%d", src0, src1, func, dst);  
+   //$display("src0=%d, src1=%d, func=%d, dst=%d", src0, src1, func, dst);  
    end 
 */   
     

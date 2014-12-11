@@ -1,0 +1,9 @@
+llb R1, 6		#R1 <= 0x0006
+sw R1, R1, 3	#mem[9] <= 0x0006			//Forwarding R1 from llb in EX_MEM
+lw R2, R1, 3	#R2 <= mem[9] == 0x0006		//Forwarding R1 from llb in MEM_WB
+sw R2, R1, 4	#mem[10] <= 0x0006			//No need to load-use stall - Forwarding R2 from lw in MEM_WB
+lw R3, R1, 4	#R3 <= mem[10] == 0x0006	//No forwarding needed
+sw R3, R1, 5	#mem[11] <= 0x0006			//No need to load-use stall - Forwarding R3 from lw in MEM_WB
+lw R4, R1, 5	#R4 <= mem[11] == 0x0006	//No forwarding needed
+sw R4, R1, 6	#mem[12] <= 0x0006			//No need to load-use stall - Forwarding R4 from lw in MEM_WB
+hlt

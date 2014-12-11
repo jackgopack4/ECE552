@@ -50,8 +50,8 @@ module ALU( dst,
 	       ((op == 4'b0101 || op[3:1] == 3'b011) ? 2'b10 :
 	                                           2'b11));
 
-//  always@(Sel) $display("Sel changed to: %b", Sel);
-//  always@(op) $display("op changed to: %b", op);
+//  always@(Sel) //$display("Sel changed to: %b", Sel);
+//  always@(op) //$display("op changed to: %b", op);
   assign ov = (Sel == 2'b00) ? v_arith : 1'b0;
   assign zr = (Sel == 2'b00) ? z_arith :
              ((Sel == 2'b01) ? z_logic :

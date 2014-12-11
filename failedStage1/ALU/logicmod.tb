@@ -8,10 +8,10 @@ initial begin
 	B=16'b1010101010101010;
 	Sel=1'b0;
 	#5;
-	$display("Sample and: %b", Out);
+	//$display("Sample and: %b", Out);
 	Sel=1'b1;
 	#5;
-	$display("Sample nor: %b", Out);
+	//$display("Sample nor: %b", Out);
 	$finish;
 end
 endmodule

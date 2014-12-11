@@ -111,52 +111,52 @@ MemWrite_To_ID_EX, JumpR_To_ID_EX, MemToReg_To_ID_EX, RegWrite_To_ID_EX;
 ////////////************ Display ************//////////////
 always @(posedge clk) begin
     // let's see what's going on!
-    //$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h",
+    ////$display("programCounter=%d\n instruction#=%b\n readReg1=%d\n readReg2=%d\n readData1->ALU=%h\n src2Wire->ALU=%h\n ALUResult=%h -> dst_addrWriteReg=%d\n dst_RegWrite=%h\n readData2==dstWriteData=%h\n ALUSrc=%b\n Branch=%b, Yes=%b, PCSrc=%b\n nextAddr=%d\n negOut=%b, ovOut=%b, zrOut=%b\n signOutBranch=%d\n pcInc=%d\n signOutMem=%h",
     //      programCounter,     instruction,      readReg1,     readReg2,     readData1,          src2Wire,          ALUResult,      dst_addr,             dst,            readData2,                   ALUSrc,     Branch,    Yes,    PCSrc,     nextAddr,      negOut,   ovOut,    zrOut,    signOutBranch,     pcInc, signOutMem);
-    //$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
+    ////$display("***************************\nRegDst=%b, Branch=%b, MemRead=%b, MemToReg=%b, MemWrite=%b, ALUSrc=%b, RegWrite=%b, LoadHigh=%b, JumpR=%b, JumpAL=%b StoreWord=%b\n***************************\n\n", RegDst, Branch, MemRead, MemToReg, MemWrite,
   // ALUSrc, RegWrite, LoadHigh, JumpR, JumpAL, StoreWord);
-  $display("\n********** IF Stage **********");
-  $display("programCounter=%h pcInc=%h nextAddr=%h\ninstruction=%h",
+  //$display("\n********** IF Stage **********");
+  //$display("programCounter=%h pcInc=%h nextAddr=%h\ninstruction=%h",
             programCounter,     pcInc,     nextAddr,     instruction);
-  $display("nextAddr =  DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM=%h :\n(DM_JumpR_EX_DM=%b  ? EX_readData1_EX_DM=%h :\n(WB_hlt_EX_DM=%b   ? DM_programCounter_EX_DM=%h :\n(PCSrc=%b           ? DM_PCaddOut_EX_DM=%h :\npcInc=%b)));",
+  //$display("nextAddr =  DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM=%h :\n(DM_JumpR_EX_DM=%b  ? EX_readData1_EX_DM=%h :\n(WB_hlt_EX_DM=%b   ? DM_programCounter_EX_DM=%h :\n(PCSrc=%b           ? DM_PCaddOut_EX_DM=%h :\npcInc=%b)));",
                         DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,       DM_JumpR_EX_DM,      EX_readData1_EX_DM,       WB_hlt_EX_DM,       DM_programCounter_EX_DM,       PCSrc,               DM_PCaddOut_EX_DM,      pcInc);
-  $display("********** ID Stage **********");
-  $display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
+  //$display("********** ID Stage **********");
+  //$display("programCounter=%h instruction=%h\nreadReg1=%d readReg2=%d\nreadData1=%h readData2=%h",
             DM_programCounter_IF_ID, instr_IF_ID, readReg1, readReg2, readData1, readData2);
-  /*$display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
+  /*//$display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             signOutALU,   signOutMem,   signOutBranch,   signOutJump);
 */
-  $display("********** EX Stage **********");
-  $display("programCounter=%h\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
+  //$display("********** EX Stage **********");
+  //$display("programCounter=%h\nALUSrc1=%h ALUSrc2=%h\nOpCode=%b ALUResult=%h\nneg=%b ov=%b zr=%b",
             DM_programCounter_ID_EX, ALU1, ALU2, EX_opCode_ID_EX, ALUResult, negOut, ovOut, zrOut);
-  $display("forwardA=%b forwardB=%b",forwardA, forwardB);
-  $display("ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=%h : ((forwardA == 2'b01) ? WB_dst_DM_WB=%h : EX_readData1_ID_EX=%h);",
+  //$display("forwardA=%b forwardB=%b",forwardA, forwardB);
+  //$display("ALU1 = (forwardA == 2'b10) ? DM_ALUResult_EX_DM=%h : ((forwardA == 2'b01) ? WB_dst_DM_WB=%h : EX_readData1_ID_EX=%h);",
                                          DM_ALUResult_EX_DM,                            WB_dst_DM_WB,     EX_readData1_ID_EX);
-  $display("ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=%h : ((forwardB == 2'b01) ? WB_dst_DM_WB=%h : src2Wire=%h);",
+  //$display("ALU2 = (forwardB == 2'b10) ? DM_ALUResult_EX_DM=%h : ((forwardB == 2'b01) ? WB_dst_DM_WB=%h : src2Wire=%h);",
                                          DM_ALUResult_EX_DM,                            WB_dst_DM_WB,     src2Wire);
-  $display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
+  //$display("signOutALU=%h signOutMem=%h signOutBranch=%h signOutJump=%h",
             EX_signOutALU_ID_EX,   EX_signOutMem_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
-  $display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
+  //$display("alu2out=PCaddOut=%h DM_pcInc_ID_EX=%h signOutBJ=%h \nDM_JumpAL_ID_EX=%b EX_signOutBranch_ID_EX=%h EX_signOutJump_ID_EX=%h",
             PCaddOut,           DM_pcInc_ID_EX,   signOutBJ,     DM_JumpAL_ID_EX,   EX_signOutBranch_ID_EX,   EX_signOutJump_ID_EX);
-  $display("********** DM Stage **********");
-  $display("programCounter=%h\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
+  //$display("********** DM Stage **********");
+  //$display("programCounter=%h\nmemAddr=%h memWrtData=%h\nMemRead=%b MemWrite=%b\nrd_data=%h\nccc=%b Yes=%b Branch=%b",
             DM_programCounter_EX_DM, DM_ALUResult_EX_DM, DM_readData2_EX_DM, DM_MemRead_EX_DM, DM_MemWrite_EX_DM, rd_data, DM_ccc_EX_DM, Yes, DM_Branch_EX_DM);
-    $display("dst_addr=%h = DM_JumpAL_EX_DM=%b ? 4'b1111 : (DM_RegDst_EX_DM=%b ? instr_EX_DM[11:8]=%b : instr_EX_DM[3:0]=%b);",
+    //$display("dst_addr=%h = DM_JumpAL_EX_DM=%b ? 4'b1111 : (DM_RegDst_EX_DM=%b ? instr_EX_DM[11:8]=%b : instr_EX_DM[3:0]=%b);",
               dst_addr,     DM_JumpAL_EX_DM,            DM_RegDst_EX_DM,     instr_EX_DM[11:8],     instr_EX_DM[3:0]);
-    $display("dst=%h = DM_JumpAL_EX_DM=%b   ? DM_pcInc_EX_DM=%h :\n(DM_MemToReg_EX_DM=%b ? rd_data=%h :\nDM_ALUResult_EX_DM=%h);",
+    //$display("dst=%h = DM_JumpAL_EX_DM=%b   ? DM_pcInc_EX_DM=%h :\n(DM_MemToReg_EX_DM=%b ? rd_data=%h :\nDM_ALUResult_EX_DM=%h);",
               dst,     DM_JumpAL_EX_DM,       DM_pcInc_EX_DM,       DM_MemToReg_EX_DM,     rd_data,      DM_ALUResult_EX_DM);
-  $display("********** nextAddr immediate assign **********");
-  $display("nextAddr=%h\nJumpAL=%b JumpR=%b hlt=%b PCSrc=%b",
+  //$display("********** nextAddr immediate assign **********");
+  //$display("nextAddr=%h\nJumpAL=%b JumpR=%b hlt=%b PCSrc=%b",
             nextAddr,     DM_JumpAL_EX_DM, DM_JumpR_EX_DM, WB_hlt_EX_DM, PCSrc);
-  /*$display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nWB_hlt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
+  /*//$display(       "DM_JumpAL_EX_DM=%b ? DM_PCaddOut_EX_DM      =%h :\nDM_JumpR_EX_DM =%b ? DM_readData1_EX_DM     =%h :\nWB_hlt_EX_DM  =%b ? DM_programCounter_EX_DM=%h :\nPCSrc          =%b ? DM_PCaddOut_EX_DM      =%h :\n                    pcInc                  =%h",
                    DM_JumpAL_EX_DM,     DM_PCaddOut_EX_DM,
                    DM_JumpR_EX_DM,      DM_readData1_EX_DM,
                    WB_hlt_EX_DM,       DM_programCounter_EX_DM,
                    PCSrc,               DM_PCaddOut_EX_DM,
                                         pcInc);
 */
-  $display("********** WB Stage **********");
-  $display("regWriteAddr=%d regWriteData=%h RegWrite=%b\n\n\n",
+  //$display("********** WB Stage **********");
+  //$display("regWriteAddr=%d regWriteData=%h RegWrite=%b\n\n\n",
            WB_dst_addr_DM_WB , WB_dst_DM_WB, WB_RegWrite_DM_WB);
 
 end

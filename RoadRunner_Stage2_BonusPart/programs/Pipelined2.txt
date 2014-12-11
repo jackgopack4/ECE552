@@ -1,0 +1,29 @@
+#######################################################################
+# Simple test with some dependencies to test pipelined implementation #
+#######################################################################
+		LLB R3, 0x22		# R3 = 0x0022
+		LLB R10, 0x07		# R10 = 0x0007
+		LLB R11, 0x33		# R11 = 0x0033
+		LLB R2, 0x05		# R2 = 0x0005
+		SW  R3, R2, 1		# MEM[6] <= 0x0022
+		SW  R10, R2,0		# MEM[5] <= 0x0007
+		SW  R11, R2,0x07	# MEM[0x0C] <= 0x0033
+		LW  R1, R2, 1		# R1 <= 0x0022
+		ADD R2, R1, R0		# R2 <= 0x0022
+		SUB R3, R1, R2		# R3 <= 0x0000
+		LW  R4, R3, 5       # R4 <= MEM[5] = 0x0007
+		LW  R5, R4, 5       # R5 <= MEM[0x0C]  = 0x0033
+		SW  R5, R4, 6		# MEM[0x0D] = 0x0033
+		LLB R5, 0x0D		# R5 = 0x000D
+		LW  R6, R5, 0		# R6 = MEM[0x0D] = 0x0033
+		LLB R7, 0x33
+		SUB R0, R6, R7
+		B EQ, PASS
+		
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+		
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT
+		

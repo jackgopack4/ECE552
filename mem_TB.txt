@@ -38,10 +38,10 @@ module mem_TB();
 
 	always @(posedge clk) begin
 		if(i_rdy) begin
-			$display("instr=%h\n",instr);
+			//$display("instr=%h\n",instr);
 			i_addr = i_addr + 1;
 		end else begin
-			$display("iCache invalid, reading from mem\n");
+			//$display("iCache invalid, reading from mem\n");
 		end
 
 	end

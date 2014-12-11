@@ -149,7 +149,7 @@ initial begin
 	in2 = $random;
     ALUop = $random;
 	#1
-	$display("ALUop = %h,  in1 = %h, in2 = %h, out = %h, zr = %b, neg = %b, ov = %b", ALUop, in1, in2, out, zr, neg, ov);
+	//$display("ALUop = %h,  in1 = %h, in2 = %h, out = %h, zr = %b, neg = %b, ov = %b", ALUop, in1, in2, out, zr, neg, ov);
 	i = i + 1;
 	end
 	$finish;

@@ -1,0 +1,8 @@
+	LLB R1, 1             #R1<=0x0001
+	LLB R2, 0x10          #R2<=0x0010
+	LHB R2, 0x27	      #R2<=0x2710
+	LLB R3, 0             #R3<=0x0000
+LOOP:	ADD R3, R3, R1        #R3<=R3+R1
+	SUB R4, R2, R3
+	B NEQ, LOOP 
+	HLT

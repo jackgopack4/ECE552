@@ -10,7 +10,7 @@ always @(posedge clk, negedge rst) begin
 	end else begin
 		programCounter <= nextAddr;
 	end
-//$display("programCounter=%d, nextAddr=%d", programCounter, nextAddr); 
+////$display("programCounter=%d, nextAddr=%d", programCounter, nextAddr); 
 end
 
 endmodule

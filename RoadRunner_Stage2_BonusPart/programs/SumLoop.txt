@@ -1,0 +1,28 @@
+#####################################################
+# Longer yet Simpler Test, sum all numbers 0 to 100 #
+#####################################################
+
+		LLB R1, 0x00		# Number we are adding
+		LLB R2, 100			# Loop counter
+		LLB R3, 0x00		# Accumulator
+		LLB R4, 0x01		# The number 1
+ACCM:	ADD	R3, R3, R1		# accumulate
+		ADD R1, R1, R4		# increment the number we are adding
+		SUB R2, R2, R4		# decrement the loop counter
+		B	GTE, ACCM
+		LLB R5, 0xBA		# Load the right answer
+		LHB R5, 0x13
+		SUB R0, R3, R5
+		B	EQ, PASS
+		ADD R0, R0, R0
+		ADD R0, R0, R0
+
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT		
+	    ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10	# R11++
+		ADD R11, R11, R10   # R11++
+		
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT

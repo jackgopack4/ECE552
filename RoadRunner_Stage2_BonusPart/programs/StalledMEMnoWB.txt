@@ -1,0 +1,25 @@
+#############################################################################
+# Create a Stall in MEM stage with should not WB, can cause missed WB in EX #
+#############################################################################
+		LLB R1, 0x33		# R1 = 0x0033
+		LLB R2, 0x11		# R2 = 0x0011
+		ADD R3, R2, R1      # R3 = 0x0044 (instruction in WB)
+		LW	R4, R1, 0x00	# instruction that will stall in MEM stage
+		ADD R5, R3, R2		# 0x0044+0x0011 = 0x0055 in EX at time of stall
+		LLB R6, 0x55
+		SUB R0, R5, R6
+		B	EQ, ARND
+		B	UNCOND, FAIL
+ARND:	ADD R3, R2, R1
+		LW 	R4, R3, 0x00
+		ADD R5, R3, R2		# should be 0x55
+		SUB R0, R5, R6
+		B	EQ, PASS
+			
+FAIL:	LLB R1, 0xFF		# R1 will contain 0xFFFF (indicates failure)
+		HLT	
+
+PASS:	LLB R1, 0xAA		# R1 will contain 0xFFAA
+		LHB R1, 0xAA		# R1 will contain 0xAAAA (indicated pass)
+		HLT	
+		

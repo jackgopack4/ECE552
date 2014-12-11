@@ -10,8 +10,8 @@ module add16bit(cout, sum, a, b, cin);
   add8bit A1(cout, sum[15:8], a[15:8], b[15:8], cout0);
 
   always@(sum) begin
-//	  $display("a is %b", a);
-//	  $display("b is %b", b);
-//	  $display("Sum is %b", sum);
+//	  //$display("a is %b", a);
+//	  //$display("b is %b", b);
+//	  //$display("Sum is %b", sum);
   end
 endmodule

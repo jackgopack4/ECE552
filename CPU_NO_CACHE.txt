@@ -31,13 +31,13 @@ wire [15:0] rd_data, wrt_data, d_addr;
 // test output //
 always @(posedge clk) begin
 		if(i_rdy) begin
-			$display("iCache valid, instr=%h",instr);
+			//$display("iCache valid, instr=%h",instr);
 		end else begin
-			$display("iCache invalid, reading from mem");
-			$display("instr=%h\n",instr);
+			//$display("iCache invalid, reading from mem");
+			//$display("instr=%h\n",instr);
 		end
 		
-		$display("stall_pipeline=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pipeline, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
+		//$display("stall_pipeline=%b, i_rdy=%b, stall_IM_ID=%b, iaddr=%h, flow_change_ID_EX=%h\n",stall_pipeline, i_rdy, stall_IM_ID, iaddr, flow_change_ID_EX);
 	end
 /*
 ///////////////////////////////////
