@@ -1,4 +1,4 @@
-module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg, padd);
+module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg, padd,stall_EX_DM);
 ///////////////////////////////////////////////////////////
 // ALU.  Performs ADD, SUB, AND, NOR, SLL, SRL, or SRA  //
 // based on func input.  Provides OV and ZR outputs.   //
@@ -23,7 +23,7 @@ input clk;
 input [15:0] src0,src1;
 input [2:0] func;			// selects function to perform
 input [3:0] shamt;			// shift amount
-
+input stall_EX_DM;
 input padd;
 
 
@@ -119,6 +119,7 @@ assign neg = dst[15];
 // Flop the ALU result //
 ////////////////////////
 always @(posedge clk)
-  dst_EX_DM <= dst;
-
+  if (!stall_EX_DM) begin
+  	dst_EX_DM <= dst;
+  end
 endmodule
