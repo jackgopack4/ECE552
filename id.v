@@ -4,9 +4,9 @@ module id(clk,rst_n,instr,/*zr_EX_DM,*/br_instr_ID_EX,jmp_imm_ID_EX,jmp_reg_ID_E
 	  src1sel_ID_EX,dm_re_EX_DM,dm_we_EX_DM,clk_z_ID_EX,clk_nv_ID_EX,instr_ID_EX,
 	  cc_ID_EX, stall_IM_ID,stall_ID_EX,stall_EX_DM,hlt_DM_WB,byp0_EX,byp0_DM,
 	  byp1_EX,byp1_DM,flow_change_ID_EX,
-	  padd_ID_EX);
+	  padd_ID_EX,i_rdy,stall_DM_WB);
 
-input clk,rst_n;
+input clk,rst_n, i_rdy;
 input [15:0] instr;					// instruction to decode and execute direct from IM, flop first
 //input zr_EX_DM;						// zero flag from ALU (used for ADDZ)
 input flow_change_ID_EX;
@@ -31,8 +31,9 @@ output reg clk_nv_ID_EX;			// asserted for instructions that should modify negat
 output [11:0] instr_ID_EX;			// lower 12-bits needed for immediate based instructions
 output [2:0] cc_ID_EX;				// condition code bits for branch determination from instr[11:9]
 output stall_IM_ID;					// asserted for hazards and halt instruction, stalls IM_ID flops
-output stall_ID_EX;					// asserted for hazards and halt instruction, stalls ID_EX flops
-output stall_EX_DM;					// asserted for hazards and halt instruction, stalls EX_DM flops
+output stall_ID_EX;	//reg					// asserted for hazards and halt instruction, stalls ID_EX flops
+output stall_EX_DM;	//reg				// asserted for hazards and halt instruction, stalls EX_DM flops
+output stall_DM_WB;
 output reg hlt_DM_WB;				// needed for register dump
 output reg byp0_EX,byp0_DM;			// bypasing controls for RF_p0
 output reg byp1_EX,byp1_DM;			// bypassing controls for RF_p1
@@ -84,7 +85,7 @@ wire load_use_hazard,flush;
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
     instr_IM_ID <= 16'hb000;			// LLB R0, #0000
-  else if (!stall_IM_ID)
+  else if (!stall_IM_ID)// || (flow_change_ID_EX && !i_rdy))
     instr_IM_ID <= instr;				// flop raw instruction from IM
 	
 /////////////////////////////////////////////////////////////
@@ -125,8 +126,10 @@ always @(posedge clk)
 	
 	
 always @(posedge clk) begin
-  rf_we_DM_WB 		<= rf_we_EX_DM;
-  rf_dst_addr_DM_WB 	<= rf_dst_addr_EX_DM;
+  if (!stall_DM_WB) begin
+    rf_we_DM_WB 		<= rf_we_EX_DM;
+    rf_dst_addr_DM_WB 	<= rf_dst_addr_EX_DM;
+  end
 end
 
 
@@ -141,7 +144,7 @@ always @(posedge clk, negedge rst_n)
 	  byp1_EX <= 1'b0;
 	  byp1_DM <= 1'b0;
 	end
-  else
+  else if (!stall_ID_EX)
     begin
 	  byp0_EX <= (rf_dst_addr_ID_EX==rf_p0_addr) ? (rf_we_ID_EX & |rf_p0_addr) : 1'b0;
 	  byp0_DM <= (rf_dst_addr_EX_DM==rf_p0_addr) ? (rf_we_EX_DM & |rf_p0_addr) : 1'b0;
@@ -158,12 +161,18 @@ always @(posedge clk, negedge rst_n)
 	  hlt_ID_EX <= 1'b0;
 	  hlt_EX_DM <= 1'b0;
 	  hlt_DM_WB <= 1'b0;
+	  //stall_ID_EX <= 1'b0;
+	  //stall_EX_DM <= 1'b0;
     end
-  else
+  else 
     begin
-	  hlt_ID_EX <= hlt & !flush | hlt_ID_EX;	// once set stays set
-	  hlt_EX_DM <= hlt_ID_EX;
-	  hlt_DM_WB <= hlt_EX_DM;
+      if (!stall_ID_EX)
+	  	hlt_ID_EX <= hlt & !flush | hlt_ID_EX;	// once set stays set
+	  	hlt_EX_DM <= hlt_ID_EX;
+	  	hlt_DM_WB <= hlt_EX_DM;
+	  
+	  //stall_ID_EX <= stall_IM_ID;
+	  //stall_EX_DM <= stall_ID_EX;
 	end
 	
 //////////////////////////////////////////
@@ -173,7 +182,7 @@ always @(posedge clk, negedge rst_n)
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
     flow_change_EX_DM <= 1'b0;
-  else if(!stall_EX_DM)
+  else if(!stall_EX_DM)// || (flow_change_ID_EX && !i_rdy))
     flow_change_EX_DM <= flow_change_ID_EX;
 
 assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
@@ -183,10 +192,16 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 //////////////////////////////	
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) || 
                           ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
+
+assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
+assign stall_ID_EX = !i_rdy; // hlt_EX_DM;
+assign stall_EX_DM = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;	
+assign stall_DM_WB = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;			
 						  
-assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard;
-assign stall_ID_EX = 1'b0; // hlt_EX_DM;
-assign stall_EX_DM = 1'b0; // hlt_EX_DM;
+//assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
+//assign stall_ID_EX =  stall_IM_ID//!i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
+//assign stall_EX_DM =  !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
+
 
 assign cc_ID_EX = instr_ID_EX[11:9];
 
