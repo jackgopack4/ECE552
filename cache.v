@@ -53,9 +53,10 @@ assign dirty = line[73]&line[72];						// if line is valid and dirty bit set
 assign rd_data = line[63:0];
 assign tag_out = line[71:64];							// need the tag for evictions
 
-
+/*
 always @(clk) begin
 $display("line[71:64]=%h, addr[13:6]=%h\n", line, addr);
 end
-	
+*/
+
 endmodule
