@@ -1,0 +1,8 @@
+new.tar.gz_extracted/rf_pipelined.v:81: syntax error
+new.tar.gz_extracted/src_mux.v:1: error: malformed statement
+new.tar.gz_extracted/src_mux.v:3: error: port clk already has a port declaration.
+new.tar.gz_extracted/rf_pipelined.v:8: error: Port ``clk'' has already been declared a port.
+new.tar.gz_extracted/src_mux.v:6: error: port p0 already has a port declaration.
+new.tar.gz_extracted/rf_pipelined.v:17: error: Port ``p0'' has already been declared a port.
+new.tar.gz_extracted/src_mux.v:7: error: port p1 already has a port declaration.
+new.tar.gz_extracted/rf_pipelined.v:17: error: Port ``p1'' has already been declared a port.

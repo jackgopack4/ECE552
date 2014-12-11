@@ -30,7 +30,7 @@ reg clr_cnt,int_we,int_re;								// state machine outputs
 // initial load of instr.hex //
 //////////////////////////////
 initial
-  $readmemh("cache_2way01.txt.bin",mem);	//SumLoop		MultRoutine
+  $readmemh("instr.hex",mem);	//SumLoop		MultRoutine
   
 /////////////////////////////////////////////////
 // Capture address at start of read or write  //

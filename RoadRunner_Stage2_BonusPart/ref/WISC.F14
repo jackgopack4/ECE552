@@ -2880,7 +2880,7 @@ T_45.0 ;
     %load/v 8, v0x7f893b5d39e0_0, 32;
    %cmpi/s 8, 16, 32;
     %jmp/0xz T_45.1, 5;
-    %vpi_call 12 79 "//$display", "R%1h = %h", v0x7f893b5d39e0_0, &A<v0x7f893b5d3aa0, v0x7f893b5d39e0_0 >;
+    %vpi_call 12 79 "$display", "R%1h = %h", v0x7f893b5d39e0_0, &A<v0x7f893b5d3aa0, v0x7f893b5d39e0_0 >;
     %ix/load 0, 1, 0;
     %load/vp0/s 8, v0x7f893b5d39e0_0, 32;
     %set/v v0x7f893b5d39e0_0, 8, 32;

@@ -1,3 +1,18 @@
-rf_pipelined.v:79: Error: System task/function //$display() is not defined by any module.
-Warning: VVP input file sub-version 7  is greater than the run time sub-version 5 !
-ref/WISC.F14: Program not runnable, 1 errors.
+R00000001 = xxxx
+R00000002 = xxxx
+R00000003 = xxxx
+R00000004 = xxxx
+R00000005 = xxxx
+R00000006 = xxxx
+R00000007 = xxxx
+R00000008 = xxxx
+R00000009 = xxxx
+R0000000a = xxxx
+R0000000b = xxxx
+R0000000c = xxxx
+R0000000d = xxxx
+R0000000e = xxxx
+R0000000f = xxxx
+Time:        251
+Cycles:       25
+PC:         0007
