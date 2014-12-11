@@ -66,7 +66,7 @@ always@(*) begin
     match_hi = 1'b0;
     match_lo = 1'b0;
   if(line[147:139]==addr[13:5]) match_hi = 1'b1;
-  else if(line[72:64]==addr[13:5]) match_lo = 1'b1;
+  if(line[72:64]==addr[13:5]) match_lo = 1'b1;
 end
 
 always@(posedge clk) begin

@@ -20,6 +20,7 @@ reg [5:0] x;
 
 reg [74:0] mem1_line;
 reg [74:0] mem0_line;
+reg LRU_line;
 
 wire hit1, hit0;
 
@@ -43,12 +44,13 @@ always @(clk or we_filt or negedge rst_n) begin
 		if(LRU[addr[4:0]] == 1'b0) begin
 			//$display("LRU = low, writing");
 			mem0[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
+			LRU[addr[4:0]] = 1'b1;
 		end
 		else begin
 			//$display("LRU = high, writing");
 			mem1[addr[4:0]] = {1'b1,wdirty,addr[13:5],wr_data};
+			LRU[addr[4:0]] = 1'b0;
 		end
-		if(toggle == 1'b1) LRU[addr[4:0]] = !LRU[addr[4:0]];
 	end
 end
 
@@ -57,6 +59,7 @@ always @(clk or re or addr) begin
 	if(clk && re) begin
 		mem1_line = mem1[addr[4:0]];
 		mem0_line = mem0[addr[4:0]];
+		LRU_line = LRU[addr[4:0]];
 	end
 end
 
@@ -64,7 +67,8 @@ end
 assign hit1 = ((mem1_line[72:64]==addr[13:5]) && (re | we)) ? mem1_line[74] : 1'b0;
 assign hit0 = ((mem0_line[72:64]==addr[13:5]) && (re | we)) ? mem0_line[74] : 1'b0;
 
-assign dirty = (LRU[addr[4:0]]) ? (mem1_line[74]&mem1_line[73]) : (mem0_line[74]&mem0_line[73]);
+assign dirty = (LRU_line) ? (mem1_line[74]&mem1_line[73]) : (mem0_line[74]&mem0_line[73]);
+
 always @(*) begin
 	hit = (hit1 | hit0);
 	if(hit1==1'b1) begin
