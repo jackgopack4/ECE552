@@ -68,4 +68,3 @@ assign src1 = (src1sel_ID_EX == RF2SRC1) ? RF_p1 :
 			  {{8{imm_ID_EX[7]}},imm_ID_EX[7:0]};			// for LHB/LLB (sign extended 8-bit immediate
 			  
 endmodule
-
