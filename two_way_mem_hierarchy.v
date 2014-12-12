@@ -21,7 +21,7 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
   wire m_re, m_we, m_rdy;
   wire [63:0] m_wr_data, m_rd_data;
   
-	new_2way_cache iCache( clk,
+	two_way_cache iCache( clk,
                 rst_n,
                 i_toggle,
                 i_addr[15:2],
@@ -34,7 +34,7 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
                 i_hit,		// high if hit
                 i_dirty );	// high if dirty
 
-  new_2way_cache dCache( clk,
+  two_way_cache dCache( clk,
                 rst_n,
                 d_toggle,
                 d_addr[15:2],
