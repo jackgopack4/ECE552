@@ -1,0 +1,44 @@
+// Project Report
+// Required Portion
+// Authors: David Hartman and John Peterson
+//Date Modified: 12 Dec 2014
+
+	For the second phase of the WISC-F14 project, we implemented two Direct-Mapped caches into the processor design. One cache was devoted to instructions and the other to data memory. The biggest impact to the preexisting CPU design was implementing a stall for all flops whenever there was a cache miss and the data had to be read from the memory. 
+
+Our cache controller has seven states.  
+IDLE: Waits for instruction or data request.
+WRITE_DCACHE: Write data to the d_cache.
+DCACHE_TO_MEM: Write block from d_cache to memory on an evict.
+MEM_TO_DCACHE: Get new block from memory and write to d_cache.
+READ_DCACHE: Read from d_cache if there is a hit.
+READ_ICACHE: Read from i_cache if there is a hit.
+MEM_TO_ICACHE: Read new block from memory and write to i_cache.
+
+Our RoadRunner test data is as follows.
+
+BasicOpCodes1.txt, pass, 186, 120
+BasicOpCodes2.txt, pass, 120, 78
+BasicOpCodes3.txt, pass, 164, 105
+BasicOpCodes4.txt, pass, 66, 42
+CacheTest1.txt, pass, 990, 499
+JaredTest.txt, pass, 30, 18
+JunkTest.txt, pass, 76, 51
+move_stuff.txt, pass, 2053, 997
+MultRoutine.txt, pass, 382, 208
+NOP_test.txt, pass, 54, 34
+Pipelined1.txt, pass, 76, 51
+Pipelined2.txt, pass, 105, 63
+prog0.txt, pass, 56, 37
+prog1.txt, pass, 36, 23
+prog2.txt, pass, 41, 25
+prog3.txt, pass, 28, 17
+prog4.txt, pass, 59, 37
+prog5.txt, pass, 1034, 520
+R0_bypass.txt, pass, 78, 50
+SimplePipelined.txt, pass, 80, 53
+StalledMEMnoWB.txt, pass, 78, 51
+SumLoop.txt, pass, 1266, 644
+
+	All tests were passed with our design. Since the reference was the original single-cycle cpu design, the pipelined CPU was much faster even with the extra four cycles taken for every memory read.
+
+	We used the published phase 1 reference design and our modified portions are commented in the modules. 
