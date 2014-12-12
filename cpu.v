@@ -53,7 +53,8 @@ always @(posedge clk) begin
 ///////////////////////////////////
 // Instantiate memory hierarchy //
 /////////////////////////////////
-mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), .i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
+mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), 
+	.i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
 
 
 
