@@ -1,7 +1,9 @@
 module src_mux(clk,stall_ID_EX,stall_EX_DM,src0sel_ID_EX,src1sel_ID_EX,p0,p1,
                imm_ID_EX,pc_ID_EX,p0_EX_DM,src0,src1,dst_EX_DM,dst_DM_WB,
 			   byp0_EX,byp0_DM,byp1_EX,byp1_DM);
-
+// Module for pipelined MUX control into ALU
+// Adapted heavily from Gengyu Yang's sample processor
+// Date modified: 12 Dec 2014
 input clk;
 input stall_ID_EX,stall_EX_DM;					// stall signal
 input [1:0] src0sel_ID_EX,src1sel_ID_EX;		// mux selectors for src0 and src1 busses
