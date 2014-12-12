@@ -20,7 +20,7 @@ output reg [15:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
 reg [15:0] pc,pc_IM_ID;
 
 wire [15:0] nxt_pc;
-
+ 
 /////////////////////////////////////
 // implement incrementer for PC+1 //
 ///////////////////////////////////
