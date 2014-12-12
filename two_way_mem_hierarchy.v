@@ -1,4 +1,9 @@
 module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_data, allow_hlt);
+// memory interface file to handle caches and data/instruction memory.
+// All memory and cache reads and writes enter and exit through this file.
+// This edition is slightly modified to accept the two-way set associative cache and cache_controller for such
+// Authors: David Hartman and John Peterson
+// Date modified: 12 Dec 2014
 
   input clk, rst_n, re, we;
   input [15:0] i_addr, d_addr, wrt_data;
@@ -46,7 +51,8 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
                 d_tag,
                 d_hit,
                 d_dirty);
-	
+                
+	// 99% of interactions handled in the cache_controller
 	two_way_cache_controller controller(.clk(clk),
                               .rst_n(rst_n),
                               .i_rdy(i_rdy),	// high when instr is ready to be read
@@ -91,6 +97,7 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
 
   
   // mux for instruction output
+  // output the proper instruction based on the bottom two bits
   always@(negedge clk) begin
     if     (i_sel == 2'b00) instr = i_rd_data[15:0];
     else if(i_sel == 2'b01) instr = i_rd_data[31:16];
@@ -99,6 +106,7 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
   end
   assign i_toggle = 1'b1;
   always@(posedge clk) begin
+    // commented display statement was used for debugging
     /*//$display("i_addr=%b\ni_wr_data=%b\ni_we=%b\ni_rd_data=%h\ni_tag=%b\ni_hit=%b\ni_dirty=%b\ninstr=%h\ni_sel=%b\n",
                 i_addr[15:2],
                 i_wr_data, //m_rd_data, 
