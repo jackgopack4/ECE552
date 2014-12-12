@@ -1,4 +1,4 @@
-module new_2way_cache(clk, rst_n, toggle, addr, wr_data, wdirty, we, re, rd_data, tag_out, hit, dirty);
+module two_way_cache(clk, rst_n, toggle, addr, wr_data, wdirty, we, re, rd_data, tag_out, hit, dirty);
 
 input clk, rst_n;
 input [13:0] addr;
