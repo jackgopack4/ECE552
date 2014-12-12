@@ -1,8 +1,5 @@
 module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re, m_we, m_wr_data, i_addr, i_hit, i_tag, m_rd_data, m_rdy, re, we, d_addr, wrt_data, d_wr_data, d_dirty_write, d_we, d_re, d_tag, d_hit, d_dirty_read, d_sel, d_rd_data, d_rdy,allow_hlt);
-        // Authors: David Hartman and John Peterson
-        // Course: ECE552
-        // Date modified: 12 Dec 2014
-	// module to control cache reads and writes, contained inside of mem_hierarchy  
+  
   input clk, rst_n;
   input [15:0] i_addr;
   input i_hit, d_hit, d_dirty_read;
@@ -13,7 +10,8 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
   input [15:0] d_addr, wrt_data;
   
   output reg i_rdy, i_we, m_we, m_re, d_dirty_write, d_we, d_re, d_rdy;
-  output reg [63:0] i_wr_data, m_wr_data, d_wr_data;
+  output [63:0] i_wr_data, m_wr_data; 
+  output reg [63:0] d_wr_data;
   output reg [13:0] m_addr;
   output reg [1:0] i_sel, d_sel;
   output reg allow_hlt;
@@ -38,7 +36,8 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
       state <= nextState;
     end
   end
-  
+ assign m_wr_data = d_rd_data;
+ assign i_wr_data = m_rd_data; 
   //always@(posedge clk) $display("state=%b, nextState=%b",state,nextState);
   /* FSM */
   always @ (*) begin
@@ -47,11 +46,9 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
     i_rdy = 1'b0;
     i_sel = i_addr[1:0];
     i_we  = 1'b0;
-    i_wr_data = m_rd_data;
     m_we  = 1'b0;
     m_re  = 1'b0;
     m_addr = i_addr[15:2];
-    m_wr_data = d_rd_data;
     d_dirty_write = 1'b0;
     d_we = 1'b0;
     d_re = 1'b0; // data read from mem is auto put into instr to write to cache

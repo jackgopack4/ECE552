@@ -1,4 +1,9 @@
 module mem_TB();
+	// Authors: David Hartman and John Peterson
+	// Course: ECE552
+	// Date modified: 12 Dec 2014
+	// Module to test cache functionality before plugging into CPU
+	// reads iCache only
 	reg clk, rst_n, re, we;
 	reg [15:0] i_addr, d_addr, wrt_data;
 
