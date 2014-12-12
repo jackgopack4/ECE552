@@ -1,13 +1,19 @@
 module two_way_cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re, m_we, m_wr_data, i_addr, i_hit, i_tag, m_rd_data, m_rdy, re, we, d_addr, wrt_data, d_wr_data, d_dirty_write, d_we, d_re, d_tag, d_hit, d_dirty_read, d_sel, d_rd_data, d_rdy,allow_hlt, d_toggle);
+// cache controller module for 2-way set associative cache
+// Remains very similar to direct mapped cache controller but with additional toggle signals
+// Manages cache writes and reads in addition to controlling ready signals for rest of processor
+// Authors: David Hartman and John Peterson
+// Date modified: 12 Dec 2014
   
   input clk, rst_n;
-  input [15:0] i_addr;
+  input [15:0] i_addr; // full imem address
   input i_hit, d_hit, d_dirty_read;
-  input [8:0] i_tag, d_tag;
-  input [63:0] m_rd_data, d_rd_data;
+  input [8:0] i_tag, d_tag; // 9-bit tag lines from caches
+  input [63:0] m_rd_data, d_rd_data; // read data from memory and dcache
   input m_rdy;
   input re, we;
-  input [15:0] d_addr, wrt_data;
+  input [15:0] d_addr;
+  input [15:0] wrt_data;
   
   output reg i_rdy, i_we, m_we, m_re, d_dirty_write, d_we, d_re, d_rdy;
   output reg [63:0] i_wr_data, m_wr_data, d_wr_data;
@@ -16,17 +22,17 @@ module two_way_cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_add
   output reg allow_hlt;
   output reg d_toggle;
   
-  reg [2:0] state, nextState; // allows 4 states should be enough
+  reg [2:0] state, nextState; // allows 8 states
   reg [63:0] save_d_rd_data;
 
   // States //
-  localparam IDLE 	       = 3'b000;
-  localparam WRITE_DCACHE  = 3'b001;
-  localparam DCACHE_TO_MEM = 3'b010;
-  localparam MEM_TO_DCACHE = 3'b011;
-  localparam READ_DCACHE   = 3'b100;
-  localparam READ_ICACHE   = 3'b101;
-  localparam MEM_TO_ICACHE = 3'b110;
+  localparam IDLE 	       = 3'b000; // wait for next cache/mem handle
+  localparam WRITE_DCACHE  = 3'b001; // used for program data write into dcache
+  localparam DCACHE_TO_MEM = 3'b010; // used to write out dcache to memory on evict
+  localparam MEM_TO_DCACHE = 3'b011; // used to install new mem into dcache
+  localparam READ_DCACHE   = 3'b100; // used on dcache hit to read value
+  localparam READ_ICACHE   = 3'b101; // used on icache hit to read instruction
+  localparam MEM_TO_ICACHE = 3'b110; // used on instr miss to load new imem location into icache
 
   
   always @(posedge clk, negedge rst_n) begin
