@@ -1,0 +1,40 @@
+// Project Report
+// Bonus Portion
+// Authors: David Hartman and John Peterson
+//Date Modified: 12 Dec 2014
+
+	For the second phase bonus part of the WISC-F14 project, we implemented two 2-way set associative caches into the processor design. 
+
+[insert description of cache here]
+
+
+Our RoadRunner test data is as follows.
+
+BasicOpCodes1.txt, pass, 187, 120
+BasicOpCodes2.txt, pass, 121, 78
+BasicOpCodes3.txt, pass, 165, 105
+BasicOpCodes4.txt, pass, 67, 42
+branch_prediction.txt, fail
+cache_2way01.txt, pass, 151, 106
+cache_2way02.txt, pass, 16059, 5049
+JaredTest.txt, pass, 31, 18
+JunkTest.txt, pass, 77, 49 *faster compared to (51)
+move_stuff.txt, fail
+MultRoutine.txt, pass, 383, 202 *faster compared to (208)
+NOP_test.txt, pass, 55, 34
+Pipelined1.txt, pass, 77, 45 *faster compared to (51)
+Pipelined2.txt, pass, 106, 63
+prog0.txt, pass, 57, 37
+prog1.txt, pass, 37, 23
+prog2.txt, pass, 42, 25
+prog3.txt, pass, 29, 17
+prog4.txt, fail
+prog5.txt, pass, 1035, 274 *much faster compared to (520)
+R0_bypass.txt, pass, 79, 50
+SimplePipelined.txt, pass, 81, 53
+StalledMEMnoWB.txt, pass, 79, 51
+SumLoop.txt, pass, 1267, 448 *much faster compared to (644)
+
+	All tests except branch_prediction, move_stuff, and prog4 were passed with our design. (*) denotes tests that were completed faster with the 2-way set associative cache compared to the direct-mapped cache. Except for the last two test improvements, the speed increase was not very significant. This was probably due to the fact that a 2-way set associative cache would only show increases in speed as code becomes longer or there is a lot of memory reads. This was the case in prog5 and SumLoop, which were both longer than the usual test to complete. 
+
+	We used the published phase 1 reference design and our modified portions are commented in the modules. 
