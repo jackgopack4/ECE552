@@ -1,7 +1,9 @@
 module dst_mux(clk,dm_re_EX_DM,dm_rd_data_EX_DM,pc_EX_DM,dst_EX_DM,rf_w_data_DM_WB,jmp_imm_EX_DM,stall_DM_WB);
-////////////////////////////////////////////////////////////////////////
-// Simple 2:1 mux determining if ALU or DM is source for write to RF //
-//////////////////////////////////////////////////////////////////////
+// Simple 2:1 mux determining if ALU or DM is source for write to RF
+// Adapted from Gengyu Yang's sample processor
+// Authors: David Hartman and John Peterson
+// Date Modified: 12 Dec 2014
+
 input clk;
 input dm_re_EX_DM;
 input jmp_imm_EX_DM;
