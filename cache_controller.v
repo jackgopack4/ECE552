@@ -18,17 +18,17 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
   output reg [1:0] i_sel, d_sel;
   output reg allow_hlt;
   
-  reg [2:0] state, nextState; // allows 4 states should be enough
+  reg [2:0] state, nextState; // allows 8 states
   reg [63:0] save_d_rd_data;
 
   // States //
-  localparam IDLE 	       = 3'b000;
-  localparam WRITE_DCACHE  = 3'b001;
-  localparam DCACHE_TO_MEM = 3'b010;
-  localparam MEM_TO_DCACHE = 3'b011;
-  localparam READ_DCACHE   = 3'b100;
-  localparam READ_ICACHE   = 3'b101;
-  localparam MEM_TO_ICACHE = 3'b110;
+  localparam IDLE 	       = 3'b000; // Waiting for instruction/order
+  localparam WRITE_DCACHE  = 3'b001; // Used for writing program data into Dcache
+  localparam DCACHE_TO_MEM = 3'b010; // write Dcache into mem on evict
+  localparam MEM_TO_DCACHE = 3'b011; // get new mem block and install into Dcache
+  localparam READ_DCACHE   = 3'b100; // read current value in Dcache (on hit)
+  localparam READ_ICACHE   = 3'b101; // read current value in Icache on hit
+  localparam MEM_TO_ICACHE = 3'b110; // install new mem block into iCache on instr miss
 
   
   always @(posedge clk, negedge rst_n) begin
@@ -139,13 +139,5 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
     endcase
    
   end //end FSM logic
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
 endmodule
