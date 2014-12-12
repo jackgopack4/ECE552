@@ -54,7 +54,7 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
                               .i_rdy(i_rdy),			 // high when instr is ready to be read
                               .i_sel(i_sel),			 // sel for instr output
                               .i_wr_data(i_wr_data),	 // instr to write to i_cache
-                              .i_we(i_we),				 // enable write to e_cache
+                              .i_we(i_we),				 // enable write to i_cache
                               .m_addr(m_addr),			 // mem addr (whether in cache or main mem)
                               .m_re(m_re),				 // mem read enable
                               .m_we(m_we),				 // mem write enable
