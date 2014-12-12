@@ -13,7 +13,7 @@ module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg, padd,stall_EX_DM);
 // 101 ==> SRL
 // 110 ==> SRA
 // 111 ==> reserved
-
+ 
 //////////////////////
 // include defines //
 ////////////////////
