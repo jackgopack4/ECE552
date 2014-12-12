@@ -45,7 +45,6 @@ always @(posedge clk, negedge rst_n)
 	  neg_EX_DM <= neg;
 	end
 
-//if (!stall_ID_EX) begin
 	always @(br_instr_ID_EX,cc_ID_EX,zr_EX_DM,ov_EX_DM,neg_EX_DM,jmp_reg_ID_EX,jmp_imm_ID_EX) begin
 
 	  flow_change_ID_EX = jmp_imm_ID_EX | jmp_reg_ID_EX;	// jumps always change the flow
@@ -62,5 +61,4 @@ always @(posedge clk, negedge rst_n)
 		  3'b111 : flow_change_ID_EX = 1;
 		endcase
 	end
-//end
 endmodule
