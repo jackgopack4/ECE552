@@ -3,7 +3,7 @@ module cache_controller(clk, rst_n, i_rdy, i_sel, i_wr_data, i_we, m_addr, m_re,
         // Course: ECE552
         // Date modified: 12 Dec 2014
 	// module to control cache reads and writes, contained inside of mem_hierarchy  
-	
+
   input clk, rst_n;
   input [15:0] i_addr;					// full instruction address from pc
   input i_hit, d_hit, d_dirty_read;		// high when hit, dirty, or dirty read from memory
