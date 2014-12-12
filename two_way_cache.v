@@ -1,4 +1,9 @@
 module two_way_cache(clk, rst_n, toggle, addr, wr_data, wdirty, we, re, rd_data, tag_out, hit, dirty);
+// Two-way set associative cache with 32 cache lines
+// 151-bit cache lines, two 64-bit data with 9-bit tag lines, dirty, and valid with one overall LRU bit
+// Functioning for large majority of tests including set associative specific tests
+// Authors: David Hartman and John Peterson
+// Date modified: 12 Dec 2014
 
 input clk, rst_n;
 input [13:0] addr; // chopped address for cache block
