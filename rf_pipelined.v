@@ -15,7 +15,7 @@ input hlt;								// not a functional input.  Used to dump register contents whe
 										// test is halted.
 
 output reg [15:0] p0,p1;  				//output read ports
-
+ 
 integer indx;
 
 reg [15:0]mem[0:15];
