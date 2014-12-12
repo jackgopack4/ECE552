@@ -40,7 +40,7 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
   cache dCache( clk,
                 rst_n,
                 d_addr[15:2],// address of data with 2 LSB dropped (offset)
-                d_wr_data,	 // data to write to cache from m_rd_data,	
+                d_wr_data,	 // data to write to cache from m_rd_data	
                 d_dirty_in,	 // high if block is dirty
                 d_we,		 // enable write to cache
                 d_re,		 // enable to read from cache
