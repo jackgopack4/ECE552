@@ -1,4 +1,8 @@
 module cpu(clk,rst_n, pc, hlt);
+// CPU, adapted from Gengyu Yang's sample processor
+// new mem_hierarchy added and pipeline registers added
+// Authors: David Hartman and John Peterson
+// Date Modified: 12 Dec 2014
 
 input clk,rst_n;
 output [15:0] pc;
