@@ -32,9 +32,9 @@ output reg clk_nv_ID_EX; // asserted for instructions that should modify negativ
 output [11:0] instr_ID_EX; // lower 12-bits needed for immediate based instructions
 output [2:0] cc_ID_EX; // condition code bits for branch determination from instr[11:9]
 output stall_IM_ID; // asserted for hazards and halt instruction, stalls IM_ID flops
-output stall_ID_EX; //reg // asserted for hazards and halt instruction, stalls ID_EX flops
-output stall_EX_DM; //reg // asserted for hazards and halt instruction, stalls EX_DM flops
-output stall_DM_WB;
+output stall_ID_EX; // asserted for hazards and halt instruction, stalls ID_EX flops
+output stall_EX_DM; // asserted for hazards and halt instruction, stalls EX_DM flops
+output stall_DM_WB; // asserted for hazards and halt instruction, stalls DM_WB flops
 output reg hlt_DM_WB; // needed for register dump
 output reg byp0_EX,byp0_DM; // bypasing controls for RF_p0
 output reg byp1_EX,byp1_DM; // bypassing controls for RF_p1
