@@ -105,37 +105,6 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
     else                    instr = i_rd_data[63:48];
   end
   assign i_toggle = 1'b1;
-  always@(posedge clk) begin
-    // commented display statement was used for debugging
-    /*//$display("i_addr=%b\ni_wr_data=%b\ni_we=%b\ni_rd_data=%h\ni_tag=%b\ni_hit=%b\ni_dirty=%b\ninstr=%h\ni_sel=%b\n",
-                i_addr[15:2],
-                i_wr_data, //m_rd_data, 
-                i_we,   // enable write to cache
-                i_rd_data,  // i_cache read out data is full block
-                i_tag,    // tag of instr
-                i_hit,    // high if hit
-                i_dirty,
-                instr,
-                i_sel); 
-    */
-    /*//$display("d_addr=%b, d_wr_data=%h, d_dirt_in=%b, d_we=%b, d_re=%b\nd_rd_data=%h\nd_tag=%b, d_hit=%b, d_dirty=%b",
-                d_addr[15:2],
-                d_wr_data,
-                d_dirty_in,
-                d_we,
-                d_re,
-                d_rd_data,
-                d_tag,
-                d_hit,
-                d_dirty); */
-    /*//$display( "m_addr=%b, m_re=%b, m_we=%b\nm_wr_data=%h\nm_rd_data=%h\nm_rdy=%b",
-              m_addr, // addr in mem
-              m_re,   // read enable
-              m_we,   // write enable
-              m_wr_data,  // data to write to mem
-              m_rd_data,  // data read from mem
-              m_rdy); */
-  end
   // mux for data read output
   always@(negedge clk) begin
     if     (d_sel == 2'b00) rd_data = d_rd_data[15:0];
@@ -145,7 +114,7 @@ module two_way_mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d
   end
 
 /*
-// test output //
+// test output was used to debug, left here for example//
 always @(*) begin
 		$display("m_rdy=%b, i_rdy=%b, i_hit=%b, i_sel=%b, instr=%h,\n m_rd_data=%h, i_rd_data=%h, i_we=%b,\n i_wr_data=%h, m_re=%b, i_addr=%h\n", m_rdy, i_rdy, i_hit, i_sel, instr, m_rd_data, i_rd_data, i_we, i_wr_data, m_re, i_addr);
 		////$display("instr=%h\n",instr);
