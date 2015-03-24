@@ -1,5 +1,9 @@
 module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, re, we, wrt_data, allow_hlt);
-
+	// Authors: David Hartman and John Peterson
+    // Course: ECE552
+    // Date modified: 12 Dec 2014
+	// module to control cache reads and writes, contained inside of mem_hierarchy 
+  
   input clk, rst_n, re, we;
   input [15:0] i_addr, d_addr, wrt_data;
 
@@ -23,64 +27,64 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
   
 	cache iCache( clk,
                 rst_n,
-                i_addr[15:2],
-                i_wr_data, //m_rd_data,	
-                1'b0,		// dirty bit set to 0
-                i_we,		// enable write to cache
-                1'b1,		// read enable set high
-                i_rd_data,	// i_cache read out data is full block
-                i_tag,		// tag of instr
-                i_hit,		// high if hit
-                i_dirty );	// high if dirty
+                i_addr[15:2],// address of instruction with 2 LSB dropped (offset)
+                i_wr_data,   // data to write to cache from m_rd_data,	
+                1'b0,		 // dirty bit set to 0
+                i_we,		 // enable write to cache
+                1'b1,		 // read enable set high
+                i_rd_data,	 // i_cache read out data is full block
+                i_tag,		 // high if hit
+                i_hit,		 // high if hit
+                i_dirty );	 // high if dirty
 
   cache dCache( clk,
                 rst_n,
-                d_addr[15:2],
-                d_wr_data,
-                d_dirty_in,
-                d_we,
-                d_re,
-                d_rd_data,
-                d_tag,
-                d_hit,
-                d_dirty);
+                d_addr[15:2],// address of data with 2 LSB dropped (offset)
+                d_wr_data,	 // data to write to cache from m_rd_data	
+                d_dirty_in,	 // high if block is dirty
+                d_we,		 // enable write to cache
+                d_re,		 // enable to read from cache
+                d_rd_data,	 // d_cache read out data is full block
+                d_tag,		 // high if hit
+                d_hit,		 // high if hit
+                d_dirty);	 // high if dirty
 	
 	cache_controller controller(.clk(clk),
                               .rst_n(rst_n),
-                              .i_rdy(i_rdy),	// high when instr is ready to be read
-                              .i_sel(i_sel),	// sel for instr output
-                              .i_wr_data(i_wr_data),	// instr to write to cache
-                              .i_we(i_we),		// enable write to cache
-                              .m_addr(m_addr),	// mem addr (whether in cache or main mem)
-                              .m_re(m_re),		// mem read enable
-                              .m_we(m_we),		// mem write enable
-                              .m_wr_data(m_wr_data),	// mem to write to cache
-                              .i_addr(i_addr),	// taking full i_addr into conroller
-                              .i_hit(i_hit),	// instr hit
-                              .i_tag(i_tag),	// tag
-                              .m_rd_data(m_rd_data),	// data read from mem
-                              .m_rdy(m_rdy),	// mem ready? for hwat?
-                              .re(re),			// read enable? for hwat?
-                              .we(we),			// write enable?
-                              .d_addr(d_addr),
-                              .wrt_data(wrt_data),
-                              .d_wr_data(d_wr_data),
-                              .d_dirty_write(d_dirty_in),
-                              .d_we(d_we),
-                              .d_re(d_re),
-                              .d_tag(d_tag),
-                              .d_hit(d_hit),
-                              .d_dirty_read(d_dirty),
-                              .d_sel(d_sel),
-                              .d_rd_data(d_rd_data),
-                              .d_rdy(d_rdy),
-                              .allow_hlt(allow_hlt));
+                              .i_rdy(i_rdy),			 // high when instr is ready to be read
+                              .i_sel(i_sel),			 // sel for instr output
+                              .i_wr_data(i_wr_data),	 // instr to write to i_cache
+                              .i_we(i_we),				 // enable write to i_cache
+                              .m_addr(m_addr),			 // mem addr (whether in cache or main mem)
+                              .m_re(m_re),				 // mem read enable
+                              .m_we(m_we),				 // mem write enable
+                              .m_wr_data(m_wr_data),	 // mem to write to cache
+                              .i_addr(i_addr),			 // taking full i_addr into conroller
+                              .i_hit(i_hit),			 // instr hit
+                              .i_tag(i_tag),			 // i tag
+                              .m_rd_data(m_rd_data),	 // data read from mem
+                              .m_rdy(m_rdy),			 // input from memory if ready to read/write
+                              .re(re),					 // read enable for memory
+                              .we(we),					 // write enable for memory
+                              .d_addr(d_addr),			 // taking full d_addr into conroller
+                              .wrt_data(wrt_data),		 // address and data to write to memory for data
+                              .d_wr_data(d_wr_data),	 // data to write to to memory
+                              .d_dirty_write(d_dirty_in),// high if data is dirty
+                              .d_we(d_we),				 // enable write to d_cache
+                              .d_re(d_re),				 // enable read from d_cache
+                              .d_tag(d_tag),			 // tag of data address
+                              .d_hit(d_hit),			 // high if d_cache hit
+                              .d_dirty_read(d_dirty),	 // high if read from dirty block
+                              .d_sel(d_sel),			 // select for d_cache block offset
+                              .d_rd_data(d_rd_data),	 // data read from d_cache
+                              .d_rdy(d_rdy),			 // high when d_cache is ready to be read
+                              .allow_hlt(allow_hlt));	 // high when hlt is allowed to propagate
 	
 	unified_mem memory( clk,
                       rst_n,
-                      m_addr,	// addr in mem
-                      m_re,		// read enable
-                      m_we,		// write enable
+                      m_addr,		// addr in mem
+                      m_re,			// read enable
+                      m_we,			// write enable
                       m_wr_data,	// data to write to mem
                       m_rd_data,	// data read from mem
                       m_rdy);		// mem has finished reading/writing
@@ -95,36 +99,6 @@ module mem_hierarchy(clk, rst_n, instr, i_rdy, d_rdy, rd_data, i_addr, d_addr, r
     else                    instr = i_rd_data[63:48];
   end
 
-  always@(posedge clk) begin
-    /*$display("i_addr=%b\ni_wr_data=%b\ni_we=%b\ni_rd_data=%h\ni_tag=%b\ni_hit=%b\ni_dirty=%b\ninstr=%h\ni_sel=%b\n",
-                i_addr[15:2],
-                i_wr_data, //m_rd_data, 
-                i_we,   // enable write to cache
-                i_rd_data,  // i_cache read out data is full block
-                i_tag,    // tag of instr
-                i_hit,    // high if hit
-                i_dirty,
-                instr,
-                i_sel); 
-    */
-    /*$display("d_addr=%b, d_wr_data=%h, d_dirt_in=%b, d_we=%b, d_re=%b\nd_rd_data=%h\nd_tag=%b, d_hit=%b, d_dirty=%b",
-                d_addr[15:2],
-                d_wr_data,
-                d_dirty_in,
-                d_we,
-                d_re,
-                d_rd_data,
-                d_tag,
-                d_hit,
-                d_dirty); */
-    /*$display( "m_addr=%b, m_re=%b, m_we=%b\nm_wr_data=%h\nm_rd_data=%h\nm_rdy=%b",
-              m_addr, // addr in mem
-              m_re,   // read enable
-              m_we,   // write enable
-              m_wr_data,  // data to write to mem
-              m_rd_data,  // data read from mem
-              m_rdy); */
-  end
   // mux for data read output
   always@(negedge clk) begin
     if     (d_sel == 2'b00) rd_data = d_rd_data[15:0];

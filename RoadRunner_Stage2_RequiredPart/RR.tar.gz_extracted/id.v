@@ -5,12 +5,15 @@ src1sel_ID_EX,dm_re_EX_DM,dm_we_EX_DM,clk_z_ID_EX,clk_nv_ID_EX,instr_ID_EX,
 cc_ID_EX, stall_IM_ID,stall_ID_EX,stall_EX_DM,hlt_DM_WB,byp0_EX,byp0_DM,
 byp1_EX,byp1_DM,flow_change_ID_EX,
 padd_ID_EX,i_rdy,stall_DM_WB);
+// Module for pipelined register control and nuanced control of flow/stall logic
+// Adapted heavily from Gengyu Yang's sample processor
+// Authors: David Hartman and John Peterosn
+// Date modified: 12 Dec 2014
 input clk,rst_n, i_rdy;
 input [15:0] instr; // instruction to decode and execute direct from IM, flop first
-//input zr_EX_DM; // zero flag from ALU (used for ADDZ)
-input flow_change_ID_EX;
-output reg jmp_imm_ID_EX;
-output reg jmp_reg_ID_EX;
+input flow_change_ID_EX; // receive a flow change in the program
+output reg jmp_imm_ID_EX; // output flopped jump immediate instruction
+output reg jmp_reg_ID_EX; // output flopped jump register instruction
 output reg br_instr_ID_EX; // set if instruction is branch instruction
 output reg jmp_imm_EX_DM; // needed for JAL in dst_mux
 output reg rf_re0; // asserted if instruction needs to read operand 0 from RF
@@ -29,9 +32,9 @@ output reg clk_nv_ID_EX; // asserted for instructions that should modify negativ
 output [11:0] instr_ID_EX; // lower 12-bits needed for immediate based instructions
 output [2:0] cc_ID_EX; // condition code bits for branch determination from instr[11:9]
 output stall_IM_ID; // asserted for hazards and halt instruction, stalls IM_ID flops
-output stall_ID_EX; //reg // asserted for hazards and halt instruction, stalls ID_EX flops
-output stall_EX_DM; //reg // asserted for hazards and halt instruction, stalls EX_DM flops
-output stall_DM_WB;
+output stall_ID_EX; // asserted for hazards and halt instruction, stalls ID_EX flops
+output stall_EX_DM; // asserted for hazards and halt instruction, stalls EX_DM flops
+output stall_DM_WB; // asserted for hazards and halt instruction, stalls DM_WB flops
 output reg hlt_DM_WB; // needed for register dump
 output reg byp0_EX,byp0_DM; // bypasing controls for RF_p0
 output reg byp1_EX,byp1_DM; // bypassing controls for RF_p1
@@ -82,7 +85,7 @@ instr_IM_ID <= instr; // flop raw instruction from IM
 // Pipeline control signals needed in EX stage and beyond //
 ///////////////////////////////////////////////////////////
 always @(posedge clk)
-if (!stall_ID_EX)
+if (!stall_ID_EX) // if not currently stalling, update ID_EX flops
 begin
 br_instr_ID_EX <= br_instr & !flush;
 jmp_imm_ID_EX <= jmp_imm & !flush;
@@ -104,7 +107,7 @@ end
 // Pipeline control signals needed in MEM stage and beyond //
 ////////////////////////////////////////////////////////////
 always @(posedge clk)
-if (!stall_EX_DM)
+if (!stall_EX_DM) // if not currently stalling, update EX_DM flops
 begin
 rf_we_EX_DM <= rf_we_ID_EX;//rf_we_ID_EX & (!(cond_ex_ID_EX & !zr_EX_DM)); // ADDZ
 rf_dst_addr_EX_DM <= rf_dst_addr_ID_EX;
@@ -113,13 +116,13 @@ dm_we_EX_DM <= dm_we_ID_EX;
 jmp_imm_EX_DM <= jmp_imm_ID_EX;
 end
 always @(posedge clk) begin
-if (!stall_DM_WB) begin
+if (!stall_DM_WB) begin // update DM_WB flops
 rf_we_DM_WB <= rf_we_EX_DM;
 rf_dst_addr_DM_WB <= rf_dst_addr_EX_DM;
 end
 end
 /////////////////////////////////////////////////////////////
-// Flops for bypass control logic (these are ID_EX flops) //
+// Flops for bypass control logic (these are ID_EX and EX_DM flops) //
 ///////////////////////////////////////////////////////////
 always @(posedge clk, negedge rst_n)
 if (!rst_n)
@@ -174,12 +177,9 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) ||
 ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
 assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
-assign stall_ID_EX = !i_rdy; // hlt_EX_DM;
-assign stall_EX_DM = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
-assign stall_DM_WB = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
-//assign stall_IM_ID = hlt & !flush | hlt_ID_EX | load_use_hazard | !i_rdy;
-//assign stall_ID_EX = stall_IM_ID//!i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
-//assign stall_EX_DM = !i_rdy;//1'b0;//!i_rdy; // hlt_EX_DM;
+assign stall_ID_EX = !i_rdy;
+assign stall_EX_DM = !i_rdy;
+assign stall_DM_WB = !i_rdy;
 assign cc_ID_EX = instr_ID_EX[11:9];
 //////////////////////////////////////////////////////////////
 // default to most common state and override base on instr //

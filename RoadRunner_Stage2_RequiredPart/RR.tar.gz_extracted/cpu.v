@@ -1,4 +1,9 @@
 module cpu(clk,rst_n, pc, hlt);
+// CPU, adapted from Gengyu Yang's sample processor
+// new mem_hierarchy added and pipeline registers added
+// Authors: David Hartman and John Peterson
+// Date Modified: 12 Dec 2014
+
 
 input clk,rst_n;
 output [15:0] pc;
@@ -48,7 +53,8 @@ always @(posedge clk) begin
 ///////////////////////////////////
 // Instantiate memory hierarchy //
 /////////////////////////////////
-mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), .i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
+mem_hierarchy mem_h(.clk(clk), .rst_n(rst_n), .instr(instr), .i_rdy(i_rdy), .d_rdy(d_rdy), .rd_data(dm_rd_data_EX_DM), 
+	.i_addr(iaddr), .d_addr(dst_EX_DM), .re(dm_re_EX_DM), .we(dm_we_EX_DM), .wrt_data(p0_EX_DM), .allow_hlt(allow_hlt));
 
 
 
